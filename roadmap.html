@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roadmap — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    .roadmap-wrap{max-width:860px;margin:0 auto;position:relative;}
+    .center-line{position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--purple),var(--cyan),var(--green));border-radius:2px;z-index:0;}
+    .rm-node{display:flex;align-items:flex-start;gap:0;margin-bottom:52px;position:relative;z-index:1;}
+    .rm-node:nth-child(even){flex-direction:row-reverse;}
+    .rm-side{flex:1;padding:0 40px;}
+    .rm-node:nth-child(even) .rm-side{text-align:right;}
+    .rm-center{flex-shrink:0;display:flex;flex-direction:column;align-items:center;z-index:2;}
+    .node-ball{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;border:3px solid transparent;transition:var(--t);cursor:pointer;}
+    .node-ball.unlocked{background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(6,182,212,0.3));border-color:var(--border2);box-shadow:0 0 20px rgba(124,58,237,0.35);}
+    .node-ball.active{background:linear-gradient(135deg,var(--purple),var(--cyan));border-color:var(--cyan-l);box-shadow:0 0 35px rgba(124,58,237,0.6);animation:glow 2.5s ease infinite;}
+    .node-ball.locked{background:rgba(255,255,255,0.04);border-color:var(--border);filter:grayscale(1) opacity(0.5);}
+    .node-ball.done{background:linear-gradient(135deg,#10b981,#06b6d4);border-color:#10b981;box-shadow:0 0 20px rgba(16,185,129,0.4);}
+    .rm-card{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:18px;padding:22px;transition:var(--t);}
+    .rm-card.active{border-color:var(--border2);box-shadow:0 0 25px rgba(124,58,237,0.15);}
+    .rm-card.done{border-color:rgba(16,185,129,0.3);box-shadow:0 0 15px rgba(16,185,129,0.08);}
+    .rm-card.locked{opacity:0.55;}
+    .rm-card:hover:not(.locked){border-color:var(--border2);transform:translateY(-3px);}
+    .task-pill{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--glass2);border-radius:10px;font-size:0.82rem;margin-bottom:6px;}
+    .task-pill .check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:grid;place-items:center;font-size:0.65rem;flex-shrink:0;}
+    .task-pill .check.done{background:var(--green);border-color:var(--green);color:#fff;}
+    .task-pill .check.active-dot{border-color:var(--cyan);background:rgba(6,182,212,0.15);}
+    .level-num{font-size:0.7rem;font-weight:800;color:var(--text3);margin:6px 0;letter-spacing:1px;}
+  </style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roadmap.html" class="active">Roadmap</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="mentors.html">Mentors</a>
+      <a href="chat.html">Messages</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-xp">⭐ 340 XP</div>
+      <div class="nav-avatar">A</div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a>
+      <a href="roadmap.html" class="sidebar-link active"><span class="icon">🗺️</span> Roadmap</a>
+      <a href="leaderboard.html" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Community</div>
+      <a href="mentors.html" class="sidebar-link"><span class="icon">🤝</span> Mentors</a>
+      <a href="chat.html" class="sidebar-link"><span class="icon">💬</span> Messages</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Account</div>
+      <a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
+      <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <!-- Header -->
+    <div class="flex-between mb-24 fade-up">
+      <div>
+        <h1 style="font-size:2rem;margin-bottom:6px;">Your <span class="gradient-text">Roadmap</span> 🗺️</h1>
+        <p class="muted">7 levels from beginner to internship-ready. You are at <strong class="gradient-text">Level 2</strong>.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+        <div class="xp-badge">⭐ 340 / 3500 XP total</div>
+        <div class="progress-wrap" style="width:200px;"><div class="progress-bar" data-progress="10" style="width:0%"></div></div>
+        <div style="font-size:0.75rem;color:var(--text2);">10% of full journey complete</div>
+      </div>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="roadmap-wrap fade-up-d1">
+      <div class="center-line"></div>
+
+      <!-- Level 1 -->
+      <div class="rm-node">
+        <div class="rm-side">
+          <div class="rm-card done">
+            <div class="flex-between mb-12">
+              <div><div class="tag tag-green mb-8">✅ Completed</div><h3>Level 1: Basics</h3></div>
+              <div class="xp-badge">+100 XP</div>
+            </div>
+            <p class="muted" style="font-size:0.85rem;margin-bottom:14px;">Programming fundamentals — variables, loops, functions, OOP.</p>
+            <div>
+              <div class="task-pill"><div class="check done">✓</div>Python / C++ Syntax</div>
+              <div class="task-pill"><div class="check done">✓</div>OOP Concepts</div>
+              <div class="task-pill"><div class="check done">✓</div>Basic Problem Solving</div>
+              <div class="task-pill"><div class="check done">✓</div>Git Basics</div>
+            </div>
+            <a href="level.html?level=1" class="btn btn-secondary btn-sm" style="margin-top:14px;width:100%;justify-content:center;">Review Level 1 →</a>
+          </div>
+        </div>
+        <div class="rm-center"><div class="node-ball done" title="Level 1">✅</div><div class="level-num">LVL 1</div></div>
+        <div class="rm-side"></div>
+      </div>
+
+      <!-- Level 2 -->
+      <div class="rm-node">
+        <div class="rm-side"></div>
+        <div class="rm-center"><div class="node-ball active" title="Level 2">⚡</div><div class="level-num">LVL 2</div></div>
+        <div class="rm-side">
+          <div class="rm-card active">
+            <div class="flex-between mb-12">
+              <div><div class="tag tag-cyan mb-8">🔄 In Progress</div><h3>Level 2: DSA</h3></div>
+              <div class="xp-badge">+240 / 400 XP</div>
+            </div>
+            <div class="progress-wrap mb-12"><div class="progress-bar" data-progress="68" style="width:0%"></div></div>
+            <p class="muted" style="font-size:0.85rem;margin-bottom:14px;">Data structures & algorithms — the backbone of interviews.</p>
+            <div>
+              <div class="task-pill"><div class="check done">✓</div>Arrays & Strings</div>
+              <div class="task-pill"><div class="check done">✓</div>Linked Lists</div>
+              <div class="task-pill"><div class="check active-dot">→</div>Binary Search & Sorting</div>
+              <div class="task-pill"><div class="check"></div>Stacks & Queues</div>
+              <div class="task-pill"><div class="check"></div>Trees & Graphs</div>
+              <div class="task-pill"><div class="check"></div>Dynamic Programming</div>
+            </div>
+            <a href="level.html?level=2" class="btn btn-primary btn-sm" style="margin-top:14px;width:100%;justify-content:center;">Continue Learning →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level 3 -->
+      <div class="rm-node">
+        <div class="rm-side">
+          <div class="rm-card locked">
+            <div class="flex-between mb-12">
+              <div><div class="tag tag-purple mb-8">🔒 Locked</div><h3>Level 3: Projects</h3></div>
+              <div class="xp-badge">+500 XP</div>
+            </div>
+            <p class="muted" style="font-size:0.85rem;margin-bottom:14px;">Build real projects — a portfolio that speaks louder than grades.</p>
+            <div>
+              <div class="task-pill"><div class="check"></div>Choose a Project Idea</div>
+              <div class="task-pill"><div class="check"></div>Plan & Design (Wireframe)</div>
+              <div class="task-pill"><div class="check"></div>Frontend Development</div>
+              <div class="task-pill"><div class="check"></div>Backend + Database</div>
+              <div class="task-pill"><div class="check"></div>Deploy on GitHub Pages / Render</div>
+            </div>
+          </div>
+        </div>
+        <div class="rm-center"><div class="node-ball locked" title="Level 3">🛠️</div><div class="level-num">LVL 3</div></div>
+        <div class="rm-side"></div>
+      </div>
+
+      <!-- Level 4 -->
+      <div class="rm-node">
+        <div class="rm-side"></div>
+        <div class="rm-center"><div class="node-ball locked" title="Level 4">📄</div><div class="level-num">LVL 4</div></div>
+        <div class="rm-side">
+          <div class="rm-card locked">
+            <div class="flex-between mb-12">
+              <div><div class="tag tag-purple mb-8">🔒 Locked</div><h3>Level 4: Resume + GitHub</h3></div>
+              <div class="xp-badge">+400 XP</div>
+            </div>
+            <p class="muted" style="font-size:0.85rem;margin-bottom:14px;">Polish your online presence — make recruiters notice you.</p>
+            <div>
+              <div class="task-pill"><div class="check"></div>Write Your Resume</div>
+              <div class="task-pill"><div class="check"></div>Clean Up GitHub Profile</div>
+              <div class="task-pill"><div class="check"></div>LinkedIn Profile Setup</div>
+              <div class="task-pill"><div class="check"></div>Get Resume Reviewed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level 5 -->
+      <div class="rm-node">
+        <div class="rm-side">
+          <div class="rm-card locked">
+            <div class="flex-between mb-12">
+              <div><div class="tag tag-purple mb-8">🔒 Locked</div><h3>Level 5: Interview Prep</h3></div>
+              <div class="xp-badge">+600 XP</div>
+            </div>
+            <p class="muted" style="font-size:0.85rem;margin-bottom:14px;">100 LeetCode + mock interviews + aptitude + HR prep.</p>
+            <div>
+              <div class="task-pill"><div class="check"></div>100 LeetCode Problems</div>
+              <div class="task-pill"><div class="check"></div>Aptitude Practice</div>
+              <div class="task-pill"><div class="check"></div>2 Mock Interviews</div>
+              <div class="task-pill"><div class="check"></div>HR Interview Prep</div>
+            </div>
+          </div>
+        </div>
+        <div class="rm-center"><div class="node-ball locked" title="Level 5">🎯</div><div class="level-num">LVL 5</div></div>
+        <div class="rm-side"></div>
+      </div>
+
+      <!-- Level 6 -->
+      <div class="rm-node">
+        <div class="rm-side"></div>
+        <div class="rm-center"><div class="node-ball locked" title="Level 6">📬</div><div class="level-num">LVL 6</div></div>
+        <div class="rm-side">
+          <div class="rm-card locked">
+            <div class="flex-between mb-12">
+              <div><div class="tag tag-purple mb-8">🔒 Locked</div><h3>Level 6: Job Apply</h3></div>
+              <div class="xp-badge">+500 XP</div>
+            </div>
+            <p class="muted" style="font-size:0.85rem;margin-bottom:14px;">Start applying — internships, campus placements, referrals.</p>
+            <div>
+              <div class="task-pill"><div class="check"></div>Apply to 20 Internships</div>
+              <div class="task-pill"><div class="check"></div>Reach Out on LinkedIn</div>
+              <div class="task-pill"><div class="check"></div>Campus Placement Portal</div>
+              <div class="task-pill"><div class="check"></div>Track Applications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level 7 -->
+      <div class="rm-node">
+        <div class="rm-side">
+          <div class="rm-card locked">
+            <div class="flex-between mb-12">
+              <div><div class="tag tag-gold mb-8">🏆 Final Boss</div><h3>Level 7: Internship Ready 🚀</h3></div>
+              <div class="xp-badge">+1000 XP</div>
+            </div>
+            <p class="muted" style="font-size:0.85rem;margin-bottom:14px;">You've made it — internship offer in hand. You are a developer!</p>
+            <div>
+              <div class="task-pill"><div class="check"></div>Get Interview Call</div>
+              <div class="task-pill"><div class="check"></div>Ace the Interview</div>
+              <div class="task-pill"><div class="check"></div>Sign Offer Letter 🎉</div>
+            </div>
+            <div style="margin-top:14px;padding:12px;background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(124,58,237,0.1));border:1px solid rgba(245,158,11,0.25);border-radius:12px;font-size:0.82rem;text-align:center;color:var(--gold);">
+              🏆 Unlock the <strong>Legend</strong> badge + Certificate!
+            </div>
+          </div>
+        </div>
+        <div class="rm-center"><div class="node-ball locked" title="Level 7">🚀</div><div class="level-num">LVL 7</div></div>
+        <div class="rm-side"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="static/js/main.js"></script>
+</body>
+</html>

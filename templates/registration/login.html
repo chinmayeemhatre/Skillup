@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container grid grid-2" style="align-items:center">
+    <section class="stack">
+      <span class="eyebrow">Welcome back</span>
+      <h1>Continue your <span class="gradient-text">level streak</span>.</h1>
+      <p class="lead">Use your account or demo credentials: <strong>aarav</strong>, <strong>priya</strong>, <strong>rahul</strong>, <strong>karan</strong>, or <strong>meera</strong> with password <strong>password123</strong>.</p>
+    </section>
+    <section class="glass card">
+      <form class="form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Login to SKILLUP</button>
+      </form>
+      <p class="muted">New here? <a class="accent" href="{% url 'signup' %}">Create an account</a></p>
+    </section>
+  </div>
+</main>
+{% endblock %}

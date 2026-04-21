@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="pageTitle">Level 2: DSA — SKILLUP</title>
+  <meta name="description" content="Learn with SKILLUP — theory, quizzes and coding challenges for every level."/>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    /* ── Tab system ── */
+    .tab-bar{display:flex;gap:6px;background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:6px;margin-bottom:28px;}
+    .tab-btn{flex:1;padding:11px 16px;border-radius:9px;font-size:0.88rem;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:var(--t);font-family:'Space Grotesk',sans-serif;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+    .tab-btn.active{background:var(--yellow);color:var(--bg);box-shadow:0 0 15px rgba(214,169,58,0.35);}
+    .tab-btn:hover:not(.active){background:var(--glass2);color:var(--text);}
+    .tab-panel{display:none;}
+    .tab-panel.active{display:block;animation:fadeUp 0.3s ease;}
+ 
+    /* ── Theory ── */
+    .theory-block{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:26px 28px;margin-bottom:20px;transition:var(--t);}
+    .theory-block:hover{border-color:rgba(214,169,58,0.22);}
+    .theory-block h3{font-size:1.05rem;margin-bottom:14px;color:var(--yellow-l);display:flex;align-items:center;gap:10px;}
+    .theory-block p{color:var(--text2);line-height:1.85;font-size:0.91rem;margin-bottom:14px;}
+    .theory-block ul{color:var(--text2);line-height:2;font-size:0.91rem;padding-left:20px;margin-bottom:14px;}
+    .theory-block p:last-child,.theory-block ul:last-child{margin-bottom:0;}
+    .code-block{background:rgba(0,0,0,0.48);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:18px 20px;margin:14px 0;font-family:'Courier New',monospace;font-size:0.82rem;line-height:1.8;color:#e2ba61;overflow-x:auto;white-space:pre;}
+    .concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0;}
+    .concept-card{background:rgba(214,169,58,0.06);border:1px solid rgba(214,169,58,0.18);border-radius:10px;padding:16px;transition:var(--t);}
+    .concept-card:hover{border-color:rgba(214,169,58,0.35);}
+    .concept-card h4{font-size:0.88rem;color:var(--yellow-l);margin-bottom:8px;}
+    .concept-card p{font-size:0.8rem;color:var(--text2);line-height:1.65;}
+    .resource-link{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--glass);border:1px solid var(--border);border-radius:10px;transition:var(--t);margin-bottom:10px;color:var(--text);}
+    .resource-link:hover{border-color:rgba(214,169,58,0.35);background:rgba(214,169,58,0.05);transform:translateX(5px);}
+    .r-type{font-size:0.72rem;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+
+    /* ── Quiz ── */
+    .quiz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+    .timer-box{display:flex;align-items:center;gap:8px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.28);padding:9px 18px;border-radius:10px;font-weight:800;color:#ff6b35;font-family:'Syne',sans-serif;font-size:1.15rem;}
+    .timer-box.warning{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444;animation:pulse-ring 0.8s ease infinite;}
+    .progress-dots{display:flex;gap:6px;}
+    .q-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:var(--t);}
+    .q-dot.answered{background:var(--yellow);}
+    .q-dot.current{background:var(--yellow-l);box-shadow:0 0 8px rgba(244,212,123,0.6);}
+    .q-card{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:20px;}
+    .q-num{font-size:0.75rem;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;}
+    .q-text{font-size:1.02rem;font-weight:600;line-height:1.65;margin-bottom:22px;}
+    .options{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    @media(max-width:640px){.options{grid-template-columns:1fr;}}
+    .opt{padding:13px 16px;background:var(--glass);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:0.88rem;font-weight:500;color:var(--text);transition:var(--t);text-align:left;font-family:'Space Grotesk',sans-serif;line-height:1.4;display:flex;align-items:center;gap:10px;}
+    .opt-letter{width:24px;height:24px;border-radius:6px;background:var(--glass2);border:1px solid var(--border);display:grid;place-items:center;font-size:0.75rem;font-weight:700;flex-shrink:0;transition:var(--t);}
+    .opt:hover:not(.answered){border-color:rgba(214,169,58,0.4);background:rgba(214,169,58,0.07);}
+    .opt:hover:not(.answered) .opt-letter{background:rgba(214,169,58,0.2);border-color:rgba(214,169,58,0.5);color:var(--yellow-l);}
+    .opt.correct{border-color:var(--green);color:var(--green);background:rgba(16,185,129,0.1);}
+    .opt.correct .opt-letter{background:rgba(16,185,129,0.2);border-color:var(--green);color:var(--green);}
+    .opt.wrong{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,0.1);}
+    .opt.wrong .opt-letter{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444;}
+    .opt.answered{cursor:default;}
+    .expl-box{background:rgba(214,169,58,0.07);border:1px solid rgba(214,169,58,0.22);border-radius:10px;padding:14px 18px;margin-top:16px;font-size:0.87rem;color:var(--text2);line-height:1.7;display:none;}
+    .expl-box.show{display:flex;gap:10px;align-items:flex-start;}
+    .quiz-nav{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+    /* Score result */
+    .score-result{text-align:center;padding:40px 20px;animation:fadeUp 0.5s ease;}
+    .score-circle{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;margin:0 auto 24px;font-family:'Syne',sans-serif;}
+    .score-circle.great{background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.15));border:3px solid var(--green);box-shadow:0 0 40px rgba(16,185,129,0.3);}
+    .score-circle.good{background:linear-gradient(135deg,rgba(214,169,58,0.2),rgba(245,158,11,0.15));border:3px solid var(--yellow);box-shadow:0 0 40px rgba(214,169,58,0.3);}
+    .score-circle.poor{background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(220,38,38,0.1));border:3px solid #ef4444;}
+
+    /* ── Challenge / Code Editor ── */
+    .challenge-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    @media(max-width:900px){.challenge-wrap{grid-template-columns:1fr;}}
+    .problem-card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+    .diff-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:7px;font-size:0.75rem;font-weight:800;margin-bottom:14px;}
+    .diff-easy{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#10b981;}
+    .diff-medium{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;}
+    .diff-hard{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;}
+    .io-block{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;margin-top:12px;font-family:monospace;font-size:0.83rem;color:var(--text2);}
+    .io-label{font-size:0.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+    .hint-accordion{background:var(--glass);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px;transition:var(--t);}
+    .hint-accordion:hover{border-color:rgba(214,169,58,0.25);}
+    .hint-head{padding:12px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:0.87rem;font-weight:600;transition:var(--t);user-select:none;}
+    .hint-head:hover{background:rgba(214,169,58,0.05);}
+    .hint-body{padding:0 16px;max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.35s ease;font-size:0.85rem;color:var(--text2);line-height:1.7;}
+    .hint-body.open{max-height:120px;padding:12px 16px;border-top:1px solid var(--border);}
+    .editor-toolbar{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:10px 10px 0 0;padding:10px 16px;}
+    .lang-pill{display:flex;gap:6px;}
+    .lang-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--glass);color:var(--text2);font-size:0.8rem;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:var(--t);}
+    .lang-btn.active{background:var(--yellow);border-color:var(--yellow);color:var(--bg);font-weight:700;}
+    .code-editor{width:100%;min-height:240px;background:rgba(0,0,0,0.52);border:1px solid rgba(255,255,255,0.08);border-top:none;border-radius:0 0 10px 10px;padding:16px 18px;font-family:'Courier New',monospace;font-size:0.86rem;color:#e2ba61;resize:vertical;line-height:1.8;outline:none;transition:border-color 0.25s;}
+    .code-editor:focus{border-color:rgba(214,169,58,0.35);}
+    .output-box{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;font-family:monospace;font-size:0.84rem;color:var(--text2);min-height:60px;white-space:pre-wrap;display:none;animation:fadeUp 0.3s ease;}
+    .output-box.show{display:block;}
+    .output-box.success{border-color:rgba(16,185,129,0.3);color:#10b981;}
+    .output-box.error{border-color:rgba(239,68,68,0.3);color:#ef4444;}
+
+    /* ── Level header ── */
+    .level-hdr{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+    .level-icon-big{width:72px;height:72px;border-radius:14px;display:grid;place-items:center;font-size:2.2rem;flex-shrink:0;}
+    .lv-active{background:linear-gradient(135deg,rgba(214,169,58,0.3),rgba(244,212,123,0.12));border:2px solid rgba(214,169,58,0.5);box-shadow:0 0 30px rgba(214,169,58,0.2);}
+    .lv-done{background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.12));border:2px solid rgba(16,185,129,0.45);}
+    .lv-locked{background:rgba(255,255,255,0.04);border:2px solid var(--border);filter:grayscale(1) opacity(0.5);}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text3);margin-bottom:18px;}
+    .breadcrumb a{color:var(--text2);transition:var(--t);}
+    .breadcrumb a:hover{color:var(--yellow-l);}
+    .bc-sep{color:var(--border-h);}
+  </style>
+</head>
+<body>
+<!-- ── NAV ── -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roadmap.html" class="active">Roadmap</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="mentors.html">Mentors</a>
+      <a href="chat.html">Messages</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-xp">⭐ 340 XP</div>
+      <div class="nav-avatar" title="Profile" onclick="location.href='profile.html'">A</div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a>
+      <a href="roadmap.html" class="sidebar-link active"><span class="icon">🗺️</span> Roadmap</a>
+      <a href="leaderboard.html" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Community</div>
+      <a href="mentors.html" class="sidebar-link"><span class="icon">🤝</span> Mentors</a>
+      <a href="chat.html" class="sidebar-link"><span class="icon">💬</span> Messages</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Account</div>
+      <a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
+      <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
+    </div>
+    <!-- mini profile card -->
+    <div style="position:absolute;bottom:20px;left:16px;right:16px;">
+      <div style="background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--yellow),var(--cyan));display:grid;place-items:center;font-weight:800;font-size:0.9rem;flex-shrink:0;color:var(--bg);">A</div>
+        <div style="min-width:0;">
+          <div style="font-size:0.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Aarav Sharma</div>
+          <div class="level-badge" style="font-size:0.7rem;padding:2px 8px;margin-top:3px;">⚡ Level 2</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="bc-sep">›</span>
+      <a href="roadmap.html">Roadmap</a>
+      <span class="bc-sep">›</span>
+      <span id="bcTitle">Level 2: DSA</span>
+    </div>
+
+    <!-- Level Header (populated by JS) -->
+    <div class="level-hdr fade-up" id="levelHdr">
+      <div class="level-icon-big lv-active" id="levelIcon">⚡</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+          <div id="levelTag" class="tag tag-cyan">🔄 In Progress</div>
+          <div id="levelXPBadge" class="xp-badge">⭐ +400 XP</div>
+        </div>
+        <h1 id="levelTitle" style="font-size:1.7rem;margin-bottom:8px;">Level 2: Data Structures &amp; Algorithms</h1>
+        <p id="levelDesc" class="muted" style="font-size:0.9rem;max-width:560px;"></p>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div id="levelProgressLabel" style="font-size:0.8rem;color:var(--text2);margin-bottom:6px;">Progress: 68%</div>
+        <div class="progress-wrap" style="width:160px;"><div class="progress-bar" id="lvlBar" data-progress="68" style="width:0%"></div></div>
+        <div style="font-size:0.75rem;color:var(--text3);margin-top:6px;" id="levelXPCount">340 / 500 XP</div>
+      </div>
+    </div>
+
+    <!-- ── Tab Bar ── -->
+    <div class="tab-bar fade-up-d1">
+      <button class="tab-btn active" id="tabTheory"    onclick="switchLvlTab('theory',this)">📚 Theory</button>
+      <button class="tab-btn"        id="tabQuiz"      onclick="switchLvlTab('quiz',this)">🧠 Quiz</button>
+      <button class="tab-btn"        id="tabChallenge" onclick="switchLvlTab('challenge',this)">💻 Challenge</button>
+    </div>
+
+    <!-- ════════ THEORY PANEL ════════ -->
+    <div id="panelTheory" class="tab-panel active fade-up-d2">
+      <div id="theoryContent"></div>
+      <div id="resourcesSection" style="margin-top:28px;">
+        <div class="section-title" style="margin-bottom:16px;"><div class="dot"></div>Resources &amp; References</div>
+        <div id="resourcesList"></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+        <a href="roadmap.html" class="btn btn-secondary">← Back to Roadmap</a>
+        <button class="btn btn-primary" onclick="switchLvlTab('quiz',document.getElementById('tabQuiz'))">Take the Quiz 🧠 →</button>
+      </div>
+    </div>
+
+    <!-- ════════ QUIZ PANEL ════════ -->
+    <div id="panelQuiz" class="tab-panel">
+      <!-- Intro screen -->
+      <div id="quizIntro" class="card" style="text-align:center;padding:50px 32px;">
+        <div style="font-size:4rem;margin-bottom:16px;" class="float-anim">🧠</div>
+        <h2 style="font-size:1.8rem;margin-bottom:12px;">Ready for the Quiz?</h2>
+        <p class="muted" style="max-width:440px;margin:0 auto 28px;line-height:1.8;">5 questions · 10-minute timer · Instant feedback on every question<br>Score <strong style="color:var(--yellow-l);">80%+</strong> to earn full XP for this level!</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
+          <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:18px 28px;text-align:center;">
+            <div id="quizQCount" style="font-size:1.8rem;font-weight:800;color:var(--yellow);">5</div>
+            <div style="font-size:0.78rem;color:var(--text2);">Questions</div>
+          </div>
+          <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:18px 28px;text-align:center;">
+            <div style="font-size:1.8rem;font-weight:800;color:#ff6b35;">10:00</div>
+            <div style="font-size:0.78rem;color:var(--text2);">Time Limit</div>
+          </div>
+          <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:18px 28px;text-align:center;">
+            <div id="quizXPReward" style="font-size:1.8rem;font-weight:800;color:var(--yellow-l);">+80 XP</div>
+            <div style="font-size:0.78rem;color:var(--text2);">Max Reward</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="padding:14px 44px;font-size:1rem;" onclick="startQuiz()">Start Quiz 🚀</button>
+      </div>
+      <!-- Active quiz area -->
+      <div id="quizArea" style="display:none;">
+        <div class="quiz-meta">
+          <div>
+            <div style="font-size:0.82rem;color:var(--text2);margin-bottom:8px;">Question <span id="qCurrent">1</span> of <span id="qTotal">5</span></div>
+            <div class="progress-dots" id="progressDots"></div>
+          </div>
+          <div class="timer-box" id="timerBox">⏱ <span id="timerDisplay">10:00</span></div>
+        </div>
+        <div id="questionDisplay"></div>
+      </div>
+      <!-- Results screen -->
+      <div id="quizResult" style="display:none;" class="score-result">
+        <div class="score-circle" id="scoreCircle">
+          <div>
+            <div style="font-size:2.6rem;font-weight:900;" id="scorePct">0%</div>
+            <div style="font-size:0.8rem;color:var(--text2);" id="scoreRatio">0/5</div>
+          </div>
+        </div>
+        <h2 style="font-size:1.8rem;margin-bottom:8px;" id="scoreMsg">Great job!</h2>
+        <p class="muted" style="margin-bottom:20px;" id="scoreSubMsg"></p>
+        <div id="xpEarned" style="margin-bottom:28px;"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="resetQuiz()">Try Again 🔄</button>
+          <button class="btn btn-primary" onclick="switchLvlTab('challenge',document.getElementById('tabChallenge'))">Go to Challenge 💻 →</button>
+        </div>
+        <div id="reviewSection" style="margin-top:36px;text-align:left;"></div>
+      </div>
+    </div>
+
+    <!-- ════════ CHALLENGE PANEL ════════ -->
+    <div id="panelChallenge" class="tab-panel">
+      <div class="challenge-wrap" id="challengeWrap">
+        <!-- Problem column -->
+        <div class="problem-panel">
+          <div class="problem-card">
+            <div id="challengeDiff" class="diff-badge diff-medium">⚡ Medium</div>
+            <h2 id="challengeTitle" style="font-size:1.25rem;margin-bottom:12px;"></h2>
+            <p id="challengeDesc" class="muted" style="font-size:0.9rem;line-height:1.85;"></p>
+            <div id="challengeExamples"></div>
+            <div id="challengeConstraints" style="margin-top:14px;font-size:0.83rem;color:var(--text3);line-height:1.7;"></div>
+          </div>
+          <div class="section-title" style="margin-bottom:12px;"><div class="dot"></div>Hints <span class="tag tag-yellow" style="margin-left:8px;">Click to reveal</span></div>
+          <div id="hintsList"></div>
+        </div>
+        <!-- Editor column -->
+        <div class="editor-panel">
+          <div class="editor-toolbar">
+            <div class="lang-pill" id="langPill">
+              <button class="lang-btn active" onclick="setLang('python',this)">Python</button>
+              <button class="lang-btn" onclick="setLang('javascript',this)">JavaScript</button>
+              <button class="lang-btn" onclick="setLang('cpp',this)">C++</button>
+            </div>
+            <button class="btn-icon" onclick="resetCode()" title="Reset to starter">↺</button>
+          </div>
+          <textarea class="code-editor" id="codeEditor" spellcheck="false" placeholder="Write your solution here..."></textarea>
+          <div class="output-box" id="outputBox"></div>
+          <div style="display:flex;gap:10px;margin-top:14px;">
+            <button class="btn btn-secondary" style="flex:1;" onclick="runCode()">▶ Run Code</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="submitCode()">Submit ✓</button>
+          </div>
+          <p style="font-size:0.77rem;color:var(--text3);margin-top:10px;text-align:center;">
+            💡 Code runs in simulation mode — backend execution with test cases coming soon
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="static/js/main.js"></script>
+<script>
+/* ==========================================================
+   SKILLUP — Level Page Controller
+   All 7 levels' data, quiz engine, and code challenge system
+   ========================================================== */
+
+// ── Level Content Data ──────────────────────────────────────
+const LEVEL_DATA = {
+  1: {
+    title: "Level 1: Programming Basics",
+    shortTitle: "Basics",
+    icon: "🧠",
+    totalXP: 100,
+    status: "done",       // done | active | locked
+    currentXP: 100,
+    maxXP: 100,
+    progress: 100,
+    desc: "Master the foundations of programming — variables, control flow, functions, and OOP concepts. The bedrock of your developer career.",
+    theory: {
+      sections: [
+        {
+          title: "🔤 Variables &amp; Data Types",
+          content: "A <strong style='color:var(--yellow-l)'>variable</strong> is a named storage location in memory. Python is dynamically typed — you don't need to declare types explicitly. Key built-in types: <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>int</code>, <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>float</code>, <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>str</code>, <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>bool</code>, <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>list</code>, <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>dict</code>.",
+          code: `# Variables and data types in Python
+name    = "Alice"         # str
+age     = 20              # int
+gpa     = 9.2             # float
+active  = True            # bool
+courses = ["CS", "Math"]  # list
+profile = {"year": 2}     # dict
+
+# f-strings for string formatting
+print(f"{name} is {age} years old — GPA: {gpa}")
+# Output: Alice is 20 years old — GPA: 9.2
+
+# Type checking
+print(type(gpa))   # <class 'float'>`
+        },
+        {
+          title: "🔁 Control Flow",
+          content: "Control flow determines execution order. Three pillars: <strong style='color:var(--yellow-l)'>if-elif-else</strong> for conditional logic, <strong style='color:var(--yellow-l)'>for</strong> loops for iterating sequences, and <strong style='color:var(--yellow-l)'>while</strong> loops for repeated execution based on a condition.",
+          code: `# If-elif-else
+marks = 85
+if marks >= 90:    grade = "A+"
+elif marks >= 80:  grade = "A"
+elif marks >= 70:  grade = "B"
+else:              grade = "C"
+print(f"Grade: {grade}")  # Grade: A
+
+# For loop with range
+for i in range(1, 6):
+    print(i, end=" ")   # 1 2 3 4 5
+
+# While loop with break
+n = 1
+while n <= 20:
+    if n % 7 == 0:
+        print(f"First multiple of 7: {n}")
+        break
+    n += 1  # First multiple of 7: 7`
+        },
+        {
+          title: "🔧 Functions",
+          content: "Functions are reusable code blocks that take <strong style='color:var(--yellow-l)'>parameters</strong> and return values. They avoid repetition and make code modular. Python supports default arguments, *args, **kwargs, and lambda (anonymous) functions.",
+          code: `# Function with default parameter
+def greet(name, greeting="Hello"):
+    """Return a personalised greeting."""
+    return f"{greeting}, {name}!"
+
+print(greet("Bob"))            # Hello, Bob!
+print(greet("Alice", "Hi"))    # Hi, Alice!
+
+# Lambda — anonymous function
+square = lambda x: x ** 2
+print(square(7))               # 49
+
+# Recursion — classic factorial
+def factorial(n):
+    if n <= 1: return 1
+    return n * factorial(n - 1)
+
+print(factorial(5))            # 120`
+        },
+        {
+          title: "🏗️ OOP — Classes &amp; Objects",
+          content: "Object-Oriented Programming organises code into <strong style='color:var(--yellow-l)'>classes</strong> (blueprints) and <strong style='color:var(--yellow-l)'>objects</strong> (instances). Four pillars: <strong>Encapsulation</strong> (hide internals), <strong>Abstraction</strong> (expose essentials), <strong>Inheritance</strong> (reuse parent code), <strong>Polymorphism</strong> (same interface, different behaviour).",
+          code: `class Student:
+    college = "KGISL"           # class attribute (shared)
+
+    def __init__(self, name, level):
+        self.name  = name       # instance attribute
+        self.level = level
+
+    def greet(self):
+        return f"Hi, I'm {self.name} at Level {self.level}"
+
+# Inheritance — MentorStudent IS-A Student
+class MentorStudent(Student):
+    def __init__(self, name, level, mentees):
+        super().__init__(name, level)   # call parent __init__
+        self.mentees = mentees
+
+    def greet(self):             # method override (polymorphism)
+        base = super().greet()
+        return base + f"; I mentor {self.mentees} juniors"
+
+s = MentorStudent("Rahul", 5, 3)
+print(s.greet())
+# Hi, I'm Rahul at Level 5; I mentor 3 juniors
+print(s.college)               # KGISL (inherited class attr)`
+        }
+      ],
+      resources: [
+        { icon:"📖", title:"Python Official Docs", type:"Documentation", url:"https://docs.python.org/3/" },
+        { icon:"🌐", title:"W3Schools Python Tutorial", type:"Interactive Tutorial", url:"https://www.w3schools.com/python/" },
+        { icon:"🎓", title:"CS50x — Harvard Free Course", type:"Free Course", url:"https://cs50.harvard.edu/x/" },
+        { icon:"🏋️", title:"HackerRank Python Practice", type:"Practice Problems", url:"https://www.hackerrank.com/domains/python" }
+      ]
+    },
+    quiz: [
+      { q:"What will `type(3.14)` return in Python?", options:["&lt;class 'int'&gt;","&lt;class 'float'&gt;","&lt;class 'double'&gt;","&lt;class 'number'&gt;"], answer:1, explanation:"3.14 is a floating-point number. Python's built-in type() function returns &lt;class 'float'&gt;." },
+      { q:"Which keyword is used to define a function in Python?", options:["function","func","def","define"], answer:2, explanation:"Python uses the 'def' keyword to define functions, followed by the function name and parentheses." },
+      { q:"What does OOP stand for?", options:["Object Oriented Programming","Object Only Programming","Online Object Processing","Operational Object Paradigm"], answer:0, explanation:"OOP stands for Object-Oriented Programming — a paradigm that organises code into objects and classes." },
+      { q:"What numbers does range(1, 5) produce?", options:["1, 2, 3, 4, 5","1, 2, 3, 4","0, 1, 2, 3, 4","1 to 5 inclusive"], answer:1, explanation:"range(1, 5) generates integers from 1 (inclusive) to 5 (exclusive): 1, 2, 3, 4." },
+      { q:"Which OOP principle allows child classes to override parent methods?", options:["Encapsulation","Abstraction","Polymorphism","Inheritance"], answer:2, explanation:"Polymorphism allows objects of different types to share the same interface. Child classes can override parent methods to change behaviour." }
+    ],
+    challenge: {
+      title:"FizzBuzz",
+      difficulty:"easy",
+      desc:"Write a function fizzbuzz(n) that prints numbers from 1 to n.\n• Multiples of 3 → print 'Fizz'\n• Multiples of 5 → print 'Buzz'\n• Multiples of both 3 and 5 → print 'FizzBuzz'\n• Otherwise → print the number",
+      examples:[
+        { input:"n = 15", output:"1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz" }
+      ],
+      constraints:"1 ≤ n ≤ 100",
+      hints:[
+        "Use the modulo operator (%) to check divisibility. e.g. n % 3 == 0 means divisible by 3.",
+        "Always check 'FizzBuzz' (divisible by BOTH 3 AND 5) BEFORE checking Fizz or Buzz separately.",
+        "Use a for loop: for i in range(1, n + 1)"
+      ],
+      starter:{
+        python:`def fizzbuzz(n):
+    for i in range(1, n + 1):
+        # Your code here
+        pass
+
+fizzbuzz(15)`,
+        javascript:`function fizzbuzz(n) {
+  for (let i = 1; i <= n; i++) {
+    // Your code here
+  }
+}
+
+fizzbuzz(15);`,
+        cpp:`#include <iostream>
+using namespace std;
+
+void fizzbuzz(int n) {
+    for (int i = 1; i <= n; i++) {
+        // Your code here
+    }
+}
+
+int main() {
+    fizzbuzz(15);
+    return 0;
+}`
+      },
+      sampleOutput:"1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz"
+    }
+  },
+
+  // ── LEVEL 2: DSA ─────────────────────────────────────────
+  2: {
+    title: "Level 2: Data Structures &amp; Algorithms",
+    shortTitle: "DSA",
+    icon: "⚡",
+    totalXP: 400,
+    status: "active",
+    currentXP: 240,
+    maxXP: 400,
+    progress: 68,
+    desc: "Master core data structures and algorithms — the backbone of every technical interview. Arrays, linked lists, trees, and sorting algorithms await.",
+    theory: {
+      sections: [
+        {
+          title: "📦 Arrays &amp; Two-Pointer Technique",
+          content: "Arrays store elements in contiguous memory with <strong style='color:var(--yellow-l)'>O(1)</strong> random access. The <strong style='color:var(--yellow-l)'>Two-Pointer</strong> technique uses two iterators moving through the array simultaneously — it reduces O(n²) brute-force to O(n) in many problems like finding pairs that sum to a target.",
+          code: `# Arrays — Two Pointer technique
+def two_sum_sorted(arr, target):
+    """Find pair summing to target in sorted array — O(n)"""
+    left, right = 0, len(arr) - 1
+    while left < right:
+        s = arr[left] + arr[right]
+        if s == target:   return (arr[left], arr[right])
+        elif s < target:  left  += 1   # need larger sum
+        else:             right -= 1   # need smaller sum
+    return None
+
+print(two_sum_sorted([1, 2, 4, 7, 11], 9))  # (2, 7)
+
+# Sliding Window — max sum of k consecutive elements
+def max_window_sum(arr, k):
+    window = sum(arr[:k])
+    best = window
+    for i in range(k, len(arr)):
+        window += arr[i] - arr[i - k]   # slide right
+        best = max(best, window)
+    return best
+
+print(max_window_sum([2, 1, 5, 1, 3, 2], 3))  # 9 (5+1+3)`
+        },
+        {
+          title: "🔗 Linked Lists — Reverse &amp; Detect Cycle",
+          content: "A <strong style='color:var(--yellow-l)'>linked list</strong> is a sequence of nodes where each stores data and a pointer to the next. Unlike arrays, head insertion is O(1) but random access is O(n). Key interview problems: reversing a list, detecting cycles (Floyd's algorithm), and finding the middle node.",
+          code: `class Node:
+    def __init__(self, val):
+        self.val  = val
+        self.next = None
+
+def reverse_linked_list(head):
+    """Reverses list in-place — O(n) time, O(1) space"""
+    prev = None
+    curr = head
+    while curr:
+        nxt       = curr.next
+        curr.next = prev    # reverse the pointer
+        prev      = curr
+        curr      = nxt
+    return prev             # new head
+
+def has_cycle(head):
+    """Floyd's tortoise-and-hare cycle detection — O(n), O(1)"""
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow is fast:
+            return True
+    return False
+
+def find_middle(head):
+    """Find middle node with two pointers — O(n), O(1)"""
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow  # slow is at middle`
+        },
+        {
+          title: "🔍 Binary Search",
+          content: "<strong style='color:var(--yellow-l)'>Binary Search</strong> works ONLY on sorted arrays. Key idea: compare the middle element to the target and eliminate <em>half</em> the remaining search space each step. This gives O(log n) time. Critical detail: use <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>mid = left + (right - left) // 2</code> to avoid integer overflow.",
+          code: `def binary_search(arr, target):
+    """Iterative binary search — O(log n)"""
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = left + (right - left) // 2   # prevent overflow
+        if   arr[mid] == target: return mid
+        elif arr[mid] <  target: left  = mid + 1  # go right
+        else:                    right = mid - 1  # go left
+    return -1   # not found
+
+arr = [1, 3, 5, 7, 9, 11, 13, 15, 17]
+print(binary_search(arr, 7))    # 3   (index)
+print(binary_search(arr, 6))    # -1  (not found)
+
+# Variations: find first/last occurrence, search in rotated array
+def search_rotated(nums, target):
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if nums[mid] == target: return mid
+        if nums[left] <= nums[mid]:   # left half is sorted
+            if nums[left] <= target < nums[mid]: right = mid - 1
+            else: left = mid + 1
+        else:                         # right half is sorted
+            if nums[mid] < target <= nums[right]: left = mid + 1
+            else: right = mid - 1
+    return -1`
+        },
+        {
+          title: "🌳 Binary Trees &amp; Traversals",
+          content: "A <strong style='color:var(--yellow-l)'>Binary Search Tree (BST)</strong> keeps left child &lt; root &lt; right child. Three classic DFS traversals: <strong>In-order</strong> (L→Root→R) gives sorted output; <strong>Pre-order</strong> (Root→L→R) used for copying trees; <strong>Post-order</strong> (L→R→Root) used for deleting trees. BFS (level-order) uses a queue.",
+          code: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val):
+        self.val  = val
+        self.left = self.right = None
+
+# DFS Traversals
+def inorder(root):   # Sorted for BST!
+    return inorder(root.left) + [root.val] + inorder(root.right) if root else []
+
+def preorder(root):
+    return [root.val] + preorder(root.left) + preorder(root.right) if root else []
+
+# BFS — Level Order Traversal
+def bfs(root):
+    if not root: return []
+    result, queue = [], deque([root])
+    while queue:
+        node = queue.popleft()
+        result.append(node.val)
+        if node.left:  queue.append(node.left)
+        if node.right: queue.append(node.right)
+    return result
+
+# Build a BST: [5, 3, 7, 1, 4, 6, 8]
+def insert(root, val):
+    if not root: return TreeNode(val)
+    if val < root.val: root.left  = insert(root.left, val)
+    else:              root.right = insert(root.right, val)
+    return root
+
+root = None
+for v in [5, 3, 7, 1, 4, 6, 8]:
+    root = insert(root, v)
+
+print(inorder(root))   # [1, 3, 4, 5, 6, 7, 8]  ← sorted!
+print(bfs(root))       # [5, 3, 7, 1, 4, 6, 8]  ← level order`
+        }
+      ],
+      resources: [
+        { icon:"📊", title:"Visualgo — Algorithm Visualiser", type:"Interactive Tool", url:"https://visualgo.net/en" },
+        { icon:"🏋️", title:"LeetCode — Curated DSA Problems", type:"Practice Platform", url:"https://leetcode.com/problemset/" },
+        { icon:"📚", title:"NeetCode.io — DSA Roadmap", type:"Structured Guide", url:"https://neetcode.io/roadmap" },
+        { icon:"🎥", title:"Abdul Bari — Algorithms (YouTube)", type:"Video Lectures", url:"https://www.youtube.com/@abdul_bari" },
+        { icon:"📖", title:"Big-O Complexity Cheat Sheet", type:"Quick Reference", url:"https://www.bigocheatsheet.com/" }
+      ]
+    },
+    quiz: [
+      { q:"What is the time complexity of binary search on a sorted array?", options:["O(n)","O(log n)","O(n log n)","O(1)"], answer:1, explanation:"Binary search divides the search space in half each step, giving O(log n). For n=1,000,000 it takes only ~20 comparisons." },
+      { q:"Which data structure uses the LIFO (Last In, First Out) principle?", options:["Queue","Array","Stack","Linked List"], answer:2, explanation:"A Stack uses LIFO — the last element pushed is the first to be popped. Think of a stack of plates — you take from the top." },
+      { q:"What is the time complexity of inserting at the HEAD of a singly linked list?", options:["O(n)","O(log n)","O(n²)","O(1)"], answer:3, explanation:"Inserting at the head only requires updating the head pointer — just one operation — so it's O(1) constant time." },
+      { q:"In a Binary Search Tree (BST), in-order traversal gives elements in what order?", options:["Random order","Reverse sorted","Ascending (sorted) order","Level-by-level order"], answer:2, explanation:"In-order traversal (Left → Root → Right) on a BST always produces elements in sorted ascending order — a key BST property." },
+      { q:"What is the WORST-case time complexity of QuickSort?", options:["O(n log n)","O(n)","O(n²)","O(log n)"], answer:2, explanation:"QuickSort degrades to O(n²) when the pivot is always the min or max element (e.g. sorted input with last-element pivot). Average case is O(n log n)." }
+    ],
+    challenge: {
+      title:"Binary Search Implementation",
+      difficulty:"medium",
+      desc:"Implement binary search to find the index of a target value in a sorted array of distinct integers.\n\nReturn the INDEX of target if found, otherwise return -1.\n\nYour solution must run in O(log n) time.",
+      examples:[
+        { input:"nums = [-1, 0, 3, 5, 9, 12],  target = 9",  output:"4" },
+        { input:"nums = [-1, 0, 3, 5, 9, 12],  target = 2",  output:"-1" }
+      ],
+      constraints:"• 1 ≤ nums.length ≤ 10,000\n• All values in nums are unique and sorted ascending\n• -10,000 ≤ nums[i], target ≤ 10,000",
+      hints:[
+        "Initialise two pointers: left = 0, right = len(nums) - 1",
+        "In each iteration calculate: mid = left + (right - left) // 2  (avoids overflow)",
+        "If nums[mid] < target → the target is in the RIGHT half; set left = mid + 1"
+      ],
+      starter:{
+        python:`def search(nums, target):
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        # TODO: compare nums[mid] with target and update left/right
+        pass
+    return -1  # not found
+
+# Test cases
+print(search([-1, 0, 3, 5, 9, 12], 9))   # Expected: 4
+print(search([-1, 0, 3, 5, 9, 12], 2))   # Expected: -1`,
+        javascript:`function search(nums, target) {
+  let left = 0, right = nums.length - 1;
+  while (left <= right) {
+    const mid = Math.floor(left + (right - left) / 2);
+    // TODO: compare nums[mid] with target and update left/right
+  }
+  return -1; // not found
+}
+
+console.log(search([-1, 0, 3, 5, 9, 12], 9)); // 4
+console.log(search([-1, 0, 3, 5, 9, 12], 2)); // -1`,
+        cpp:`class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            // TODO: compare nums[mid] with target and update left/right
+        }
+        return -1; // not found
+    }
+};`
+      },
+      sampleOutput:"Test 1: 4  ✓\nTest 2: -1 ✓\nAll test cases passed! 🎉"
+    }
+  },
+
+  // ── LEVELS 3-7 (stubs — full content in semester 2) ────
+  3:{ title:"Level 3: Projects", shortTitle:"Projects", icon:"🛠️", totalXP:500, status:"locked", currentXP:0, maxXP:500, progress:0,
+      desc:"Build real projects — a portfolio that speaks louder than grades. Web apps, REST APIs, and deployment await.",
+      theory:{sections:[],resources:[]}, quiz:[],
+      challenge:{title:"Build a Todo App",difficulty:"medium",desc:"Create a full-stack Todo application with CRUD operations.",examples:[],constraints:"",hints:["Use React for the frontend","Use Express.js for the backend","Store todos in MongoDB"],starter:{python:"",javascript:`// Build your Todo App here\n// Frontend: React\n// Backend: Express.js\n// Database: MongoDB`,cpp:""},sampleOutput:"Todo App running at http://localhost:3000 ✓"}
+  },
+  4:{ title:"Level 4: Resume + GitHub", shortTitle:"Resume & GitHub", icon:"📄", totalXP:400, status:"locked", currentXP:0, maxXP:400, progress:0,
+      desc:"Polish your online presence — make recruiters notice you.",
+      theory:{sections:[],resources:[]}, quiz:[],
+      challenge:{title:"GitHub Profile README",difficulty:"easy",desc:"Create an impressive GitHub profile README.",examples:[],constraints:"",hints:["Use markdown headers","Add tech stack badges","Include a GitHub stats widget"],starter:{python:"",javascript:"",cpp:""},sampleOutput:"Profile README looks great! ✓"}
+  },
+  5:{ title:"Level 5: Interview Prep", shortTitle:"Interview Prep", icon:"🎯", totalXP:600, status:"locked", currentXP:0, maxXP:600, progress:0,
+      desc:"100 LeetCode + mock interviews + aptitude + HR preparation.",
+      theory:{sections:[],resources:[]}, quiz:[],
+      challenge:{title:"Two Sum (LeetCode #1)",difficulty:"hard",desc:"Given an array of integers and a target sum, return indices of the two numbers that add up to the target.",examples:[{input:"nums=[2,7,11,15], target=9",output:"[0,1]"}],constraints:"Each test has exactly one solution",hints:["Use a HashMap for O(n) solution","For each number, check if target-number is in the map"],starter:{python:`def twoSum(nums, target):\n    seen = {}\n    for i, n in enumerate(nums):\n        # Your code here\n        pass`,javascript:`function twoSum(nums, target) {\n  const map = {};\n  // Your code here\n}`,cpp:""},sampleOutput:"[0, 1]  ✓"}
+  },
+  6:{ title:"Level 6: Job Apply", shortTitle:"Job Apply", icon:"📬", totalXP:500, status:"locked", currentXP:0, maxXP:500, progress:0,
+      desc:"Start applying — internships, campus placements, referrals.",
+      theory:{sections:[],resources:[]}, quiz:[],
+      challenge:{title:"Write a Cover Letter",difficulty:"easy",desc:"Write a compelling cover letter for a Software Engineer internship.",examples:[],constraints:"",hints:["Open with a strong hook","Mention specific company projects","End with a clear call to action"],starter:{python:"",javascript:"// Write your cover letter content here",cpp:""},sampleOutput:"Cover letter submitted! ✓"}
+  },
+  7:{ title:"Level 7: Internship Ready 🚀", shortTitle:"Internship Ready", icon:"🚀", totalXP:1000, status:"locked", currentXP:0, maxXP:1000, progress:0,
+      desc:"You've made it — internship offer in hand. You are a developer!",
+      theory:{sections:[],resources:[]}, quiz:[],
+      challenge:{title:"Final Boss: System Design",difficulty:"hard",desc:"Design a URL shortener system (like bit.ly). Explain your architecture choices.",examples:[],constraints:"Handle 1M requests/day",hints:["Consider using a hash function","Think about database choice: SQL vs NoSQL","Consider caching with Redis"],starter:{python:"",javascript:`// System Design: URL Shortener\n// Describe your approach:\n\n// 1. API Design:\n//    POST /shorten  { url: "..." }  → { short: "abc123" }\n//    GET  /:code                    → redirect to original\n\n// 2. Database Schema:\n//    urls: { code, originalUrl, createdAt, clicks }`,cpp:""},sampleOutput:"System design accepted! Legend badge unlocked 🏆"}
+  }
+};
+
+/* ==========================================================
+   ── Page Init & Header Render ──
+   ========================================================== */
+const params = new URLSearchParams(window.location.search);
+let currentLevel = parseInt(params.get('level')) || 2;
+if (currentLevel < 1 || currentLevel > 7) currentLevel = 2;
+const lvl = LEVEL_DATA[currentLevel];
+
+// Render header immediately
+(function renderHeader() {
+  document.title = `${lvl.title.replace(/&amp;/g,'&')} — SKILLUP`;
+  document.getElementById('bcTitle').textContent   = lvl.shortTitle;
+  document.getElementById('levelTitle').textContent = lvl.title.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  document.getElementById('levelDesc').textContent  = lvl.desc;
+  document.getElementById('levelXPBadge').textContent = `⭐ +${lvl.totalXP} XP`;
+
+  const iconEl = document.getElementById('levelIcon');
+  iconEl.textContent = lvl.icon;
+  iconEl.className = 'level-icon-big ' +
+    (lvl.status === 'done' ? 'lv-done' : lvl.status === 'active' ? 'lv-active' : 'lv-locked');
+
+  const tagEl = document.getElementById('levelTag');
+  if      (lvl.status === 'done')   { tagEl.className='tag tag-green';  tagEl.textContent='✅ Completed'; }
+  else if (lvl.status === 'active') { tagEl.className='tag tag-cyan';   tagEl.textContent='🔄 In Progress'; }
+  else                              { tagEl.className='tag tag-purple'; tagEl.textContent='🔒 Locked'; }
+
+  document.getElementById('levelProgressLabel').textContent = `Progress: ${lvl.progress}%`;
+  document.getElementById('lvlBar').dataset.progress = lvl.progress;
+  document.getElementById('levelXPCount').textContent = `${lvl.currentXP} / ${lvl.maxXP} XP`;
+})();
+
+/* ==========================================================
+   ── Theory Renderer ──
+   ========================================================== */
+(function renderTheory() {
+  const container  = document.getElementById('theoryContent');
+  const resSection = document.getElementById('resourcesSection');
+
+  if (lvl.status === 'locked') {
+    container.innerHTML = `
+      <div style="text-align:center;padding:64px 20px;background:var(--glass);border:1px solid var(--border);border-radius:14px;margin-bottom:24px;">
+        <div style="font-size:4rem;margin-bottom:16px;">🔒</div>
+        <h2 style="margin-bottom:12px;">Level Locked</h2>
+        <p class="muted" style="max-width:400px;margin:0 auto 24px;">Complete Level ${currentLevel - 1} to unlock this content.</p>
+        <a href="roadmap.html" class="btn btn-primary">View Your Roadmap 🗺️</a>
+      </div>`;
+    resSection.style.display = 'none';
+    return;
+  }
+
+  if (!lvl.theory.sections.length) {
+    container.innerHTML = `<div class="theory-block"><p class="muted">📖 Theory content for this level is being prepared. Check back soon!</p></div>`;
+    resSection.style.display = 'none';
+    return;
+  }
+
+  // Render theory sections
+  container.innerHTML = lvl.theory.sections.map(s => `
+    <div class="theory-block">
+      <h3>${s.title}</h3>
+      <p>${s.content}</p>
+      <div class="code-block">${escHtml(s.code)}</div>
+    </div>`).join('');
+
+  // Render resource links
+  document.getElementById('resourcesList').innerHTML = lvl.theory.resources.map(r => `
+    <a href="${r.url}" target="_blank" rel="noopener" class="resource-link">
+      <span style="font-size:1.5rem;flex-shrink:0;">${r.icon}</span>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:0.9rem;">${r.title}</div>
+        <div class="r-type">${r.type}</div>
+      </div>
+      <span style="color:var(--text3);font-size:1.1rem;">→</span>
+    </a>`).join('');
+})();
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ==========================================================
+   ── Tab Switcher ──
+   ========================================================== */
+function switchLvlTab(tab, btn) {
+  ['theory','quiz','challenge'].forEach(t => {
+    document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1))?.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel' + tab.charAt(0).toUpperCase() + tab.slice(1))?.classList.add('active');
+  btn?.classList.add('active');
+}
+
+/* ==========================================================
+   ── Quiz Engine ──
+   ========================================================== */
+let qState = { qs:[], ans:[], cur:0, timer:null, timeLeft:600, running:false };
+
+document.getElementById('quizQCount').textContent   = lvl.quiz.length || 5;
+document.getElementById('quizXPReward').textContent = `+${Math.round(lvl.totalXP * 0.2)} XP`;
+
+function startQuiz() {
+  if (!lvl.quiz.length) { showToast('Quiz for this level is coming soon!','info','📖'); return; }
+  if (lvl.status === 'locked') { showToast('Unlock this level first!','error','🔒'); return; }
+
+  qState = { qs:[...lvl.quiz], ans:new Array(lvl.quiz.length).fill(null), cur:0, timeLeft:600, running:true, timer:null };
+
+  document.getElementById('quizIntro').style.display  = 'none';
+  document.getElementById('quizArea').style.display   = 'block';
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('qTotal').textContent = qState.qs.length;
+
+  renderDots();
+  renderQuestion();
+  startTimer();
+}
+
+function renderDots() {
+  document.getElementById('progressDots').innerHTML = qState.qs.map((_,i) => {
+    let cls = 'q-dot';
+    if      (i === qState.cur)           cls += ' current';
+    else if (qState.ans[i] !== null)     cls += ' answered';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+function renderQuestion() {
+  const q   = qState.qs[qState.cur];
+  const ans = qState.ans[qState.cur];
+  document.getElementById('qCurrent').textContent = qState.cur + 1;
+  const letters = ['A','B','C','D'];
+
+  document.getElementById('questionDisplay').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${qState.cur + 1} of ${qState.qs.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => {
+          let cls = 'opt';
+          if (ans !== null) {
+            cls += ' answered';
+            if (i === q.answer)              cls += ' correct';
+            else if (i === ans && ans !== q.answer) cls += ' wrong';
+          }
+          return `<button class="${cls}" onclick="selectAnswer(${i})">
+            <span class="opt-letter">${letters[i]}</span>${opt}</button>`;
+        }).join('')}
+      </div>
+      <div class="expl-box ${ans !== null ? 'show' : ''}">
+        💡&nbsp;<span>${q.explanation}</span>
+      </div>
+      <div class="quiz-nav">
+        ${qState.cur > 0 ? `<button class="btn btn-secondary btn-sm" onclick="prevQ()">← Prev</button>` : ''}
+        ${qState.cur < qState.qs.length - 1
+          ? `<button class="btn btn-primary btn-sm" onclick="nextQ()">Next →</button>`
+          : `<button class="btn btn-primary btn-sm" style="background:var(--green);border-color:var(--green);" onclick="finishQuiz()">Submit Quiz ✓</button>`
+        }
+      </div>
+    </div>`;
+  renderDots();
+}
+
+function selectAnswer(idx) {
+  if (qState.ans[qState.cur] !== null) return;  // already answered
+  qState.ans[qState.cur] = idx;
+  renderQuestion();
+  const correct = idx === qState.qs[qState.cur].answer;
+  showToast(correct ? 'Correct! 🎉' : 'Not quite — read the explanation 📖', correct ? 'success' : 'error', correct ? '✅' : '❌');
+}
+
+function nextQ() { if (qState.cur < qState.qs.length - 1) { qState.cur++; renderQuestion(); } }
+function prevQ() { if (qState.cur > 0) { qState.cur--; renderQuestion(); } }
+
+function finishQuiz() {
+  clearInterval(qState.timer);
+  const correct = qState.ans.filter((a, i) => a === qState.qs[i].answer).length;
+  const total   = qState.qs.length;
+  const pct     = Math.round((correct / total) * 100);
+  const xp      = Math.round(lvl.totalXP * 0.2 * (correct / total));
+
+  document.getElementById('quizArea').style.display   = 'none';
+  document.getElementById('quizResult').style.display = 'block';
+
+  const circle = document.getElementById('scoreCircle');
+  circle.className = 'score-circle ' + (pct >= 80 ? 'great' : pct >= 60 ? 'good' : 'poor');
+  document.getElementById('scorePct').textContent   = pct + '%';
+  document.getElementById('scoreRatio').textContent = `${correct}/${total} correct`;
+
+  const msgs = {
+    perfect:  ['🏆 Perfect Score!',    'Flawless! You absolute legend! 🔥'],
+    great:    ['🎉 Great Work!',        'Excellent understanding. You're ready for the challenge!'],
+    good:     ['👍 Solid Effort!',      'Good foundation. Review the explanations and try again!'],
+    poor:     ['📖 Keep Learning!',     'Head back to Theory, review the concepts, and retry!']
+  };
+  const [msg, sub] = pct === 100 ? msgs.perfect : pct >= 80 ? msgs.great : pct >= 60 ? msgs.good : msgs.poor;
+  document.getElementById('scoreMsg').textContent    = msg;
+  document.getElementById('scoreSubMsg').textContent = sub;
+  document.getElementById('xpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.05rem;padding:10px 22px;justify-content:center;">⭐ +${xp} XP Earned!</div>`;
+
+  // Save score to localStorage
+  const scores = JSON.parse(localStorage.getItem('skillup_scores') || '[]');
+  scores.push({ level: currentLevel, score: pct, correct, total, xp, date: new Date().toISOString() });
+  localStorage.setItem('skillup_scores', JSON.stringify(scores));
+
+  // Show wrong answer review
+  const wrong = qState.qs.map((q,i) => ({q, i, uAns: qState.ans[i], ok: qState.ans[i] === q.answer })).filter(x => !x.ok);
+  if (wrong.length) {
+    document.getElementById('reviewSection').innerHTML = `
+      <div class="section-title"><div class="dot"></div>Review — Wrong Answers</div>
+      ${wrong.map(({q, uAns}) => `
+        <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:16px 18px;margin-bottom:12px;">
+          <div style="font-weight:600;font-size:0.92rem;margin-bottom:10px;">${q.q}</div>
+          <div style="font-size:0.85rem;">❌ Your answer: <span style="color:#ef4444;">${uAns !== null ? q.options[uAns] : 'Not answered'}</span></div>
+          <div style="font-size:0.85rem;">✅ Correct:     <span style="color:var(--green);">${q.options[q.answer]}</span></div>
+          <div style="font-size:0.83rem;color:var(--text2);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);">💡 ${q.explanation}</div>
+        </div>`).join('')}`;
+  }
+
+  if (pct >= 80) { launchConfetti(); showToast(`Quiz done! +${xp} XP earned 🎉`, 'success', '⭐'); }
+  else showToast(`Quiz complete — score: ${pct}%. Review & retry!`, 'info', '📊');
+}
+
+function resetQuiz() {
+  clearInterval(qState.timer);
+  document.getElementById('quizIntro').style.display  = 'block';
+  document.getElementById('quizArea').style.display   = 'none';
+  document.getElementById('quizResult').style.display = 'none';
+}
+
+function startTimer() {
+  qState.timeLeft = 600;
+  clearInterval(qState.timer);
+  qState.timer = setInterval(() => {
+    qState.timeLeft--;
+    const m = String(Math.floor(qState.timeLeft / 60)).padStart(2,'0');
+    const s = String(qState.timeLeft % 60).padStart(2,'0');
+    document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+    if (qState.timeLeft <= 60) document.getElementById('timerBox').classList.add('warning');
+    if (qState.timeLeft <= 0) { clearInterval(qState.timer); finishQuiz(); }
+  }, 1000);
+}
+
+/* ==========================================================
+   ── Code Challenge Renderer ──
+   ========================================================== */
+let currentLang = 'python';
+
+(function renderChallenge() {
+  const ch  = lvl.challenge;
+  const wrap = document.getElementById('challengeWrap');
+
+  if (lvl.status === 'locked' || !ch || !ch.title) {
+    wrap.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:64px 20px;background:var(--glass);border:1px solid var(--border);border-radius:14px;">
+        <div style="font-size:4rem;margin-bottom:16px;">${lvl.status === 'locked' ? '🔒' : '🚧'}</div>
+        <h2 style="margin-bottom:12px;">${lvl.status === 'locked' ? 'Level Locked' : 'Coming Soon'}</h2>
+        <p class="muted" style="margin-bottom:24px;">${lvl.status === 'locked' ? 'Complete the previous levels first!' : 'Challenge content is being prepared!'}</p>
+        <a href="roadmap.html" class="btn btn-primary">View Roadmap 🗺️</a>
+      </div>`;
+    return;
+  }
+
+  // Populate problem info
+  document.getElementById('challengeTitle').textContent = ch.title;
+  document.getElementById('challengeDesc').innerHTML = ch.desc.replace(/\n/g,'<br>');
+  const diffEl = document.getElementById('challengeDiff');
+  diffEl.className = `diff-badge diff-${ch.difficulty}`;
+  diffEl.textContent = ch.difficulty === 'easy' ? '🟢 Easy' : ch.difficulty === 'medium' ? '⚡ Medium' : '🔴 Hard';
+
+  document.getElementById('challengeExamples').innerHTML = ch.examples.map((ex, i) => `
+    <div style="margin-top:16px;">
+      <div style="font-size:0.78rem;font-weight:700;color:var(--text3);margin-bottom:6px;">EXAMPLE ${i+1}</div>
+      <div class="io-block">
+        <div class="io-label">Input</div>${ex.input}
+        <div class="io-label" style="margin-top:10px;">Output</div>${ex.output}
+      </div>
+    </div>`).join('');
+
+  if (ch.constraints)
+    document.getElementById('challengeConstraints').innerHTML = `<strong>Constraints:</strong><br>${ch.constraints.replace(/\n/g,'<br>')}`;
+
+  document.getElementById('hintsList').innerHTML = ch.hints.map((h, i) => `
+    <div class="hint-accordion">
+      <div class="hint-head" onclick="toggleHint(this)">
+        <span>💡 Hint ${i+1}</span><span style="color:var(--text3);font-size:1.1rem;transition:transform 0.3s;">+</span>
+      </div>
+      <div class="hint-body">${h}</div>
+    </div>`).join('');
+
+  // Set initial code
+  setLang('python', document.querySelector('.lang-btn'));
+})();
+
+function toggleHint(header) {
+  const body  = header.nextElementSibling;
+  const arrow = header.querySelector('span:last-child');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '−' : '+';
+}
+
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const editor = document.getElementById('codeEditor');
+  if (editor) editor.value = lvl.challenge?.starter?.[lang] || '';
+  const out = document.getElementById('outputBox');
+  if (out) { out.className = 'output-box'; out.textContent = ''; }
+}
+
+function resetCode() {
+  const editor = document.getElementById('codeEditor');
+  if (editor) editor.value = lvl.challenge?.starter?.[currentLang] || '';
+  showToast('Code reset to starter template','info','↺');
+}
+
+function runCode() {
+  const code   = document.getElementById('codeEditor')?.value?.trim();
+  const outBox = document.getElementById('outputBox');
+  if (!code || !outBox) return;
+
+  outBox.className = 'output-box show';
+  outBox.textContent = '⚙️  Running code...';
+
+  setTimeout(() => {
+    const attempted = code.length > 100 && !code.includes('pass') && !code.match(/\/\/ TODO/);
+    if (attempted) {
+      outBox.className  = 'output-box show success';
+      outBox.textContent = `> Running ${currentLang} solution...\n\n${lvl.challenge.sampleOutput || '✓ Output generated successfully'}`;
+    } else {
+      outBox.className  = 'output-box show error';
+      outBox.textContent = '> ⚠️  Please complete your solution before running.\n   Replace the TODO comments with your logic.';
+    }
+  }, 800);
+}
+
+function submitCode() {
+  const code   = document.getElementById('codeEditor')?.value?.trim();
+  const outBox = document.getElementById('outputBox');
+  if (!code || code.length < 60) { showToast('Write a complete solution first!','error','❌'); return; }
+
+  outBox.className  = 'output-box show';
+  outBox.textContent = '⚙️  Submitting solution...';
+
+  setTimeout(() => {
+    // Persist to localStorage (connects to backend in production)
+    const subs = JSON.parse(localStorage.getItem('skillup_submissions') || '[]');
+    subs.push({ level: currentLevel, lang: currentLang, code, ts: new Date().toISOString() });
+    localStorage.setItem('skillup_submissions', JSON.stringify(subs));
+
+    outBox.className  = 'output-box show success';
+    outBox.textContent = `✅  Solution accepted!\n\n${lvl.challenge.sampleOutput}\n\n+${Math.round(lvl.totalXP * 0.3)} XP added to your profile!`;
+
+    launchConfetti();
+    showToast(`Solution submitted! +${Math.round(lvl.totalXP * 0.3)} XP 🏆`,'success','🏆');
+  }, 1500);
+}
+</script>
+</body>
+</html>

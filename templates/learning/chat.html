@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Mentor Chat{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container grid grid-2">
+    <section class="glass card stack">
+      <span class="eyebrow">Mentorship room</span>
+      <h1>{{ other.first_name|default:other.username }}</h1>
+      <p class="lead">Use this space to ask focused questions, share errors, discuss project decisions, or request a mock interview.</p>
+      <div class="resource-link">
+        <strong>Conversation prompts</strong>
+        <p class="muted">What did you try? What exact error or blocker appeared? What outcome do you want? Which level task is this related to?</p>
+      </div>
+    </section>
+    <section class="glass card stack">
+      <div class="chat-window">
+        {% for item in chat_messages %}
+          <div class="bubble {% if item.sender == user %}me{% endif %}">
+            <strong>{{ item.sender.first_name|default:item.sender.username }}</strong>
+            <p>{{ item.body }}</p>
+            <span class="soft">{{ item.created_at|date:"M d, H:i" }}</span>
+          </div>
+        {% empty %}
+          <div class="bubble"><strong>SKILLUP Assistant</strong><p>Start with a clear question and one screenshot-worthy detail. Mentors love precise context.</p></div>
+        {% endfor %}
+      </div>
+      <form class="form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Send Message</button>
+      </form>
+    </section>
+  </div>
+</main>
+{% endblock %}

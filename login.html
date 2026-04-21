@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    body { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--bg); position:relative; overflow:hidden; }
+    canvas#starCanvas { position:fixed; inset:0; pointer-events:none; z-index:0; }
+    .auth-wrap { position:relative; z-index:2; width:100%; max-width:440px; padding:20px; }
+    .auth-card { background:rgba(17,24,39,0.85); backdrop-filter:blur(24px); border:1px solid var(--border2); border-radius:28px; padding:44px 40px; box-shadow:0 0 60px rgba(124,58,237,0.15); }
+    .auth-logo { text-align:center; margin-bottom:32px; }
+    .auth-logo .logo-icon { width:54px; height:54px; background:linear-gradient(135deg,var(--purple),var(--cyan)); border-radius:16px; display:grid; place-items:center; font-size:1.6rem; margin:0 auto 12px; box-shadow:0 0 30px rgba(124,58,237,0.4); }
+    .auth-tabs { display:flex; background:var(--glass); border:1px solid var(--border); border-radius:12px; padding:4px; margin-bottom:28px; }
+    .auth-tab { flex:1; text-align:center; padding:10px; border-radius:9px; font-size:0.88rem; font-weight:600; cursor:pointer; transition:var(--t); color:var(--text2); }
+    .auth-tab.active { background:linear-gradient(135deg,var(--purple),var(--purple-l)); color:#fff; box-shadow:0 0 15px rgba(124,58,237,0.3); }
+    .form-stack { display:flex; flex-direction:column; gap:18px; }
+    .social-btn { display:flex; align-items:center; justify-content:center; gap:10px; padding:12px; background:var(--glass); border:1px solid var(--border); border-radius:12px; font-size:0.88rem; font-weight:600; cursor:pointer; transition:var(--t); color:var(--text); }
+    .social-btn:hover { border-color:var(--border2); background:rgba(124,58,237,0.08); }
+    .orb1 { width:400px; height:400px; top:-100px; right:-100px; animation:orbFloat1 12s ease-in-out infinite; }
+    .orb2 { width:300px; height:300px; bottom:-80px; left:-80px; animation:orbFloat2 14s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+<div class="orb orb-purple orb1"></div>
+<div class="orb orb-cyan orb2"></div>
+
+<div class="auth-wrap fade-up">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="logo-icon">🎮</div>
+      <h2 class="gradient-text" style="font-size:1.6rem;">SKILLUP</h2>
+      <p class="muted" style="font-size:0.85rem;margin-top:6px;">Your coding journey continues here</p>
+    </div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login', this)">Login</div>
+      <div class="auth-tab" onclick="window.location='signup.html'">Sign Up</div>
+    </div>
+
+    <div id="loginForm">
+      <div class="form-stack">
+        <div class="input-group">
+          <label class="input-label">Email or Username</label>
+          <input class="input" type="text" placeholder="Enter your email or username" id="loginUser"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <div style="position:relative;">
+            <input class="input" type="password" placeholder="Enter your password" id="loginPass" style="padding-right:44px;"/>
+            <span onclick="togglePwd('loginPass')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--text2);font-size:1.1rem;" id="eyeIcon">👁️</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--text2);cursor:pointer;">
+            <input type="checkbox" style="accent-color:var(--purple);width:16px;height:16px;"/> Remember me
+          </label>
+          <a href="#" style="color:var(--purple-l);font-size:0.85rem;font-weight:500;">Forgot password?</a>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;" onclick="handleLogin()">Login to SKILLUP 🚀</button>
+      </div>
+
+      <div class="divider-text" style="margin:24px 0;">or continue with</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="social-btn">🔍 Continue with Google</button>
+        <button class="social-btn">💼 Continue with GitHub</button>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:28px;font-size:0.85rem;color:var(--text2);">Don't have an account? <a href="signup.html" style="color:var(--purple-l);font-weight:600;">Sign up free →</a></p>
+  </div>
+
+  <p style="text-align:center;margin-top:20px;font-size:0.8rem;color:var(--text3);">
+    By logging in, you agree to our <a href="#" style="color:var(--purple-l);">Terms</a> & <a href="#" style="color:var(--purple-l);">Privacy Policy</a>
+  </p>
+</div>
+
+<script src="static/js/main.js"></script>
+<script>
+  function handleLogin() {
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value.trim();
+    if (!u || !p) { showToast('Please fill all fields', 'error', '❌'); return; }
+    showToast('Logging you in...', 'info', '🔄');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+  }
+  function togglePwd(id) {
+    const el = document.getElementById(id);
+    el.type = el.type === 'password' ? 'text' : 'password';
+  }
+  function switchAuthTab(tab, btn) {
+    document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>

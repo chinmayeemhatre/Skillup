@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container grid grid-2" style="align-items:center">
+    <section class="stack">
+      <span class="eyebrow">Create your learner profile</span>
+      <h1>Start at Basics and move toward <span class="gradient-text">Internship Ready</span>.</h1>
+      <p class="lead">Your progress, XP, streaks, badges, tasks, and mentorship history are stored in SQLite through Django.</p>
+      <div class="grid grid-2">
+        <div class="glass card"><strong>Real roadmap</strong><p class="muted">Seven levels with content and tasks.</p></div>
+        <div class="glass card"><strong>Mentor graph</strong><p class="muted">Peers and seniors by level.</p></div>
+      </div>
+    </section>
+    <section class="glass card">
+      <form class="form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Create Account</button>
+      </form>
+      <p class="muted">Already registered? <a class="accent" href="{% url 'login' %}">Login</a></p>
+    </section>
+  </div>
+</main>
+{% endblock %}

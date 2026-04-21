@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Roadmap{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container stack" style="gap:26px">
+    <section class="split">
+      <div>
+        <span class="eyebrow">7-level developer roadmap</span>
+        <h1>Follow the timeline. Complete the missions.</h1>
+        <p class="lead">Each level has theory, videos, references, challenges, example interview questions, and mentor-ready tasks.</p>
+      </div>
+      <div class="glass card stat"><span class="muted">Total Progress</span><b>{{ progress_percent }}%</b></div>
+    </section>
+
+    <section class="timeline">
+      {% for level in levels %}
+        <article class="level-row {% if level.number > profile.current_level|add:'1' %}locked{% endif %}">
+          <div class="level-node">{{ level.number }}</div>
+          <a class="glass card stack" href="{% url 'level_detail' level.number %}">
+            <div class="split">
+              <div>
+                <span class="pill {% if level.id in completed_levels %}badge{% else %}badge-violet{% endif %}">
+                  {% if level.id in completed_levels %}Completed{% elif level.number == profile.current_level %}Current{% else %}Upcoming{% endif %}
+                </span>
+                <h2 style="margin-top:10px">{{ level.title }}</h2>
+              </div>
+              <span class="pill">Bonus {{ level.xp_reward }} XP</span>
+            </div>
+            <p class="muted">{{ level.tagline }}</p>
+          </a>
+        </article>
+      {% endfor %}
+    </section>
+  </div>
+</main>
+{% endblock %}

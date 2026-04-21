@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;}
+    canvas#starCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;}
+    .auth-wrap{position:relative;z-index:2;width:100%;max-width:480px;padding:20px;}
+    .auth-card{background:rgba(17,24,39,0.85);backdrop-filter:blur(24px);border:1px solid var(--border2);border-radius:28px;padding:44px 40px;box-shadow:0 0 60px rgba(124,58,237,0.15);}
+    .auth-logo{text-align:center;margin-bottom:28px;}
+    .auth-logo .logo-icon{width:54px;height:54px;background:linear-gradient(135deg,var(--purple),var(--cyan));border-radius:16px;display:grid;place-items:center;font-size:1.6rem;margin:0 auto 12px;box-shadow:0 0 30px rgba(124,58,237,0.4);}
+    .form-stack{display:flex;flex-direction:column;gap:16px;}
+    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .step-indicator{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;}
+    .step-dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:0.8rem;font-weight:700;border:2px solid var(--border);color:var(--text3);transition:var(--t);}
+    .step-dot.active{background:linear-gradient(135deg,var(--purple),var(--cyan));border-color:var(--purple);color:#fff;box-shadow:0 0 15px rgba(124,58,237,0.4);}
+    .step-dot.done{background:var(--green);border-color:var(--green);color:#fff;}
+    .step-line{width:40px;height:2px;background:var(--border);}
+    .step-line.done{background:var(--green);}
+    .level-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+    .level-select-item{padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--glass);cursor:pointer;transition:var(--t);text-align:center;}
+    .level-select-item:hover{border-color:var(--border2);background:rgba(124,58,237,0.08);}
+    .level-select-item.selected{border-color:var(--purple);background:rgba(124,58,237,0.15);box-shadow:0 0 15px rgba(124,58,237,0.2);}
+    .level-select-item .li-emoji{font-size:1.5rem;margin-bottom:4px;}
+    .level-select-item .li-name{font-size:0.8rem;font-weight:600;}
+    .social-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:var(--glass);border:1px solid var(--border);border-radius:12px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:var(--t);color:var(--text);}
+    .social-btn:hover{border-color:var(--border2);background:rgba(124,58,237,0.08);}
+    .strength-bar{height:4px;border-radius:2px;background:var(--border);margin-top:6px;overflow:hidden;}
+    .strength-fill{height:100%;border-radius:2px;width:0%;transition:width 0.3s,background 0.3s;}
+    .orb1{width:400px;height:400px;top:-100px;right:-100px;animation:orbFloat1 12s ease-in-out infinite;}
+    .orb2{width:300px;height:300px;bottom:-80px;left:-80px;animation:orbFloat2 14s ease-in-out infinite;}
+  </style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+<div class="orb orb-purple orb1"></div>
+<div class="orb orb-cyan orb2"></div>
+
+<div class="auth-wrap fade-up">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="logo-icon">🎮</div>
+      <h2 class="gradient-text" style="font-size:1.6rem;">Join SKILLUP</h2>
+      <p class="muted" style="font-size:0.85rem;margin-top:6px;">Start your coding journey today — free!</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator">
+      <div class="step-dot active" id="dot1">1</div>
+      <div class="step-line" id="line1"></div>
+      <div class="step-dot" id="dot2">2</div>
+      <div class="step-line" id="line2"></div>
+      <div class="step-dot" id="dot3">3</div>
+    </div>
+
+    <!-- Step 1: Basic Info -->
+    <div id="step1">
+      <div class="form-stack">
+        <div class="row-2">
+          <div class="input-group">
+            <label class="input-label">First Name</label>
+            <input class="input" type="text" placeholder="Aarav" id="fname"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Last Name</label>
+            <input class="input" type="text" placeholder="Sharma" id="lname"/>
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Username</label>
+          <input class="input" type="text" placeholder="@aarav_codes" id="username"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">College Email</label>
+          <input class="input" type="email" placeholder="aarav@college.edu" id="email"/>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;" onclick="goStep(2)">Next Step →</button>
+      </div>
+      <div class="divider-text" style="margin:20px 0;">or sign up with</div>
+      <div style="display:flex;gap:10px;">
+        <button class="social-btn" style="flex:1;">🔍 Google</button>
+        <button class="social-btn" style="flex:1;">💼 GitHub</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Password & College -->
+    <div id="step2" style="display:none;">
+      <div class="form-stack">
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <input class="input" type="password" placeholder="Min 8 characters" id="pwd" oninput="checkStrength(this.value)"/>
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+          <div style="font-size:0.75rem;color:var(--text3);margin-top:4px;" id="strengthText">Enter a password</div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Confirm Password</label>
+          <input class="input" type="password" placeholder="Re-enter password" id="pwd2"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">College / University</label>
+          <input class="input" type="text" placeholder="IIT Bombay, VIT, etc." id="college"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Year of Study</label>
+          <select class="input" id="year" style="appearance:none;cursor:pointer;">
+            <option value="">Select year</option>
+            <option>1st Year</option><option>2nd Year</option>
+            <option>3rd Year</option><option>4th Year</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-secondary" style="flex:1;justify-content:center;" onclick="goStep(1)">← Back</button>
+          <button class="btn btn-primary" style="flex:2;justify-content:center;" onclick="goStep(3)">Next Step →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Choose Starting Level -->
+    <div id="step3" style="display:none;">
+      <p class="muted" style="font-size:0.88rem;margin-bottom:12px;">Where are you right now? We'll personalise your roadmap:</p>
+      <div class="level-select-grid">
+        <div class="level-select-item" onclick="selectLevel(this,'1')"><div class="li-emoji">🧠</div><div class="li-name">Beginner</div><div style="font-size:0.7rem;color:var(--text3);">Just starting out</div></div>
+        <div class="level-select-item" onclick="selectLevel(this,'2')"><div class="li-emoji">⚡</div><div class="li-name">Know Basics</div><div style="font-size:0.7rem;color:var(--text3);">Learned fundamentals</div></div>
+        <div class="level-select-item" onclick="selectLevel(this,'3')"><div class="li-emoji">🛠️</div><div class="li-name">Doing DSA</div><div style="font-size:0.7rem;color:var(--text3);">Solving problems</div></div>
+        <div class="level-select-item" onclick="selectLevel(this,'4')"><div class="li-emoji">📄</div><div class="li-name">Have Projects</div><div style="font-size:0.7rem;color:var(--text3);">Built something</div></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px;">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center;" onclick="goStep(2)">← Back</button>
+        <button class="btn btn-primary" style="flex:2;justify-content:center;" onclick="handleSignup()">🚀 Create Account!</button>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:24px;font-size:0.85rem;color:var(--text2);">Already have an account? <a href="login.html" style="color:var(--purple-l);font-weight:600;">Login →</a></p>
+  </div>
+</div>
+
+<script src="static/js/main.js"></script>
+<script>
+  let selectedLevel = '1';
+  function goStep(n) {
+    [1,2,3].forEach(i => { document.getElementById('step'+i).style.display = i===n ? '' : 'none'; });
+    [1,2,3].forEach(i => {
+      const dot = document.getElementById('dot'+i);
+      dot.classList.toggle('active', i===n);
+      dot.classList.toggle('done', i<n);
+    });
+    [1,2].forEach(i => { document.getElementById('line'+i)?.classList.toggle('done', i<n); });
+  }
+  function selectLevel(el, lvl) {
+    document.querySelectorAll('.level-select-item').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedLevel = lvl;
+  }
+  function checkStrength(p) {
+    const fill = document.getElementById('strengthFill');
+    const txt = document.getElementById('strengthText');
+    let score = 0;
+    if (p.length >= 8) score++;
+    if (/[A-Z]/.test(p)) score++;
+    if (/[0-9]/.test(p)) score++;
+    if (/[^a-zA-Z0-9]/.test(p)) score++;
+    const levels = [{w:'25%',c:'#ef4444',t:'Weak'},{w:'50%',c:'#f59e0b',t:'Fair'},{w:'75%',c:'#06b6d4',t:'Good'},{w:'100%',c:'#10b981',t:'Strong 💪'}];
+    const l = levels[Math.max(score-1,0)];
+    fill.style.width = l.w; fill.style.background = l.c; txt.textContent = l.t; txt.style.color = l.c;
+  }
+  function handleSignup() {
+    showToast('Creating your account...', 'info', '🎮');
+    setTimeout(() => { launchConfetti(); setTimeout(() => window.location.href = 'dashboard.html', 1500); }, 1000);
+  }
+</script>
+</body>
+</html>

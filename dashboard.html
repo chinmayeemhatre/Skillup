@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    .welcome-banner{background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(6,182,212,0.1));border:1px solid var(--border2);border-radius:22px;padding:28px 32px;position:relative;overflow:hidden;margin-bottom:28px;}
+    .welcome-banner .orb{position:absolute;width:250px;height:250px;right:-60px;top:-60px;opacity:0.2;border-radius:50%;background:var(--purple);filter:blur(60px);}
+    .level-ring{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-size:2.2rem;box-shadow:0 0 30px rgba(124,58,237,0.4);animation:glow 3s ease infinite;flex-shrink:0;}
+    .xp-section{margin-bottom:8px;}
+    .xp-labels{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text2);margin-bottom:6px;}
+    .task-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--glass);border:1px solid var(--border);border-radius:14px;transition:var(--t);margin-bottom:10px;}
+    .task-item:hover{border-color:var(--border2);background:rgba(124,58,237,0.05);}
+    .task-item.done{opacity:0.6;}
+    .task-checkbox{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:var(--t);}
+    .task-checkbox.checked{background:var(--green);border-color:var(--green);}
+    .task-xp{margin-left:auto;font-size:0.78rem;font-weight:700;color:var(--gold);background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);padding:3px 10px;border-radius:12px;white-space:nowrap;}
+    .badge-row{display:flex;gap:16px;flex-wrap:wrap;}
+    .mini-mentor{display:flex;align-items:center;gap:12px;padding:14px;background:var(--glass);border:1px solid var(--border);border-radius:14px;transition:var(--t);margin-bottom:10px;}
+    .mini-mentor:hover{border-color:var(--border2);}
+    .mentor-avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1rem;flex-shrink:0;}
+    .activity-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .activity-dot.online{background:var(--green);box-shadow:0 0 6px rgba(16,185,129,0.6);}
+    .activity-dot.away{background:var(--gold);}
+    .activity-dot.offline{background:var(--text3);}
+    .streak-week{display:flex;gap:8px;}
+    .day-box{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:0.7rem;color:var(--text3);}
+    .day-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);display:grid;place-items:center;font-size:0.75rem;transition:var(--t);}
+    .day-circle.done{background:linear-gradient(135deg,#ff6b35,#f59e0b);border-color:#f59e0b;color:#fff;box-shadow:0 0 8px rgba(245,158,11,0.4);}
+    .day-circle.today{border-color:#f59e0b;color:var(--gold);animation:pulse-ring 1.5s ease infinite;}
+    .quick-action{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 12px;background:var(--glass);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:var(--t);text-align:center;text-decoration:none;color:var(--text);}
+    .quick-action:hover{border-color:var(--border2);transform:translateY(-2px);}
+    .quick-action .qa-icon{font-size:1.8rem;}
+    .quick-action .qa-label{font-size:0.78rem;font-weight:600;color:var(--text2);}
+  </style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="mentors.html">Mentors</a>
+      <a href="chat.html">Messages</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-xp">⭐ 340 XP</div>
+      <div class="nav-avatar" title="Profile">A</div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link active"><span class="icon">🏠</span> Dashboard</a>
+      <a href="roadmap.html" class="sidebar-link"><span class="icon">🗺️</span> Roadmap</a>
+      <a href="leaderboard.html" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Community</div>
+      <a href="mentors.html" class="sidebar-link"><span class="icon">🤝</span> Mentors</a>
+      <a href="chat.html" class="sidebar-link"><span class="icon">💬</span> Messages</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Account</div>
+      <a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
+      <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
+    </div>
+    <!-- Mini profile card -->
+    <div style="position:absolute;bottom:20px;left:16px;right:16px;">
+      <div style="background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px;">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-weight:800;font-size:0.9rem;flex-shrink:0;">A</div>
+        <div style="min-width:0;">
+          <div style="font-size:0.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Aarav Sharma</div>
+          <div class="level-badge" style="font-size:0.7rem;padding:2px 8px;margin-top:3px;">⚡ Level 2</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner fade-up">
+      <div class="orb"></div>
+      <div style="display:flex;align-items:center;gap:20px;position:relative;z-index:1;">
+        <div class="level-ring">⚡</div>
+        <div style="flex:1;">
+          <div style="font-size:0.85rem;color:var(--text2);margin-bottom:4px;">Welcome back 👋</div>
+          <h2 style="font-size:1.6rem;margin-bottom:8px;">Aarav Sharma</h2>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div class="level-badge">⚡ Level 2 — DSA</div>
+            <div class="xp-badge">⭐ 340 XP</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:0.85rem;"><span style="font-size:1.1rem;">🔥</span><strong style="color:#ff6b35;">12</strong><span class="muted">day streak</span></div>
+          </div>
+          <div class="xp-section mt-12">
+            <div class="xp-labels"><span>Level 2</span><span id="currentXP" data-xp="340">340</span> / <span id="maxXP" data-xp="500">500 XP</span><span>Level 3</span></div>
+            <div class="progress-wrap"><div class="progress-bar" data-progress="68" style="width:0%"></div></div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="demoLevelUp()" style="flex-shrink:0;">🚀 Level Up!</button>
+      </div>
+    </div>
+
+    <div class="grid-2 fade-up-d1">
+      <!-- LEFT COLUMN -->
+      <div>
+        <!-- Today's Tasks -->
+        <div class="card mb-24">
+          <div class="section-title"><div class="dot"></div>Today's Tasks <span class="tag tag-cyan" style="margin-left:auto;">2/5 done</span></div>
+          <div id="taskList">
+            <div class="task-item done">
+              <div class="task-checkbox checked" onclick="toggleTask(this)">✓</div>
+              <div><div style="font-size:0.88rem;font-weight:600;text-decoration:line-through;color:var(--text2);">Solve 2 LeetCode Easy problems</div><div style="font-size:0.75rem;color:var(--text3);">Algorithm Basics</div></div>
+              <div class="task-xp">+30 XP</div>
+            </div>
+            <div class="task-item done">
+              <div class="task-checkbox checked" onclick="toggleTask(this)">✓</div>
+              <div><div style="font-size:0.88rem;font-weight:600;text-decoration:line-through;color:var(--text2);">Watch: Arrays & Linked Lists</div><div style="font-size:0.75rem;color:var(--text3);">Video Lecture</div></div>
+              <div class="task-xp">+20 XP</div>
+            </div>
+            <div class="task-item">
+              <div class="task-checkbox" onclick="toggleTask(this, 50)"></div>
+              <div><div style="font-size:0.88rem;font-weight:600;">Implement Binary Search</div><div style="font-size:0.75rem;color:var(--text3);">Coding Task</div></div>
+              <div class="task-xp">+50 XP</div>
+            </div>
+            <div class="task-item">
+              <div class="task-checkbox" onclick="toggleTask(this, 40)"></div>
+              <div><div style="font-size:0.88rem;font-weight:600;">Read: Big-O Notation guide</div><div style="font-size:0.75rem;color:var(--text3);">Reading</div></div>
+              <div class="task-xp">+40 XP</div>
+            </div>
+            <div class="task-item">
+              <div class="task-checkbox" onclick="toggleTask(this, 60)"></div>
+              <div><div style="font-size:0.88rem;font-weight:600;">Submit: Stack implementation</div><div style="font-size:0.75rem;color:var(--text3);">Project Task</div></div>
+              <div class="task-xp">+60 XP</div>
+            </div>
+          </div>
+          <a href="roadmap.html" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-top:8px;">View All Tasks →</a>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+          <div class="section-title"><div class="dot"></div>Quick Actions</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+            <a href="roadmap.html" class="quick-action"><div class="qa-icon">🗺️</div><div class="qa-label">Roadmap</div></a>
+            <a href="leaderboard.html" class="quick-action"><div class="qa-icon">🏆</div><div class="qa-label">Leaderboard</div></a>
+            <a href="mentors.html" class="quick-action"><div class="qa-icon">🤝</div><div class="qa-label">Mentors</div></a>
+            <a href="chat.html" class="quick-action"><div class="qa-icon">💬</div><div class="qa-label">Messages</div></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div>
+        <!-- Stats -->
+        <div class="stats-grid mb-24">
+          <div class="stat-card"><div class="stat-value gradient-text" data-count="340">0</div><div class="stat-label">⭐ Total XP</div></div>
+          <div class="stat-card"><div class="stat-value" style="color:#ff6b35;" data-count="12">0</div><div class="stat-label">🔥 Day Streak</div></div>
+          <div class="stat-card"><div class="stat-value" style="color:var(--gold);" data-count="5">0</div><div class="stat-label">🏅 Badges</div></div>
+          <div class="stat-card"><div class="stat-value" style="color:var(--cyan);">#8</div><div class="stat-label">🏆 Class Rank</div></div>
+        </div>
+
+        <!-- Weekly Streak -->
+        <div class="card mb-24">
+          <div class="section-title"><div class="dot"></div>This Week's Streak 🔥</div>
+          <div class="streak-week">
+            <div class="day-box"><div class="day-circle done">M</div><span>Mon</span></div>
+            <div class="day-box"><div class="day-circle done">T</div><span>Tue</span></div>
+            <div class="day-box"><div class="day-circle done">W</div><span>Wed</span></div>
+            <div class="day-box"><div class="day-circle done">T</div><span>Thu</span></div>
+            <div class="day-box"><div class="day-circle done">F</div><span>Fri</span></div>
+            <div class="day-box"><div class="day-circle today">S</div><span>Sat</span></div>
+            <div class="day-box"><div class="day-circle">S</div><span>Sun</span></div>
+          </div>
+          <p style="font-size:0.8rem;color:var(--text2);margin-top:12px;">🔥 Keep it up! 2 more days for a <strong style="color:var(--gold);">7-day badge</strong>!</p>
+        </div>
+
+        <!-- Badges -->
+        <div class="card mb-24">
+          <div class="section-title"><div class="dot"></div>My Badges <span class="tag tag-gold" style="margin-left:auto;">5 earned</span></div>
+          <div class="badge-row">
+            <div class="badge-item"><div class="badge-icon earned">🌟</div><div class="badge-name">First Step</div></div>
+            <div class="badge-item"><div class="badge-icon earned">🔥</div><div class="badge-name">On Fire</div></div>
+            <div class="badge-item"><div class="badge-icon earned">⚡</div><div class="badge-name">Quick Start</div></div>
+            <div class="badge-item"><div class="badge-icon earned">🧠</div><div class="badge-name">DSA Learner</div></div>
+            <div class="badge-item"><div class="badge-icon earned">🏃</div><div class="badge-name">Consistent</div></div>
+            <div class="badge-item"><div class="badge-icon locked">🛠️</div><div class="badge-name">Builder</div></div>
+            <div class="badge-item"><div class="badge-icon locked">🎯</div><div class="badge-name">Sharp Aim</div></div>
+            <div class="badge-item"><div class="badge-icon locked">🚀</div><div class="badge-name">Rocket</div></div>
+          </div>
+        </div>
+
+        <!-- Available Mentors -->
+        <div class="card">
+          <div class="section-title"><div class="dot"></div>Available Mentors</div>
+          <div class="mini-mentor">
+            <div class="mentor-avatar" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">R</div>
+            <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Rahul Gupta</div><div style="font-size:0.75rem;color:var(--text2);">Level 5 · 🏅 Mentor badge</div></div>
+            <div class="activity-dot online"></div>
+            <a href="chat.html" class="btn btn-cyan btn-sm">Message</a>
+          </div>
+          <div class="mini-mentor">
+            <div class="mentor-avatar" style="background:linear-gradient(135deg,#ec4899,#7c3aed);">P</div>
+            <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Priya Nair</div><div style="font-size:0.75rem;color:var(--text2);">Level 4 · ⭐ Top Helper</div></div>
+            <div class="activity-dot online"></div>
+            <a href="chat.html" class="btn btn-cyan btn-sm">Message</a>
+          </div>
+          <div class="mini-mentor">
+            <div class="mentor-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">K</div>
+            <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Karan Mehta</div><div style="font-size:0.75rem;color:var(--text2);">Level 6 · 🎯 DSA Expert</div></div>
+            <div class="activity-dot away"></div>
+            <a href="chat.html" class="btn btn-secondary btn-sm">Message</a>
+          </div>
+          <a href="mentors.html" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-top:8px;">Browse All Mentors →</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="static/js/main.js"></script>
+<script>
+  function toggleTask(checkbox, xp) {
+    const checked = checkbox.classList.toggle('checked');
+    checkbox.textContent = checked ? '✓' : '';
+    const item = checkbox.closest('.task-item');
+    const title = item.querySelector('.task-item div div:first-child');
+    if (checked) {
+      item.classList.add('done');
+      title.style.textDecoration = 'line-through';
+      title.style.color = 'var(--text2)';
+      if (xp) { showToast(`+${xp} XP earned! 🔥`, 'success', '⭐'); }
+    } else {
+      item.classList.remove('done');
+      title.style.textDecoration = '';
+      title.style.color = '';
+    }
+  }
+</script>
+</body>
+</html>

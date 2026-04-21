@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container stack" style="gap:24px">
+    <section class="split">
+      <div>
+        <span class="eyebrow">Dashboard</span>
+        <h1>Hi {{ user.first_name|default:user.username }}, keep the streak alive.</h1>
+        <p class="lead">Your current focus is Level {{ current_level.number }} - {{ current_level.title }}.</p>
+      </div>
+      <a class="btn btn-primary" href="{% url 'level_detail' current_level.number %}">Continue Learning</a>
+    </section>
+
+    <section class="grid grid-4">
+      <div class="glass card stat"><span class="muted">XP</span><b>{{ profile.xp }}</b></div>
+      <div class="glass card stat"><span class="muted">Current Level</span><b>{{ profile.current_level }}/7</b></div>
+      <div class="glass card stat"><span class="muted">Completed Tasks</span><b>{{ completed_tasks }}</b></div>
+      <div class="glass card stat"><span class="muted">Daily Streak</span><b>{{ profile.streak }} days</b></div>
+    </section>
+
+    <section class="glass card stack">
+      <div class="split"><strong>Total Roadmap Progress</strong><span>{{ progress_percent }}%</span></div>
+      <div class="progress" data-progress="{{ progress_percent }}"><span></span></div>
+    </section>
+
+    <section class="grid grid-2">
+      <div class="glass card stack">
+        <div class="split"><h2>Next Tasks</h2><a class="pill" href="{% url 'roadmap' %}">Roadmap</a></div>
+        {% for task in next_tasks %}
+          <a class="resource-link" href="{% url 'level_detail' task.level.number %}">
+            <strong>{{ task.title }}</strong>
+            <p class="muted">{{ task.description }}</p>
+            <span class="pill badge">+{{ task.xp }} XP</span>
+          </a>
+        {% empty %}
+          <p class="muted">All tasks are complete. Legendary discipline.</p>
+        {% endfor %}
+      </div>
+      <div class="glass card stack">
+        <h2>Badges</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          {% for earned in badges %}
+            <span class="pill badge-violet">{{ earned.badge.icon }} {{ earned.badge.name }}</span>
+          {% empty %}
+            <span class="muted">Complete tasks to unlock badges.</span>
+          {% endfor %}
+        </div>
+        <h3>Recent Activity</h3>
+        {% for item in recent_tasks %}
+          <div class="resource-link"><strong>{{ item.task.title }}</strong><p class="muted">Level {{ item.task.level.number }} - {{ item.completed_at|date:"M d, H:i" }}</p></div>
+        {% empty %}
+          <p class="muted">No completed tasks yet.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

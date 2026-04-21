@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mentors — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    .mentor-card{background:var(--glass);border:1px solid var(--border);border-radius:18px;padding:22px;transition:var(--t);display:flex;flex-direction:column;gap:14px;}
+    .mentor-card:hover{border-color:rgba(192,54,90,0.25);transform:translateY(-3px);}
+    .mentor-top{display:flex;align-items:center;gap:14px;}
+    .mentor-av{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;font-weight:800;flex-shrink:0;color:#fff;}
+    .mentor-status{display:flex;align-items:center;gap:6px;font-size:0.76rem;font-weight:600;}
+    .dot-online{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 5px rgba(58,158,79,0.6);}
+    .dot-away{width:7px;height:7px;border-radius:50%;background:var(--yellow);}
+    .dot-offline{width:7px;height:7px;border-radius:50%;background:var(--text3);}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .skill-tag{padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;background:rgba(112,71,192,0.1);border:1px solid rgba(112,71,192,0.25);color:var(--purple-l);}
+    .mentor-stats{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+    .m-stat{flex:1;text-align:center;padding:10px 6px;border-right:1px solid var(--border);}
+    .m-stat:last-child{border-right:none;}
+    .m-stat-val{font-size:1rem;font-weight:800;font-family:'Syne',sans-serif;}
+    .m-stat-lbl{font-size:0.67rem;color:var(--text2);}
+    .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+    .filt-btn{padding:7px 16px;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:var(--glass);transition:var(--t);}
+    .filt-btn.active{background:var(--pink);color:#fff;border-color:var(--pink);}
+    .filt-btn:hover:not(.active){border-color:var(--pink-l);color:var(--pink-l);}
+    .mentor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+    .request-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:8px;font-size:0.7rem;background:rgba(196,154,26,0.1);color:var(--yellow-l);border:1px solid rgba(196,154,26,0.25);}
+    .search-bar{position:relative;margin-bottom:20px;}
+    .search-bar input{padding-left:38px;}
+    .search-bar span{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);}
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <img src="static/images/logo.png" alt="SkillUp" style="height:32px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="logo-icon" style="display:none;">🎮</div>
+      <span class="gradient-text">SKILLUP</span>
+    </a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="mentors.html" class="active">Mentors</a>
+      <a href="chat.html">Messages</a>
+    </div>
+    <div class="nav-actions"><div class="nav-xp">⭐ 340 XP</div><div class="nav-avatar">A</div></div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a>
+      <a href="roadmap.html" class="sidebar-link"><span class="icon">🗺️</span> Roadmap</a>
+      <a href="leaderboard.html" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Community</div>
+      <a href="mentors.html" class="sidebar-link active"><span class="icon">🤝</span> Mentors</a>
+      <a href="chat.html" class="sidebar-link"><span class="icon">💬</span> Messages</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Account</div>
+      <a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
+      <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="fade-up mb-24">
+      <h1 style="font-size:1.9rem;margin-bottom:6px;">🤝 Find a <span class="gradient-text">Mentor</span></h1>
+      <p class="muted">Senior students 2–3 levels ahead, ready to guide you. They earn XP when they help!</p>
+    </div>
+
+    <div class="filter-bar fade-up-d1">
+      <div class="filt-btn active" onclick="filterMentors(this,'all')">🌐 All</div>
+      <div class="filt-btn" onclick="filterMentors(this,'online')">🟢 Online Now</div>
+      <div class="filt-btn" onclick="filterMentors(this,'dsa')">⚡ DSA</div>
+      <div class="filt-btn" onclick="filterMentors(this,'projects')">🛠️ Projects</div>
+      <div class="filt-btn" onclick="filterMentors(this,'resume')">📄 Resume</div>
+      <div class="filt-btn" onclick="filterMentors(this,'interview')">🎯 Interview</div>
+    </div>
+
+    <div class="search-bar fade-up-d1">
+      <span>🔍</span>
+      <input class="input" type="text" placeholder="Search mentors by name or skill..." oninput="searchMentors(this.value)"/>
+    </div>
+
+    <div class="mentor-grid fade-up-d2" id="mentorGrid"></div>
+  </main>
+</div>
+
+<script src="static/js/main.js"></script>
+<script>
+  const mentors = [
+    {name:"Karan Mehta",initials:"K",color:"#c0365a,#c49a1a",level:6,title:"Job Apply",status:"online",helped:34,xp:1240,rating:4.9,resp:"< 1 hr",skills:["DSA","System Design","Interview Prep","LeetCode"],bio:"Final year, interned at Flipkart. Expert at DSA & cracking interviews!",badges:["🏆 Top Mentor","🎯 DSA Expert"],tags:["dsa","interview"]},
+    {name:"Priya Nair",initials:"P",color:"#7047c0,#c0365a",level:4,title:"Resume",status:"online",helped:22,xp:820,rating:4.8,resp:"< 2 hr",skills:["Projects","Resume","Django","React"],bio:"Building cool web apps since forever. Let me help with your first project!",badges:["🌟 Star Helper"],tags:["projects","resume"]},
+    {name:"Rohan Das",initials:"R",color:"#0b8fa8,#7047c0",level:4,title:"Resume",status:"away",helped:18,xp:710,rating:4.7,resp:"< 3 hr",skills:["C++","DSA","Competitive Coding"],bio:"Solved 400+ Codeforces problems. Specialist in competitive programming.",badges:["⚡ Speed Coder"],tags:["dsa"]},
+    {name:"Sneha Patel",initials:"S",color:"#3a9e4f,#0b8fa8",level:3,title:"Projects",status:"online",helped:15,xp:580,rating:4.6,resp:"< 1 hr",skills:["Flask","SQL","Data Analysis","Python"],bio:"Data science enthusiast. Built 3 ML projects. Will help you build yours!",badges:["📊 Data Wizard"],tags:["projects"]},
+    {name:"Arjun Rao",initials:"A",color:"#7047c0,#c49a1a",level:3,title:"Projects",status:"offline",helped:12,xp:520,rating:4.5,resp:"< 6 hr",skills:["React","Node.js","MongoDB","Git"],bio:"Full stack developer in the making. Love open source!",badges:["🛠️ Builder"],tags:["projects"]},
+    {name:"Divya Iyer",initials:"D",color:"#c49a1a,#3a9e4f",level:3,title:"Projects",status:"online",helped:20,xp:480,rating:4.8,resp:"< 30 min",skills:["Resume Writing","GitHub","LinkedIn","HR Prep"],bio:"Aced 3 HR rounds. Will help you craft the perfect resume!",badges:["📄 Resume Pro","🏅 Helpful"],tags:["resume","interview"]},
+  ];
+
+  function renderMentors(data) {
+    const sm = {online:'dot-online',away:'dot-away',offline:'dot-offline'};
+    const sl = {online:'🟢 Online',away:'🟡 Away',offline:'⚫ Offline'};
+    document.getElementById('mentorGrid').innerHTML = data.length ? data.map(m => `
+      <div class="mentor-card fade-up">
+        <div class="mentor-top">
+          <div class="mentor-av" style="background:linear-gradient(135deg,${m.color});">${m.initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:0.95rem;font-weight:700;">${m.name}</div>
+            <div class="level-badge" style="font-size:0.7rem;padding:2px 9px;margin:4px 0 0;">Lvl ${m.level} — ${m.title}</div>
+            <div class="mentor-status mt-8"><div class="${sm[m.status]}"></div><span class="muted">${sl[m.status]}</span></div>
+          </div>
+          <div style="text-align:right;font-size:0.78rem;color:var(--text2);">⭐ ${m.rating}<br><span style="font-size:0.7rem;">${m.resp}</span></div>
+        </div>
+        <p style="font-size:0.82rem;color:var(--text2);line-height:1.6;">${m.bio}</p>
+        <div class="skill-tags">${m.skills.map(s=>`<div class="skill-tag">${s}</div>`).join('')}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">${m.badges.map(b=>`<div class="request-badge">${b}</div>`).join('')}</div>
+        <div class="mentor-stats">
+          <div class="m-stat"><div class="m-stat-val gradient-text">${m.helped}</div><div class="m-stat-lbl">Helped</div></div>
+          <div class="m-stat"><div class="m-stat-val yellow-text">${m.xp}</div><div class="m-stat-lbl">XP</div></div>
+          <div class="m-stat"><div class="m-stat-val cyan-text">${m.rating}</div><div class="m-stat-lbl">Rating</div></div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <a href="chat.html" class="btn btn-primary btn-sm" style="flex:2;justify-content:center;">💬 Message</a>
+          <button class="btn btn-secondary btn-sm" style="flex:1;justify-content:center;" onclick="showToast('Profile coming soon!','info','👤')">View</button>
+        </div>
+      </div>`).join('') : '<div style="grid-column:1/-1;text-align:center;color:var(--text3);padding:40px;">No mentors found.</div>';
+  }
+
+  renderMentors(mentors);
+
+  function filterMentors(btn, tag) {
+    document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (tag==='all') renderMentors(mentors);
+    else if (tag==='online') renderMentors(mentors.filter(m=>m.status==='online'));
+    else renderMentors(mentors.filter(m=>m.tags.includes(tag)));
+  }
+
+  function searchMentors(q) {
+    const filtered = mentors.filter(m => m.name.toLowerCase().includes(q.toLowerCase()) || m.skills.some(s=>s.toLowerCase().includes(q.toLowerCase())));
+    renderMentors(filtered);
+  }
+</script>
+</body>
+</html>

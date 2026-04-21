@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container grid grid-2">
+    <section class="glass card stack">
+      <span class="eyebrow">Learner profile</span>
+      <h1>{{ user.first_name|default:user.username }}</h1>
+      <p class="lead">{{ profile_obj.bio|default:"A focused student building software skills through SKILLUP." }}</p>
+      <div class="grid grid-3">
+        <div class="stat"><span class="muted">XP</span><b>{{ profile_obj.xp }}</b></div>
+        <div class="stat"><span class="muted">Level</span><b>{{ profile_obj.current_level }}</b></div>
+        <div class="stat"><span class="muted">Streak</span><b>{{ profile_obj.streak }}</b></div>
+      </div>
+      <div class="resource-link">
+        <strong>College</strong>
+        <p class="muted">{{ profile_obj.college|default:"Not added yet" }}</p>
+      </div>
+    </section>
+    <section class="glass card stack">
+      <h2>Edit Profile</h2>
+      <form class="form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Save Profile</button>
+      </form>
+    </section>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Level {{ level.number }}{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container stack" style="gap:24px">
+    <section class="split">
+      <div>
+        <span class="eyebrow">Level {{ level.number }}</span>
+        <h1>{{ level.title }} <span class="gradient-text">Mission</span></h1>
+        <p class="lead">{{ level.tagline }}</p>
+      </div>
+      <div class="glass card stat"><span class="muted">Level Progress</span><b>{{ level_progress }}%</b></div>
+    </section>
+
+    <section class="glass card stack">
+      <div class="split"><strong>Checklist Completion</strong><span>{{ level_progress }}%</span></div>
+      <div class="progress" data-progress="{{ level_progress }}"><span></span></div>
+    </section>
+
+    <section class="grid grid-2">
+      <div class="glass card stack">
+        <h2>Theory</h2>
+        <p class="muted">{{ level.theory }}</p>
+        <h3>Mini Project Idea</h3>
+        <p class="muted">{{ level.mini_project }}</p>
+        <h3>Example Questions</h3>
+        <p class="muted">{{ level.example_questions }}</p>
+      </div>
+      <div class="glass card stack">
+        <h2>Tasks & Challenges</h2>
+        {% for task in level.tasks.all %}
+          <form method="post" action="{% url 'toggle_task' task.id %}" class="task">
+            {% csrf_token %}
+            <button class="check" title="Toggle task">{% if task.id in completed_task_ids %}OK{% else %}+{% endif %}</button>
+            <div>
+              <strong>{{ task.title }}</strong>
+              <p class="muted">{{ task.description }}</p>
+            </div>
+            <span class="pill badge">+{{ task.xp }} XP</span>
+          </form>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="grid grid-3">
+      <div class="glass card stack">
+        <h2>Video Suggestions</h2>
+        <div class="resource-list">
+          {% for item in videos %}
+            <a class="resource-link" href="{{ item.url }}" target="_blank" rel="noreferrer"><strong>{{ item.title }}</strong><p class="muted">{{ item.description }}</p></a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="glass card stack">
+        <h2>References</h2>
+        <div class="resource-list">
+          {% for item in references %}
+            <a class="resource-link" href="{{ item.url }}" target="_blank" rel="noreferrer"><strong>{{ item.title }}</strong><p class="muted">{{ item.description }}</p></a>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="glass card stack">
+        <h2>Tips & Tricks</h2>
+        <div class="resource-list">
+          {% for item in tips %}
+            <div class="resource-link"><strong>{{ item.title }}</strong><p class="muted">{{ item.description }}</p></div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

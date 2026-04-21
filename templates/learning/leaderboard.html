@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container stack" style="gap:24px">
+    <section>
+      <span class="eyebrow">Community leaderboard</span>
+      <h1>XP, streaks, and visible momentum.</h1>
+      <p class="lead">This includes demo learners plus real users created in your SQLite database.</p>
+    </section>
+    <section class="glass card stack">
+      {% for leader in leaders %}
+        <div class="resource-link">
+          <div class="split">
+            <div class="split" style="flex-direction:row;align-items:center">
+              <span class="brand-mark">{{ forloop.counter }}</span>
+              <div>
+                <strong>{{ leader.user.first_name|default:leader.user.username }}</strong>
+                <p class="muted">{{ leader.college }} - Level {{ leader.current_level }}</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <span class="pill badge">{{ leader.xp }} XP</span>
+              <span class="pill badge-violet">{{ leader.streak }} day streak</span>
+              <span class="pill">{{ leader.done }} tasks</span>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="muted">Run the seed command to add demo leaderboard users.</p>
+      {% endfor %}
+    </section>
+  </div>
+</main>
+{% endblock %}

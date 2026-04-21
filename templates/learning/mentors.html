@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Mentors{% endblock %}
+{% block content %}
+<main class="page">
+  <div class="container stack" style="gap:24px">
+    <section class="split">
+      <div>
+        <span class="eyebrow">Mentorship hub</span>
+        <h1>Find peers and near-level mentors.</h1>
+        <p class="lead">You are at Level {{ profile.current_level }}. SKILLUP shows same-level peers and students one or two levels above.</p>
+      </div>
+      <span class="pill badge">{{ profile.xp }} XP</span>
+    </section>
+
+    <section class="grid grid-2">
+      <div class="glass card stack">
+        <h2>Same Level Peers</h2>
+        {% for person in peers %}
+          <div class="resource-link split">
+            <div><strong>{{ person.user.first_name|default:person.user.username }}</strong><p class="muted">{{ person.college }} - {{ person.streak }} day streak</p></div>
+            <a class="btn btn-sm" href="{% url 'chat' person.user.id %}">Message</a>
+          </div>
+        {% empty %}
+          <p class="muted">No same-level peers yet. Demo users will appear after seeding.</p>
+        {% endfor %}
+      </div>
+      <div class="glass card stack">
+        <h2>Mentors 1-2 Levels Above</h2>
+        {% for person in mentors_above %}
+          <div class="resource-link split">
+            <div><strong>{{ person.user.first_name|default:person.user.username }}</strong><p class="muted">Level {{ person.current_level }} - {{ person.college }}</p></div>
+            <a class="btn btn-sm btn-primary" href="{% url 'chat' person.user.id %}">Ask</a>
+          </div>
+        {% empty %}
+          <p class="muted">You are near the top. Help requests below are still visible.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="grid grid-2">
+      <div class="glass card stack">
+        <h2>Ask for Help</h2>
+        <form class="form" method="post">
+          {% csrf_token %}
+          {{ help_form.as_p }}
+          <button class="btn btn-green">Post Help Request</button>
+        </form>
+      </div>
+      <div class="glass card stack">
+        <h2>Open Help Requests</h2>
+        {% for request in requests %}
+          <div class="resource-link">
+            <strong>{{ request.user.first_name|default:request.user.username }} - Level {{ request.level.number }}</strong>
+            <p class="muted">{{ request.question }}</p>
+            <span class="pill">{{ request.created_at|timesince }} ago</span>
+          </div>
+        {% empty %}
+          <p class="muted">No help requests yet.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

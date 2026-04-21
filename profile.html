@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    .profile-banner{background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(6,182,212,0.15));border:1px solid var(--border2);border-radius:24px;padding:36px;position:relative;overflow:hidden;margin-bottom:28px;}
+    .profile-avatar-wrap{position:relative;display:inline-block;margin-bottom:16px;}
+    .profile-avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-size:2.2rem;font-weight:900;border:3px solid var(--border2);box-shadow:0 0 30px rgba(124,58,237,0.4);}
+    .edit-av{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--purple);display:grid;place-items:center;font-size:0.8rem;cursor:pointer;border:2px solid var(--bg);}
+    .rank-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(124,58,237,0.2));border:1px solid rgba(245,158,11,0.4);border-radius:20px;padding:6px 16px;font-size:0.85rem;font-weight:700;color:var(--gold);}
+    .tab-bar{display:flex;gap:4px;background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:4px;margin-bottom:28px;}
+    .tab-btn{flex:1;text-align:center;padding:10px;border-radius:10px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:var(--t);color:var(--text2);}
+    .tab-btn.active{background:linear-gradient(135deg,var(--purple),var(--purple-l));color:#fff;box-shadow:0 0 15px rgba(124,58,237,0.3);}
+    .tab-panel{display:none;}
+    .tab-panel.active{display:block;}
+    .activity-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}
+    .activity-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:1.2rem;flex-shrink:0;}
+    .settings-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);}
+    .toggle{width:44px;height:24px;background:var(--border);border-radius:12px;cursor:pointer;position:relative;transition:var(--t);}
+    .toggle.on{background:var(--purple);}
+    .toggle::after{content:'';width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:var(--t);}
+    .toggle.on::after{left:23px;}
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a><a href="roadmap.html">Roadmap</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="mentors.html" class="disabled">Mentors</a><a href="chat.html" class="disabled">Messages</a>
+    </div>
+    <div class="nav-actions"><div class="nav-xp">⭐ 340 XP</div><div class="nav-avatar">A</div></div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a>
+      <a href="roadmap.html" class="sidebar-link"><span class="icon">🗺️</span> Roadmap</a>
+      <a href="leaderboard.html" class="sidebar-link"><span class="icon">🏆</span> Leaderboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Community</div>
+      <div class="sidebar-link disabled"><span class="icon">🤝</span> Mentors <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
+      <div class="sidebar-link disabled"><span class="icon">💬</span> Messages <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Account</div>
+      <a href="profile.html" class="sidebar-link active"><span class="icon">👤</span> My Profile</a>
+      <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- Profile Banner -->
+    <div class="profile-banner fade-up">
+      <div class="orb orb-purple" style="width:280px;height:280px;right:-80px;top:-80px;opacity:0.15;position:absolute;"></div>
+      <div style="display:flex;align-items:flex-start;gap:24px;position:relative;z-index:1;flex-wrap:wrap;">
+        <div>
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar">A</div>
+            <div class="edit-av" onclick="showToast('Upload feature coming soon!','info','📸')">✏️</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <h2 style="font-size:1.8rem;margin-bottom:4px;">Aarav Sharma</h2>
+          <div style="color:var(--text2);font-size:0.9rem;margin-bottom:12px;">@aarav_sharma · VIT Vellore · 2nd Year</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+            <div class="level-badge">⚡ Level 2 — DSA</div>
+            <div class="xp-badge">⭐ 340 XP</div>
+            <div class="rank-badge">🏆 Class Rank #8</div>
+            <div style="display:flex;align-items:center;gap:5px;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);padding:4px 12px;border-radius:20px;font-size:0.82rem;font-weight:700;color:#ff6b35;">🔥 12 day streak</div>
+          </div>
+          <p style="font-size:0.88rem;color:var(--text2);max-width:480px;line-height:1.6;">"Aspiring software developer | DSA enthusiast | Love building cool stuff 🛠️"</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-primary btn-sm" onclick="showToast('Profile saved!','success','✅')">✏️ Edit Profile</button>
+          <button class="btn btn-secondary btn-sm" onclick="showToast('Link copied!','info','🔗')">🔗 Share Profile</button>
+        </div>
+      </div>
+      <!-- XP Progress -->
+      <div style="margin-top:20px;position:relative;z-index:1;">
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text2);margin-bottom:6px;"><span>Level 2</span><span>340 / 500 XP</span><span>Level 3</span></div>
+        <div class="progress-wrap"><div class="progress-bar" data-progress="68" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid mb-24 fade-up-d1">
+      <div class="stat-card"><div class="stat-value gradient-text" data-count="340">0</div><div class="stat-label">⭐ XP Earned</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#ff6b35;" data-count="12">0</div><div class="stat-label">🔥 Day Streak</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--gold);" data-count="5">0</div><div class="stat-label">🏅 Badges</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--cyan);" data-count="18">0</div><div class="stat-label">✅ Tasks Done</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar fade-up-d2">
+      <div class="tab-btn active" onclick="switchTab('tabBadges',this)">🏅 Badges</div>
+      <div class="tab-btn" onclick="switchTab('tabActivity',this)">📅 Activity</div>
+      <div class="tab-btn" onclick="switchTab('tabSettings',this)">⚙️ Settings</div>
+    </div>
+
+    <!-- Badges Tab -->
+    <div class="tab-panel active" id="tabBadges">
+      <div class="card fade-up-d3">
+        <div class="section-title"><div class="dot"></div>Achievement Badges <span class="tag tag-gold" style="margin-left:auto;">5 / 20 earned</span></div>
+        <div class="badge-row" style="gap:20px;">
+          <div class="badge-item"><div class="badge-icon earned">🌟</div><div class="badge-name">First Step</div></div>
+          <div class="badge-item"><div class="badge-icon earned">🔥</div><div class="badge-name">On Fire</div></div>
+          <div class="badge-item"><div class="badge-icon earned">⚡</div><div class="badge-name">Quick Start</div></div>
+          <div class="badge-item"><div class="badge-icon earned">🧠</div><div class="badge-name">DSA Learner</div></div>
+          <div class="badge-item"><div class="badge-icon earned">🏃</div><div class="badge-name">Consistent</div></div>
+          <div class="badge-item"><div class="badge-icon locked">🛠️</div><div class="badge-name">Builder</div></div>
+          <div class="badge-item"><div class="badge-icon locked">🎯</div><div class="badge-name">Sharp Aim</div></div>
+          <div class="badge-item"><div class="badge-icon locked">🚀</div><div class="badge-name">Rocket</div></div>
+          <div class="badge-item"><div class="badge-icon locked">📄</div><div class="badge-name">Resume Ready</div></div>
+          <div class="badge-item"><div class="badge-icon locked">🏆</div><div class="badge-name">Legend</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Tab -->
+    <div class="tab-panel" id="tabActivity">
+      <div class="card fade-up">
+        <div class="section-title"><div class="dot"></div>Recent Activity</div>
+        <div class="activity-item"><div class="activity-icon" style="background:rgba(16,185,129,0.15);">✅</div><div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Completed: Arrays & Strings module</div><div style="font-size:0.75rem;color:var(--text2);">+30 XP earned</div></div><div style="font-size:0.75rem;color:var(--text3);">2h ago</div></div>
+        <div class="activity-item"><div class="activity-icon" style="background:rgba(245,158,11,0.15);">🏅</div><div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Badge Earned: Consistent</div><div style="font-size:0.75rem;color:var(--text2);">7+ day streak milestone</div></div><div style="font-size:0.75rem;color:var(--text3);">Yesterday</div></div>
+        <div class="activity-item"><div class="activity-icon" style="background:rgba(124,58,237,0.15);">💬</div><div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Messaged mentor: Karan Mehta</div><div style="font-size:0.75rem;color:var(--text2);">Asked about Binary Search</div></div><div style="font-size:0.75rem;color:var(--text3);">Yesterday</div></div>
+        <div class="activity-item"><div class="activity-icon" style="background:rgba(6,182,212,0.15);">⚡</div><div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Moved to Level 2: DSA</div><div style="font-size:0.75rem;color:var(--text2);">Completed all Level 1 tasks!</div></div><div style="font-size:0.75rem;color:var(--text3);">3 days ago</div></div>
+        <div class="activity-item" style="border:none;"><div class="activity-icon" style="background:rgba(16,185,129,0.15);">🌟</div><div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Joined SKILLUP!</div><div style="font-size:0.75rem;color:var(--text2);">Welcome to your journey 🎮</div></div><div style="font-size:0.75rem;color:var(--text3);">1 week ago</div></div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div class="tab-panel" id="tabSettings">
+      <div class="card fade-up">
+        <div class="section-title"><div class="dot"></div>Account Settings</div>
+        <div class="settings-row"><div><div style="font-size:0.9rem;font-weight:600;">Email Notifications</div><div style="font-size:0.78rem;color:var(--text2);">Receive updates on XP, badges & messages</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="settings-row"><div><div style="font-size:0.9rem;font-weight:600;">Daily Streak Reminder</div><div style="font-size:0.78rem;color:var(--text2);">Get reminded to maintain your streak</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="settings-row"><div><div style="font-size:0.9rem;font-weight:600;">Show on Leaderboard</div><div style="font-size:0.78rem;color:var(--text2);">Allow others to see your rank</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="settings-row"><div><div style="font-size:0.9rem;font-weight:600;">Accept Mentor Requests</div><div style="font-size:0.78rem;color:var(--text2);">Let juniors message you for help</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+        <div class="settings-row" style="border:none;"><div><div style="font-size:0.9rem;font-weight:600;">Two-Factor Authentication</div><div style="font-size:0.78rem;color:var(--text2);">Extra security for your account</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+        <div style="margin-top:20px;display:flex;gap:12px;">
+          <button class="btn btn-primary btn-sm" onclick="showToast('Settings saved!','success','✅')">Save Changes</button>
+          <button class="btn btn-secondary btn-sm" style="color:var(--red);border-color:rgba(239,68,68,0.3);" onclick="showToast('Logged out successfully!','info','🚪');setTimeout(()=>location.href='login.html',1200)">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="static/js/main.js"></script>
+</body>
+</html>

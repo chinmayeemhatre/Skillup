@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaderboard — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    .podium{display:flex;align-items:flex-end;justify-content:center;gap:16px;margin-bottom:40px;}
+    .podium-slot{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .podium-block{border-radius:16px 16px 0 0;display:grid;place-items:center;font-size:2rem;font-weight:900;color:rgba(255,255,255,0.3);}
+    .podium-1 .podium-block{width:120px;height:100px;background:linear-gradient(180deg,rgba(245,158,11,0.3),rgba(245,158,11,0.1));border:2px solid rgba(245,158,11,0.5);}
+    .podium-2 .podium-block{width:100px;height:72px;background:linear-gradient(180deg,rgba(148,163,184,0.2),rgba(148,163,184,0.05));border:2px solid rgba(148,163,184,0.3);}
+    .podium-3 .podium-block{width:100px;height:54px;background:linear-gradient(180deg,rgba(180,120,60,0.2),rgba(180,120,60,0.05));border:2px solid rgba(180,120,60,0.3);}
+    .podium-avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:1.4rem;font-weight:800;position:relative;}
+    .podium-1 .podium-avatar{width:72px;height:72px;box-shadow:0 0 30px rgba(245,158,11,0.5);border:3px solid #f59e0b;}
+    .podium-2 .podium-avatar{box-shadow:0 0 20px rgba(148,163,184,0.3);border:3px solid #94a3b8;}
+    .podium-3 .podium-avatar{box-shadow:0 0 20px rgba(180,120,60,0.3);border:3px solid #b4783c;}
+    .crown{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:1.4rem;}
+    .podium-name{font-size:0.88rem;font-weight:700;text-align:center;}
+    .podium-xp{font-size:0.78rem;color:var(--gold);}
+    .lb-table{width:100%;border-collapse:collapse;}
+    .lb-row td{padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
+    .lb-row:hover td{background:rgba(124,58,237,0.04);}
+    .lb-row.me td{background:rgba(124,58,237,0.08);border-color:var(--border2);}
+    .lb-row td:first-child{border-radius:12px 0 0 12px;}
+    .lb-row td:last-child{border-radius:0 12px 12px 0;}
+    .rank-num{font-size:1rem;font-weight:800;width:40px;text-align:center;}
+    .rank-1{color:var(--gold);} .rank-2{color:#94a3b8;} .rank-3{color:#b4783c;}
+    .lb-avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:0.9rem;}
+    .xp-bar-mini{height:6px;background:var(--border);border-radius:3px;width:100px;overflow:hidden;}
+    .xp-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:3px;}
+    .filter-tabs{display:flex;gap:8px;margin-bottom:24px;}
+    .filter-tab{padding:8px 18px;border-radius:20px;font-size:0.85rem;font-weight:600;cursor:pointer;border:1px solid var(--border);color:var(--text2);transition:var(--t);}
+    .filter-tab.active{background:linear-gradient(135deg,var(--purple),var(--purple-l));color:#fff;border-color:var(--purple);box-shadow:0 0 15px rgba(124,58,237,0.3);}
+    .search-bar{position:relative;margin-bottom:24px;}
+    .search-bar input{padding-left:40px;}
+    .search-bar .s-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:1rem;}
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a><a href="roadmap.html">Roadmap</a>
+      <a href="leaderboard.html" class="active">Leaderboard</a>
+      <a href="mentors.html" class="disabled">Mentors</a><a href="chat.html" class="disabled">Messages</a>
+    </div>
+    <div class="nav-actions"><div class="nav-xp">⭐ 340 XP</div><div class="nav-avatar">A</div></div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="icon">🏠</span> Dashboard</a>
+      <a href="roadmap.html" class="sidebar-link"><span class="icon">🗺️</span> Roadmap</a>
+      <a href="leaderboard.html" class="sidebar-link active"><span class="icon">🏆</span> Leaderboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Community</div>
+      <div class="sidebar-link disabled"><span class="icon">🤝</span> Mentors <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
+      <div class="sidebar-link disabled"><span class="icon">💬</span> Messages <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Account</div>
+      <a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
+      <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="fade-up mb-24">
+      <h1 style="font-size:2rem;margin-bottom:6px;">🏆 <span class="gradient-text">Leaderboard</span></h1>
+      <p class="muted">Compete, stay motivated, and see how you rank among your peers.</p>
+    </div>
+
+    <!-- Podium -->
+    <div class="card card-glow mb-28 fade-up-d1" style="padding:36px;">
+      <div class="podium">
+        <!-- 2nd -->
+        <div class="podium-slot podium-2">
+          <div class="podium-avatar" style="background:linear-gradient(135deg,#ec4899,#7c3aed);">P<div class="podium-crown" style="position:absolute;top:-16px;font-size:1rem;">🥈</div></div>
+          <div class="podium-name">Priya Nair</div>
+          <div class="podium-xp">⭐ 820 XP</div>
+          <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl 4</div>
+          <div class="podium-block">2</div>
+        </div>
+        <!-- 1st -->
+        <div class="podium-slot podium-1">
+          <div class="podium-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);"><span class="crown">👑</span>K</div>
+          <div class="podium-name" style="font-size:0.95rem;">Karan Mehta</div>
+          <div class="podium-xp" style="font-size:0.85rem;">⭐ 1,240 XP</div>
+          <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl 6</div>
+          <div class="podium-block">1</div>
+        </div>
+        <!-- 3rd -->
+        <div class="podium-slot podium-3">
+          <div class="podium-avatar" style="background:linear-gradient(135deg,#06b6d4,#7c3aed);">R<div style="position:absolute;top:-16px;font-size:1rem;">🥉</div></div>
+          <div class="podium-name">Rohan Das</div>
+          <div class="podium-xp">⭐ 710 XP</div>
+          <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl 4</div>
+          <div class="podium-block">3</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px;padding:10px;background:rgba(124,58,237,0.1);border:1px solid var(--border2);border-radius:12px;font-size:0.85rem;">
+        You are ranked <strong class="gradient-text">#8</strong> out of <strong>42</strong> students · Keep going! 🔥
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-tabs fade-up-d2">
+      <div class="filter-tab active" onclick="setFilter(this,'all')">🌍 All Time</div>
+      <div class="filter-tab" onclick="setFilter(this,'week')">📅 This Week</div>
+      <div class="filter-tab" onclick="setFilter(this,'level')">⚡ By Level</div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar fade-up-d2">
+      <span class="s-icon">🔍</span>
+      <input class="input" type="text" id="lbSearch" placeholder="Search a student..." oninput="filterLeaderboard(this.value)"/>
+    </div>
+
+    <!-- Table -->
+    <div class="card fade-up-d3" style="padding:0;overflow:hidden;">
+      <table class="lb-table">
+        <thead>
+          <tr style="background:rgba(255,255,255,0.03);">
+            <td style="padding:12px 16px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);">#</td>
+            <td style="padding:12px 16px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);">Student</td>
+            <td style="padding:12px 16px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);">Level</td>
+            <td style="padding:12px 16px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);">XP</td>
+            <td style="padding:12px 16px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);">Streak</td>
+            <td style="padding:12px 16px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);">Badges</td>
+          </tr>
+        </thead>
+        <tbody id="lbBody">
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script src="static/js/main.js"></script>
+<script>
+  const students = [
+    {rank:1,name:'Karan Mehta',initials:'K',color:'#f59e0b,#ef4444',level:6,lvlName:'Job Apply',xp:1240,maxXp:1500,streak:28,badges:12},
+    {rank:2,name:'Priya Nair',initials:'P',color:'#ec4899,#7c3aed',level:4,lvlName:'Resume',xp:820,maxXp:1000,streak:14,badges:8},
+    {rank:3,name:'Rohan Das',initials:'R',color:'#06b6d4,#7c3aed',level:4,lvlName:'Resume',xp:710,maxXp:1000,streak:9,badges:7},
+    {rank:4,name:'Sneha Patel',initials:'S',color:'#10b981,#06b6d4',level:3,lvlName:'Projects',xp:580,maxXp:700,streak:21,badges:6},
+    {rank:5,name:'Arjun Rao',initials:'A',color:'#7c3aed,#ec4899',level:3,lvlName:'Projects',xp:520,maxXp:700,streak:6,badges:5},
+    {rank:6,name:'Divya Iyer',initials:'D',color:'#f59e0b,#10b981',level:3,lvlName:'Projects',xp:480,maxXp:700,streak:11,badges:5},
+    {rank:7,name:'Vikram Singh',initials:'V',color:'#ef4444,#f59e0b',level:2,lvlName:'DSA',xp:390,maxXp:500,streak:3,badges:4},
+    {rank:8,name:'Aarav Sharma',initials:'A',color:'#7c3aed,#06b6d4',level:2,lvlName:'DSA',xp:340,maxXp:500,streak:12,badges:5,isMe:true},
+    {rank:9,name:'Meera Joshi',initials:'M',color:'#06b6d4,#10b981',level:2,lvlName:'DSA',xp:290,maxXp:500,streak:5,badges:3},
+    {rank:10,name:'Raj Kumar',initials:'R',color:'#9d5cf5,#f59e0b',level:2,lvlName:'DSA',xp:240,maxXp:500,streak:2,badges:2},
+    {rank:11,name:'Aisha Khan',initials:'A',color:'#ec4899,#f59e0b',level:1,lvlName:'Basics',xp:90,maxXp:200,streak:8,badges:1},
+    {rank:12,name:'Suresh Babu',initials:'S',color:'#7c3aed,#ec4899',level:1,lvlName:'Basics',xp:60,maxXp:200,streak:1,badges:1},
+  ];
+
+  function renderTable(data) {
+    const tbody = document.getElementById('lbBody');
+    tbody.innerHTML = data.map(s => `
+      <tr class="lb-row${s.isMe?' me':''}" data-name="${s.name}">
+        <td><div class="rank-num ${s.rank<=3?'rank-'+s.rank:''}">${s.rank<=3?['🥇','🥈','🥉'][s.rank-1]:s.rank}</div></td>
+        <td>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="lb-avatar" style="background:linear-gradient(135deg,${s.color});">${s.initials}</div>
+            <div>
+              <div style="font-size:0.9rem;font-weight:600;">${s.name}${s.isMe?' <span class="tag tag-purple" style="font-size:0.65rem;padding:2px 8px;">You</span>':''}</div>
+              <div style="font-size:0.75rem;color:var(--text2);">@${s.name.split(' ').join('_').toLowerCase()}</div>
+            </div>
+          </div>
+        </td>
+        <td><div class="level-badge" style="font-size:0.75rem;padding:3px 10px;">Lvl ${s.level} — ${s.lvlName}</div></td>
+        <td>
+          <div style="font-size:0.9rem;font-weight:700;color:var(--gold);margin-bottom:4px;">⭐ ${s.xp.toLocaleString()}</div>
+          <div class="xp-bar-mini"><div class="xp-fill" style="width:${Math.round(s.xp/s.maxXp*100)}%"></div></div>
+        </td>
+        <td><span style="font-size:1rem;">🔥</span> <strong style="color:#ff6b35;">${s.streak}</strong> <span class="muted" style="font-size:0.78rem;">days</span></td>
+        <td><span style="font-size:0.9rem;">🏅</span> <strong style="font-size:0.9rem;">${s.badges}</strong></td>
+      </tr>`).join('');
+  }
+
+  renderTable(students);
+
+  const origFilter = window.filterLeaderboard;
+  window.filterLeaderboard = (q) => {
+    document.querySelectorAll('.lb-row').forEach(row => {
+      row.style.display = row.dataset.name.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+    });
+  };
+
+  function setFilter(btn, type) {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (type === 'week') renderTable([...students].sort((a,b) => b.streak - a.streak));
+    else if (type === 'level') renderTable([...students].sort((a,b) => b.level - a.level));
+    else renderTable(students);
+  }
+</script>
+</body>
+</html>
