@@ -86,10 +86,21 @@
     .lang-btn.active{background:var(--yellow);border-color:var(--yellow);color:var(--bg);font-weight:700;}
     .code-editor{width:100%;min-height:240px;background:rgba(0,0,0,0.52);border:1px solid rgba(255,255,255,0.08);border-top:none;border-radius:0 0 10px 10px;padding:16px 18px;font-family:'Courier New',monospace;font-size:0.86rem;color:#e2ba61;resize:vertical;line-height:1.8;outline:none;transition:border-color 0.25s;}
     .code-editor:focus{border-color:rgba(214,169,58,0.35);}
-    .output-box{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;font-family:monospace;font-size:0.84rem;color:var(--text2);min-height:60px;white-space:pre-wrap;display:none;animation:fadeUp 0.3s ease;}
+    .output-box{background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:16px;margin-top:16px;font-family:'Fira Code', monospace;font-size:0.85rem;color:#fff;min-height:80px;white-space:pre-wrap;display:none;animation:fadeUp 0.3s ease;border-left:4px solid var(--gold);}
     .output-box.show{display:block;}
-    .output-box.success{border-color:rgba(16,185,129,0.3);color:#10b981;}
-    .output-box.error{border-color:rgba(239,68,68,0.3);color:#ef4444;}
+    .output-box.success{border-left-color:var(--green);background:rgba(16,185,129,0.05);}
+    .output-box.error{border-left-color:#ef4444;background:rgba(239,68,68,0.05);color:#ff9999;}
+    .editor-container { display: flex; flex-direction: column; height: 500px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #0d1117; }
+    .editor-header { background: #161b22; padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .editor-main { display: grid; grid-template-columns: 1fr 1fr; flex: 1; min-height: 0; }
+    .editor-input { background: transparent; border: none; padding: 20px; color: #e2ba61; font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; outline: none; resize: none; border-right: 1px solid var(--border); }
+    .editor-problem { padding: 24px; overflow-y: auto; background: rgba(0,0,0,0.2); }
+    .editor-problem h4 { margin-bottom: 12px; color: var(--gold); }
+    .editor-problem p { font-size: 0.9rem; color: var(--text2); margin-bottom: 16px; }
+    .test-cases { margin-top: 20px; }
+    .test-case { background: var(--glass); padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; margin-bottom: 6px; border-left: 3px solid var(--border); }
+    .test-case.passed { border-left-color: var(--green); }
+    .test-case.failed { border-left-color: #ef4444; }
 
     /* ── Level header ── */
     .level-hdr{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
@@ -109,8 +120,10 @@
   <div class="container">
     <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
     <div class="nav-links">
+      <a href="index.html">Home</a>
       <a href="dashboard.html">Dashboard</a>
-      <a href="roadmap.html" class="active">Roadmap</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="coding_lab.html">Coding Lab</a>
       <a href="leaderboard.html">Leaderboard</a>
       <a href="mentors.html">Mentors</a>
       <a href="chat.html">Messages</a>
@@ -278,16 +291,32 @@
         </div>
         <button class="btn btn-primary" style="padding:14px 44px;font-size:1rem;" onclick="startChallenge()">Start Test 🚀</button>
       </div>
-      <!-- Active Challenge Area -->
+      <!-- Active Challenge Area: Coding Lab -->
       <div id="challengeArea" style="display:none;">
-        <div class="quiz-meta">
-          <div>
-            <div style="font-size:0.82rem;color:var(--text2);margin-bottom:8px;">Question <span id="cCurrent">1</span> of <span id="cTotal">15</span></div>
-            <div class="progress-dots" id="cProgressDots" style="flex-wrap:wrap;"></div>
+        <div class="editor-container">
+          <div class="editor-header">
+            <div style="font-weight:700; font-size:0.9rem;">🚀 Coding Lab — <span id="codingTitle">Challenge</span></div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="timer-box" style="padding:4px 12px; font-size:0.9rem; border-radius:6px;">⏱ <span id="cTimerDisplay">30:00</span></div>
+              <button class="btn btn-primary btn-sm" onclick="runCodingChallenge()">Run Code ⚡</button>
+            </div>
           </div>
-          <div class="timer-box" id="cTimerBox">⏱ <span id="cTimerDisplay">30:00</span></div>
+          <div class="editor-main">
+            <div class="editor-problem">
+              <h4 id="problemTitle">Problem Title</h4>
+              <p id="problemDesc">Problem description goes here...</p>
+              <div class="test-cases" id="testCases">
+                <!-- Test cases added here -->
+              </div>
+            </div>
+            <textarea class="editor-input" id="codeInput" spellcheck="false" placeholder="# Write your code here..."></textarea>
+          </div>
         </div>
-        <div id="cQuestionDisplay"></div>
+        <div id="codingOutput" class="output-box"></div>
+        <div class="quiz-nav" style="margin-top:20px;">
+          <button class="btn btn-secondary" onclick="resetCodingChallenge()">Reset 🔄</button>
+          <button class="btn btn-primary" id="submitCodingBtn" disabled onclick="finishCodingChallenge()">Submit Solution ✓</button>
+        </div>
       </div>
       <!-- Challenge Results -->
       <div id="challengeResult" style="display:none;" class="score-result">
@@ -447,11 +476,6 @@ print(s.college)               # KGISL (inherited class attr)`
       { q:"How do you start a while loop in Python?", options:["while x > y {","while (x > y)","while x > y:","while x > y"], answer:2, explanation:"Python uses a colon (:) to indicate the start of a code block." },
       { q:"What is the correct file extension for Python files?", options:[".pyth",".pt",".pyt",".py"], answer:3, explanation:"Python scripts use the .py file extension." },
       { q:"How do you create a variable with the numeric value 5?", options:["x = int(5)","x = 5","Both are correct","None of the above"], answer:2, explanation:"Both create a variable with the integer value 5, though x = 5 is more idiomatic." },
-      { q:"Which built-in function returns the length of a list?", options:["length()","size()","len()","count()"], answer:2, explanation:"The len() function returns the number of items in an object." },
-      { q:"What is a correct way to create a function in Python?", options:["function my_func():","def my_func():","create my_func():","my_func() def:"], answer:1, explanation:"The def keyword is used to declare a function in Python." },
-      { q:"Which collection is ordered, changeable, and allows duplicate members?", options:["Dictionary","Tuple","Set","List"], answer:3, explanation:"Lists are ordered, mutable, and allow duplicate elements." },
-      { q:"How do you access the first element of a list named 'my_list'?", options:["my_list[1]","my_list[0]","my_list.first()","my_list{0}"], answer:1, explanation:"Python lists are 0-indexed, so the first element is at index 0." },
-      { q:"What does the `range(5)` function generate?", options:["0, 1, 2, 3, 4, 5","1, 2, 3, 4, 5","0, 1, 2, 3, 4","1, 2, 3, 4"], answer:2, explanation:"range(n) generates numbers from 0 up to, but not including, n." },
       { q:"Which of the following represents a dictionary in Python?", options:["[1, 2, 3]","(1, 2, 3)","{'name': 'Alice', 'age': 25}","{1, 2, 3}"], answer:2, explanation:"Dictionaries are enclosed in curly braces and contain key-value pairs separated by colons." }
     ]
   },
@@ -648,72 +672,99 @@ print(bfs(root))       # [5, 3, 7, 1, 4, 6, 8]  ← level order`
     theory: {
       sections: [
         {
-          title: "🌐 Frontend Development & React",
-          content: "The frontend is the user interface. <strong style='color:var(--yellow-l)'>React</strong> is the industry standard library for building UIs. It uses a component-based architecture and a virtual DOM for efficient rendering. Key concepts include <strong style='color:var(--yellow-l)'>JSX</strong> (HTML-in-JS), <strong style='color:var(--yellow-l)'>Props</strong> (passing data), and <strong style='color:var(--yellow-l)'>State</strong> (managing interactive data).",
-          code: `import { useState } from 'react';
+          title: "🌐 Frontend Architecture & Modern React",
+          content: "Modern frontend development goes beyond just HTML/CSS. <strong style='color:var(--yellow-l)'>React</strong> is the industry standard. Key architectural patterns include: <br>• <strong>Component Lifecycle:</strong> Understanding mounting, updating, and unmounting.<br>• <strong>Hooks:</strong> Using <code style='color:var(--yellow)'>useEffect</code> for side effects (API calls, subscriptions) and <code style='color:var(--yellow)'>useMemo/useCallback</code> for performance optimization.<br>• <strong>State Management:</strong> Using Context API or Redux for global application state.",
+          code: `import React, { useState, useEffect, useMemo } from 'react';
 
-function Counter({ initialValue }) {
-  // useState hook for internal component state
-  const [count, setCount] = useState(initialValue);
+function Dashboard({ userId }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <div className="card">
-      <h3>Count: {count}</h3>
-      <button onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
-    </div>
-  );
+  // Fetching data on component mount
+  useEffect(() => {
+    fetch(\`/api/user/\${userId}/stats\`)
+      .then(res => res.json())
+      .then(json => {
+        setData(json);
+        setLoading(false);
+      });
+  }, [userId]); // Re-run if userId changes
+
+  // Memoized value to prevent expensive re-calculations
+  const processedData = useMemo(() => {
+    return data ? data.map(item => item.value * 2) : [];
+  }, [data]);
+
+  if (loading) return <div>Loading...</div>;
+  return <div>{processedData.join(', ')}</div>;
 }`
         },
         {
-          title: "⚙️ Backend & RESTful APIs",
-          content: "The backend handles business logic and data processing. <strong style='color:var(--yellow-l)'>Node.js</strong> and <strong style='color:var(--yellow-l)'>Express</strong> are popular for building server-side applications. A <strong style='color:var(--yellow-l)'>REST API</strong> uses standard HTTP methods (GET, POST, PUT, DELETE) to allow the frontend to communicate with the server and database.",
+          title: "⚙️ Scalable Backend with Node.js & Express",
+          content: "A professional backend needs to handle security, scalability, and performance. <br>• <strong>Middleware:</strong> Functions that execute during the request-response cycle (Authentication, Logging, Error handling).<br>• <strong>Environment Variables:</strong> Using <code style='color:var(--yellow)'>dotenv</code> to store sensitive keys safely.<br>• <strong>JWT Authentication:</strong> Securely identifying users without session state.",
           code: `const express = require('express');
+const jwt = require('jsonwebtoken');
 const app = express();
 
-// Middleware to parse JSON bodies
 app.use(express.json());
 
-// GET endpoint
-app.get('/api/users', (req, res) => {
-  res.json({ users: [{ id: 1, name: 'Aarav' }] });
-});
+// Authentication Middleware
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.sendStatus(401);
 
-// POST endpoint
-app.post('/api/users', (req, res) => {
-  const newUser = req.body;
-  // Save to DB...
-  res.status(201).json({ message: 'User created!', user: newUser });
-});
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
 
-app.listen(3000, () => console.log('Server running on port 3000'));`
+app.get('/api/protected', authenticateToken, (req, res) => {
+  res.json({ message: "Welcome authenticated user!", user: req.user });
+});`
         },
         {
-          title: "🗄️ Databases (MongoDB)",
-          content: "Databases store persistent data. <strong style='color:var(--yellow-l)'>MongoDB</strong> is a NoSQL database that stores data in flexible, JSON-like documents. We use <strong style='color:var(--yellow-l)'>Mongoose</strong> in Node.js to define schemas and interact with the database efficiently.",
+          title: "🗄️ Database Modeling & Optimization",
+          content: "In NoSQL (MongoDB), data modeling is driven by your access patterns. <br>• <strong>Embedding vs Referencing:</strong> Embedding is faster for reads (one query), Referencing is better for large, frequently updated data.<br>• <strong>Indexing:</strong> Creating indexes on fields used in frequent queries (like email or username) can speed up searches from O(n) to O(log n).",
           code: `const mongoose = require('mongoose');
 
-// Define a Schema
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, unique: true },
-  level: { type: Number, default: 1 }
+const postSchema = new mongoose.Schema({
+  title: String,
+  body: String,
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Referencing
+  comments: [{ // Embedding
+    text: String,
+    postedAt: { type: Date, default: Date.now }
+  }]
 });
 
-// Create a Model
-const User = mongoose.model('User', userSchema);
+// Adding an index for fast lookup
+postSchema.index({ author: 1 }); 
 
-// Async function to create a user
-async function createUser(userData) {
-  try {
-    const user = new User(userData);
-    await user.save();
-    console.log('Saved:', user);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}`
+const Post = mongoose.model('Post', postSchema);`
+        },
+        {
+          title: "🧪 Testing & Code Quality",
+          content: "Professional code is tested. <br>• <strong>Unit Testing:</strong> Testing individual functions in isolation (using Jest/Mocha).<br>• <strong>Integration Testing:</strong> Testing how multiple modules work together (API endpoints).<br>• <strong>Linting:</strong> Using ESLint to enforce consistent code style and catch bugs early.",
+          code: `// Example Jest Unit Test
+const { sum } = require('./math');
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3);
+});
+
+// Integration Test (Supertest)
+const request = require('supertest');
+const app = require('./app');
+
+describe('GET /api/users', () => {
+  it('should return a list of users', async () => {
+    const res = await request(app).get('/api/users');
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty('users');
+  });
+});`
         }
       ],
       resources: [
@@ -781,16 +832,23 @@ I'm a Full-Stack Developer passionate about building scalable web apps.
 - **[E-Commerce API](link):** RESTful API with Stripe payment integration.`
         },
         {
-          title: "🌐 LinkedIn Optimization",
-          content: "LinkedIn is where recruiters find you. Have a professional headshot, a compelling headline (e.g., 'CS Student @ XYZ | Full Stack Developer'), and a detailed 'About' section. Post regularly about your coding journey, projects you finish, and lessons you learn to build a personal brand.",
-          code: `Example LinkedIn Headline:
-"Final Year CS Student | Building Scalable Web Apps with React & Node.js | Seeking 2025 SDE Roles"
-
-Example Post:
-"Just finished building a full-stack E-commerce app! 🚀
-I learned so much about integrating Stripe for payments and optimizing Redux state. 
-Check out the live demo here: [Link]
-#webdevelopment #reactjs #nodejs"`
+          title: "🌐 Building a Stunning Personal Portfolio",
+          content: "A portfolio website is your 'living resume'. It should showcase your personality and technical skills. <br>• <strong>Tech Stack:</strong> Use Next.js or Astro for speed and SEO. <br>• <strong>Must-Haves:</strong> An 'About Me' section, a clean 'Projects' grid with live links/source code, and a clear 'Contact' method. <br>• <strong>Performance:</strong> Ensure it scores 90+ on Lighthouse; developers appreciate fast sites.",
+          code: `Portfolio MVP Structure:
+- Home: Catchy headline + your photo.
+- Projects: 3-4 deep dives (Title, Tech, Problem solved, Link).
+- Blog: (Optional) Write about what you learn to show expertise.
+- Contact: Resume PDF + LinkedIn + GitHub links.`
+        },
+        {
+          title: "🌱 Open Source Contribution",
+          content: "Contributing to open source proves you can work on large, production-grade codebases. <br>• <strong>Finding Projects:</strong> Use sites like 'Good First Issue' or 'First Timers Only'. <br>• <strong>The Process:</strong> Fork the repo -> Create a branch -> Fix a small bug/doc -> Submit a Pull Request. <br>• <strong>Impact:</strong> Even a documentation fix in a popular repo like React or VS Code looks great on your profile.",
+          code: `Git Flow for Contributions:
+1. fork origin/main
+2. git checkout -b fix/typo-in-readme
+3. git commit -m "docs: fix typo in installation guide"
+4. git push origin fix/typo-in-readme
+5. Open PR on original repository.`
         }
       ],
       resources: [
@@ -829,57 +887,46 @@ Check out the live demo here: [Link]
     theory: {
       sections: [
         {
-          title: "🗣️ Behavioral Interviews (STAR Method)",
-          content: "Companies test culture fit using behavioral questions (e.g., 'Tell me about a time you failed'). Always use the <strong style='color:var(--yellow-l)'>STAR method</strong>: <br>• <strong>Situation:</strong> Set the context.<br>• <strong>Task:</strong> What was the challenge?<br>• <strong>Action:</strong> What specific steps did YOU take?<br>• <strong>Result:</strong> What was the quantifiable outcome?",
-          code: `Question: "Tell me about a time you resolved a conflict."
+          title: "🗣️ Behavioral Interviews & Conflict Resolution",
+          content: "Companies test your emotional intelligence (EQ) and conflict resolution skills. Beyond the <strong style='color:var(--yellow-l)'>STAR method</strong>, focus on showing growth. <br>• <strong>Adaptability:</strong> 'Tell me about a time you had to change your approach mid-project.'<br>• <strong>Leadership:</strong> 'Tell me about a time you mentored a junior teammate.'<br>• <strong>Handling Failure:</strong> Be honest about a mistake, focus on what you learned and how you never repeated it.",
+          code: `STAR Method Refined:
+1. Situation: High stakes, tight deadline.
+2. Task: Migrating 1 million records with zero downtime.
+3. Action: I didn't just code; I coordinated with DevOps, wrote a rollback script, and did a staging dry-run.
+4. Result: Migration finished in 4 hours with 0% data loss.
 
-[Situation]: In my final year project, our team disagreed on whether to use SQL or NoSQL.
-[Task]: We needed a database decision by Friday to start development.
-[Action]: I organized a quick meeting, researched both options, and built a small proof-of-concept for the NoSQL approach to show its flexibility with our unstructured data.
-[Result]: The team agreed to NoSQL based on the POC, and we finished the backend 2 days ahead of schedule.`
+Key Tip: Use "I" for your actions, but "We" for the team's success.`
         },
         {
-          title: "💻 Technical & Whiteboard Coding",
-          content: "In a coding interview, communication is more important than the perfect solution. Never code in silence. Follow the <strong style='color:var(--yellow-l)'>REACT</strong> framework: <strong>R</strong>epeat the question, <strong>E</strong>xample edge cases, <strong>A</strong>pproach (discuss brute force then optimized), <strong>C</strong>ode (write cleanly), <strong>T</strong>est (dry run with examples).",
-          code: `// Interviewer: "Find if two numbers in an array sum to a target."
+          title: "💻 Master DSA: Advanced Patterns",
+          content: "To clear interviews at FAANG+, you need more than just arrays. <br>• <strong>Dynamic Programming (DP):</strong> Solving subproblems to optimize (Memoization/Tabulation).<br>• <strong>Graph Algorithms:</strong> BFS/DFS, Dijkstra's (Shortest Path), Topological Sort.<br>• <strong>Sliding Window & Two Pointers:</strong> Essential for string/array optimization from O(n^2) to O(n).",
+          code: `// Sliding Window Example: Max Sum Subarray of size K
+function maxSubarraySum(arr, k) {
+  let maxSum = 0, windowSum = 0;
+  for (let i = 0; i < k; i++) maxSum += arr[i];
+  windowSum = maxSum;
 
-// 1. Clarify: "Can there be negative numbers? Are there duplicates?"
-// 2. Approach: "Brute force is O(n^2). I can optimize to O(n) using a Hash Map."
-
-function twoSum(nums, target) {
-  const map = new Map(); // Stores { value: index }
-  
-  for (let i = 0; i < nums.length; i++) {
-    const complement = target - nums[i];
-    if (map.has(complement)) {
-      return [map.get(complement), i]; // Found it!
-    }
-    map.set(nums[i], i);
+  for (let i = k; i < arr.length; i++) {
+    windowSum += arr[i] - arr[i - k]; // Slide the window
+    maxSum = Math.max(maxSum, windowSum);
   }
-  return [];
+  return maxSum;
 }
-// 3. Dry Run: "If nums=[2,7,11], target=9. Map gets 2. Next is 7. 9-7=2. 2 is in map. Return [0,1]."`
+
+// Topological Sort (Kahn's Algorithm)
+// Used for task scheduling and dependency resolution.`
         },
         {
-          title: "🧠 System Design Basics",
-          content: "Even junior roles often test basic system design. You need to understand how systems scale. Key concepts include <strong style='color:var(--yellow-l)'>Vertical vs Horizontal Scaling</strong>, <strong style='color:var(--yellow-l)'>Load Balancers</strong> (distributing traffic), <strong style='color:var(--yellow-l)'>Caching</strong> (Redis/Memcached for fast reads), and <strong style='color:var(--yellow-l)'>Microservices</strong>.",
-          code: `Basic Scalable Architecture:
+          title: "🏗️ System Design: Scalability & Performance",
+          content: "System design is about making trade-offs. <br>• <strong>Load Balancers:</strong> Use Nginx or AWS ELB to avoid single points of failure.<br>• <strong>Database Sharding:</strong> Splitting a large database into smaller, faster pieces.<br>• <strong>Message Queues:</strong> Using RabbitMQ or Kafka for asynchronous tasks (e.g., sending emails) to prevent blocking the main request.",
+          code: `Asynchronous Task Workflow:
+1. User clicks "Sign Up".
+2. Web Server creates user in DB.
+3. Web Server sends a "Send Welcome Email" message to RabbitMQ.
+4. Web Server immediately returns "Success" to User.
+5. Background Worker picks message from Queue and sends email.
 
-[Client (Browser/App)]
-       │ (HTTPS)
-       ▼
-[Load Balancer (Nginx/AWS ELB)]
-       │
-  ┌────┼────┐ (Distributes Traffic)
-  ▼    ▼    ▼
-[Web Server 1] [Web Server 2] [Web Server 3]
-  │    │    │
-  └────┼────┘
-       │
-   ┌───┴───┐
-   ▼       ▼
-[Cache]  [Database (Primary/Replica)]
-(Redis)  (PostgreSQL / MongoDB)`
+Benefit: The user doesn't wait 5 seconds for the email server to respond.`
         }
       ],
       resources: [
@@ -986,39 +1033,32 @@ Follow-up Message:
     theory: {
       sections: [
         {
-          title: "🎉 Evaluating & Accepting Offers",
-          content: "When you receive a verbal offer, be enthusiastic but <strong style='color:var(--yellow-l)'>never accept on the spot</strong>. Ask for the written offer and a few days to review the total compensation (Base, Bonus, Equity). If you have other interviews, you can use an offer to speed up other companies' timelines.",
-          code: `How to respond to a verbal offer:
-"Thank you so much! I am incredibly excited about this opportunity and the team. Could you please send over the written offer details? I'd love to review the complete package before making a final decision."
+          title: "🎉 Evaluating & Negotiating Offers",
+          content: "An offer is more than just base salary. <strong style='color:var(--yellow-l)'>Total Compensation (TC)</strong> includes Base, Bonus, and Equity (RSUs/Options). Beyond money, evaluate the <strong style='color:var(--yellow-l)'>Engineering Culture</strong>: Do they have good testing practices? Is there a mentorship program? What is the tech stack? Never accept immediately; always express gratitude and ask for 48-72 hours to review the formal document.",
+          code: `Salary Negotiation Email Template:
+"Hi [Recruiter Name], thank you so much for the offer! I am incredibly excited about the prospect of joining [Company]. 
 
-How to leverage an offer:
-"Hi [Recruiter at Company B],
-I'm currently interviewing with your team and am very interested in the role. I just received another offer that expires on [Date]. Is there any way we can expedite the remaining interview process?"`
+Based on my research and other ongoing interviews, I was expecting a base salary closer to [Amount]. Given my experience in [Specific Skill], is there any flexibility in the budget for this role?"
+
+Tip: Negotiation is a collaboration, not a confrontation.`
         },
         {
-          title: "🤝 Salary Negotiation",
-          content: "While internships are rarely negotiated, full-time offers absolutely should be. Companies expect it. Do your market research (levels.fyi, Glassdoor). Negotiate based on your value, competing offers, or market rates. Be polite, collaborative, and never give ultimatums.",
-          code: `Negotiation Email Template:
+          title: "🚀 Professional Onboarding & First 30 Days",
+          content: "Your goal in the first month is to <strong style='color:var(--yellow-l)'>Absorb and Assist</strong>. <br>• <strong>The First Week:</strong> Focus on setting up your environment and understanding the business domain.<br>• <strong>Week 2-4:</strong> Pick up 'Good First Issues' (small bugs, doc fixes) to get your first PR merged. <br>• <strong>Communication:</strong> Over-communicate your progress in Daily Standups.",
+          code: `Effective Daily Standup Format:
+1. Yesterday: Setup the local dev environment and fixed a CSS alignment bug in the login page.
+2. Today: I'll start working on the User Profile API endpoint logic.
+3. Blockers: I'm waiting for access to the staging database credentials.
 
-"Hi [Recruiter],
-I'm thrilled about the offer! I've really enjoyed meeting the team. 
-
-Based on my research for similar roles in [City], and considering my prior internship experience with [Skill], I was hoping we could explore a base salary closer to $X. 
-
-I am very excited to join and if we can make this adjustment, I am ready to sign today."`
+Tip: Be concise and stick to the 3-point format.`
         },
         {
-          title: "💼 Thriving in Your First Week",
-          content: "Your goal in week one is to learn, not to ship massive features. Set up your local environment, schedule 1-on-1s with your team members, and <strong style='color:var(--yellow-l)'>ask questions</strong>. Don't stay blocked for hours—try for 30-60 minutes, document what you tried, and ask a senior engineer.",
-          code: `Week 1 Checklist:
-[x] Get laptop, accounts, and access rights set up.
-[x] Clone the main repository and get it running locally.
-[x] Read the architecture documentation and READMEs.
-[x] Have a 1-on-1 with your manager to set expectations.
-[x] Introduce yourself in the team Slack/Teams channel.
-
-How to ask a good question:
-"Hi [Senior], I'm trying to start the backend locally but I'm getting a 'DB Connection Refused' error. I've already checked my .env file and ensured Docker is running. Do you have 5 minutes to help me debug?"`
+          title: "🤝 Corporate Communication & Culture",
+          content: "Professionalism is about reliable delivery and clear communication. <br>• <strong>Slack/Teams:</strong> Keep channels clean, use threads for discussions.<br>• <strong>Jira/Trello:</strong> Keep your tickets updated—it's your manager's window into your work.<br>• <strong>Meeting Etiquette:</strong> Be on time, have your camera on (if remote), and take notes.",
+          code: `Slack Professional Etiquette:
+- Don't just say "Hi". State your question/update immediately.
+- Use threads to keep main channels quiet.
+- Use emojis for quick acknowledgments (👀 for looking, ✅ for done).`
         }
       ],
       resources: [
@@ -1367,70 +1407,64 @@ document.getElementById('chalQCount').textContent = lvl.challenge?.length || 15;
 document.getElementById('chalXPReward').textContent = `+${Math.round(lvl.totalXP * 0.3)} XP`;
 
 function startChallenge() {
-  if (!lvl.challenge || !lvl.challenge.length) { showToast('Challenge for this level is coming soon!','info','🚧'); return; }
+  if (!lvl.coding) { showToast('Coding lab for this level is coming soon!','info','🚧'); return; }
   if (lvl.status === 'locked') { showToast('Unlock this level first!','error','🔒'); return; }
-
-  cState = { qs:[...lvl.challenge], ans:new Array(lvl.challenge.length).fill(null), cur:0, timeLeft:1800, running:true, timer:null };
 
   document.getElementById('challengeIntro').style.display  = 'none';
   document.getElementById('challengeArea').style.display   = 'block';
   document.getElementById('challengeResult').style.display = 'none';
-  document.getElementById('cTotal').textContent = cState.qs.length;
-
-  renderCDots();
-  renderCQuestion();
+  
+  document.getElementById('codingTitle').textContent = lvl.coding.title;
+  document.getElementById('problemTitle').textContent = lvl.coding.title;
+  document.getElementById('problemDesc').textContent = lvl.coding.desc;
+  document.getElementById('codeInput').value = lvl.coding.starter;
+  document.getElementById('codingOutput').style.display = 'none';
+  document.getElementById('submitCodingBtn').disabled = true;
+  
   startCTimer();
 }
 
-function renderCDots() {
-  document.getElementById('cProgressDots').innerHTML = cState.qs.map((_,i) => {
-    let cls = 'q-dot';
-    if      (i === cState.cur)           cls += ' current';
-    else if (cState.ans[i] !== null)     cls += ' answered';
-    return `<div class="${cls}"></div>`;
-  }).join('');
+function runCodingChallenge() {
+  const code = document.getElementById('codeInput').value;
+  const output = document.getElementById('codingOutput');
+  output.classList.add('show');
+  output.textContent = "Running tests...\n";
+  
+  setTimeout(() => {
+    const isValid = lvl.coding.validation(code);
+    if (isValid) {
+      output.className = "output-box show success";
+      output.textContent = "✅ All test cases passed!\nOutput: Swapped successfully.";
+      document.getElementById('submitCodingBtn').disabled = false;
+      showToast('Solution verified! You can now submit.','success','✔️');
+    } else {
+      output.className = "output-box show error";
+      output.textContent = "❌ Test case failed.\nExpected result not found in logic.";
+      showToast('Logic error. Try again!','error','❌');
+    }
+  }, 800);
 }
 
-function renderCQuestion() {
-  const q   = cState.qs[cState.cur];
-  const ans = cState.ans[cState.cur];
-  document.getElementById('cCurrent').textContent = cState.cur + 1;
-  const letters = ['A','B','C','D'];
-
-  document.getElementById('cQuestionDisplay').innerHTML = `
-    <div class="q-card">
-      <div class="q-num">Question ${cState.cur + 1} of ${cState.qs.length}</div>
-      <div class="q-text">${q.q}</div>
-      <div class="options">
-        ${q.options.map((opt, i) => {
-          let cls = 'opt';
-          if (ans !== null) {
-            cls += ' answered';
-            if (i === q.answer)              cls += ' correct';
-            else if (i === ans && ans !== q.answer) cls += ' wrong';
-          }
-          return `<button class="${cls}" onclick="selectCAnswer(${i})">
-            <span class="opt-letter">${letters[i]}</span>${opt}</button>`;
-        }).join('')}
-      </div>
-      <div class="expl-box ${ans !== null ? 'show' : ''}">
-        💡&nbsp;<span>${q.explanation}</span>
-      </div>
-      <div class="quiz-nav">
-        ${cState.cur > 0 ? `<button class="btn btn-secondary btn-sm" onclick="prevCQ()">← Prev</button>` : ''}
-        ${cState.cur < cState.qs.length - 1
-          ? `<button class="btn btn-primary btn-sm" onclick="nextCQ()">Next →</button>`
-          : `<button class="btn btn-primary btn-sm" style="background:var(--green);border-color:var(--green);" onclick="finishChallenge()">Submit Test ✓</button>`
-        }
-      </div>
-    </div>`;
-  renderCDots();
+function resetCodingChallenge() {
+  document.getElementById('codeInput').value = lvl.coding.starter;
+  document.getElementById('codingOutput').style.display = 'none';
+  document.getElementById('submitCodingBtn').disabled = true;
 }
 
-function selectCAnswer(idx) {
-  if (cState.ans[cState.cur] !== null) return;
-  cState.ans[cState.cur] = idx;
-  renderCQuestion();
+function finishCodingChallenge() {
+  clearInterval(cState.timer);
+  const xp = Math.round(lvl.totalXP * 0.3);
+  
+  document.getElementById('challengeArea').style.display = 'none';
+  document.getElementById('challengeResult').style.display = 'block';
+  document.getElementById('cScorePct').textContent = "100%";
+  document.getElementById('cScoreRatio').textContent = "1/1";
+  document.getElementById('cScoreMsg').textContent = "Challenge Mastered!";
+  document.getElementById('cScoreSubMsg').textContent = "You've successfully solved the programming problem for this level.";
+  document.getElementById('cXpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.1rem;padding:10px 24px;">⭐ +${xp} XP Earned</div>`;
+  
+  launchConfetti();
+  showToast(`Challenge passed! +${xp} XP 🎉`, 'success', '⭐');
 }
 
 function nextCQ() { if (cState.cur < cState.qs.length - 1) { cState.cur++; renderCQuestion(); } }

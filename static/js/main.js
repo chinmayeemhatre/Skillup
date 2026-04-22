@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-progress]').forEach(bar => {
     animateProgressBar(bar, parseFloat(bar.dataset.progress));
   });
-  initStars();
+  // initStars(); // Particles removed per user request
   initMobileNav();
   initCustomCursor();
 });
@@ -39,27 +39,33 @@ function initCustomCursor() {
 
   const dot = document.createElement('div');
   const ring = document.createElement('div');
+  const reticle = document.createElement('div');
   dot.className = 'cursor-dot';
   ring.className = 'cursor-ring';
+  reticle.className = 'cursor-reticle';
   document.body.classList.add('has-custom-cursor');
-  document.body.append(dot, ring);
+  document.body.append(dot, ring, reticle);
 
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let ringX = mouseX;
-  let ringY = mouseY;
+  let mouseX = 0, mouseY = 0;
+  let dotX = 0, dotY = 0;
+  let ringX = 0, ringY = 0;
+  let reticleX = 0, reticleY = 0;
   let lastSpark = 0;
-  const interactiveSelector = 'a, button, input, textarea, select, .mini-level, .level-chip, .card, [role="button"]';
+  
+  const interactiveSelector = 'a, button, input, textarea, select, .mini-level, .level-chip, .card, [role="button"], .sidebar-link, .btn';
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    dot.style.left = `${mouseX}px`;
-    dot.style.top = `${mouseY}px`;
-    ring.classList.toggle('is-hovering', Boolean(e.target.closest(interactiveSelector)));
+    
+    const isHovering = Boolean(e.target.closest(interactiveSelector));
+    ring.classList.toggle('is-hovering', isHovering);
+    dot.classList.toggle('is-hovering', isHovering);
+    reticle.classList.toggle('is-hovering', isHovering);
 
+    // Occasional sparks on fast move
     const now = performance.now();
-    if (now - lastSpark > 55) {
+    if (now - lastSpark > 80 && Math.abs(e.movementX) + Math.abs(e.movementY) > 20) {
       lastSpark = now;
       const spark = document.createElement('span');
       spark.className = 'cursor-spark';
@@ -70,15 +76,26 @@ function initCustomCursor() {
     }
   });
 
-  function animateRing() {
-    ringX += (mouseX - ringX) * 0.18;
-    ringY += (mouseY - ringY) * 0.18;
-    ring.style.left = `${ringX}px`;
-    ring.style.top = `${ringY}px`;
-    requestAnimationFrame(animateRing);
+  function animate() {
+    // Smooth trailing
+    dotX += (mouseX - dotX) * 0.35;
+    dotY += (mouseY - dotY) * 0.35;
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    reticleX += (mouseX - reticleX) * 0.08;
+    reticleY += (mouseY - reticleY) * 0.08;
+
+    dot.style.transform = `translate(${dotX}px, ${dotY}px)`;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+    reticle.style.transform = `translate(${reticleX}px, ${reticleY}px) translate(-50%, -50%)`;
+    
+    requestAnimationFrame(animate);
   }
 
-  animateRing();
+  document.addEventListener('mousedown', () => reticle.classList.add('is-clicking'));
+  document.addEventListener('mouseup', () => reticle.classList.remove('is-clicking'));
+
+  animate();
 }
 
 // ── Star field ──

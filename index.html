@@ -3,234 +3,118 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SKILLUP — Gamified Learning & Mentorship Platform</title>
-  <meta name="description" content="Level up your coding career with SKILLUP — a gamified learning platform with XP, badges, streaks and peer mentorship for college students."/>
+  <title>SKILLUP — Level Up Your Dev Career</title>
   <link rel="stylesheet" href="static/css/style.css"/>
   <style>
-    .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; padding-top: 68px; }
-    canvas#starCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .orb1 { width: 500px; height: 500px; top: -150px; right: -100px; animation: orbFloat1 12s ease-in-out infinite; background:var(--yellow); opacity: 0.18; }
-    .orb2 { width: 400px; height: 400px; bottom: -100px; left: -100px; animation: orbFloat2 14s ease-in-out infinite; background:var(--orange); opacity: 0.12; }
-    .hero-content { position: relative; z-index: 2; }
-    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(214,169,58,0.12); border: 1px solid rgba(214,169,58,0.42); padding: 8px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; color: var(--yellow-l); margin-bottom: 24px; box-shadow:0 0 15px rgba(214,169,58,0.18); }
-    .hero h1 { font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; }
-    .hero p { font-size: 1.15rem; color: var(--text2); max-width: 540px; margin-bottom: 36px; line-height: 1.8; }
-    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
-    .hero-visual { position: relative; z-index: 2; }
-    .game-card { background: rgba(23,19,11,0.86); backdrop-filter: blur(24px); border: 1px solid rgba(214,169,58,0.34); border-radius: 10px; padding: 28px; width: 320px; animation: float 5s ease-in-out infinite; box-shadow: 0 0 60px rgba(214,169,58,0.13), 0 0 120px rgba(244,212,123,0.06); }
-    .mini-level { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 7px; background: var(--glass); border: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; transition: var(--t); }
-    .mini-level:hover { border-color: rgba(214,169,58,0.34); background: rgba(214,169,58,0.07); }
-    .lvl-icon { width: 42px; height: 42px; border-radius: 7px; display: grid; place-items: center; font-size: 1.3rem; flex-shrink: 0; }
-    .lvl-unlocked { background: rgba(214,169,58,0.17); border: 1px solid rgba(214,169,58,0.35); }
-    .lvl-locked { background: rgba(255,255,255,0.04); border: 1px solid var(--border); filter: grayscale(1) opacity(0.5); }
-    .stats-row { display: flex; gap: 12px; margin-top: 16px; }
-    .mini-stat { flex: 1; text-align: center; background: var(--glass); border: 1px solid var(--border); border-radius: 7px; padding: 12px 8px; }
-    .features { padding: 100px 0; position: relative; z-index: 2; }
-    .feature-card { background: var(--glass); border: 1px solid var(--border); border-radius: 9px; padding: 32px; transition: var(--t); }
-    .feature-card:hover { border-color: rgba(214,169,58,0.34); transform: translateY(-4px); box-shadow: 0 0 30px rgba(214,169,58,0.1); }
-    .feature-icon { width: 60px; height: 60px; border-radius: 7px; display: grid; place-items: center; font-size: 1.8rem; margin-bottom: 20px; }
-    .how-it-works { padding: 80px 0; position: relative; z-index: 2; background: rgba(23,19,11,0.62); }
-    .step-line { position: relative; display: flex; align-items: flex-start; gap: 24px; }
-    .step-num { width: 52px; height: 52px; border-radius: 7px; background: var(--yellow); display: grid; place-items: center; font-size: 1.2rem; font-weight: 800; font-family:'Syne',sans-serif; flex-shrink: 0; box-shadow: var(--glow-pink); color:var(--bg); }
-    .levels-preview { padding: 80px 0; position: relative; z-index: 2; }
-    .level-chip { display: flex; align-items: center; gap: 14px; background: var(--glass); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; transition: var(--t); }
-    .level-chip:hover { border-color: var(--border-h); background: rgba(214,169,58,0.06); }
-    .level-chip .emoji { font-size: 1.6rem; }
-    .cta-section { padding: 100px 0; text-align: center; position: relative; z-index: 2; }
-    .cta-box { background: rgba(214,169,58,0.08); border: 1px solid rgba(214,169,58,0.34); border-radius: 10px; padding: 64px 48px; position: relative; overflow: hidden; box-shadow:0 0 60px rgba(214,169,58,0.1); }
-    .footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--text3); font-size: 0.85rem; position: relative; z-index: 2; }
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; padding: 100px 24px; }
+    .hero-bg-glow { position: absolute; width: 800px; height: 800px; background: radial-gradient(circle, rgba(245,166,35,0.1) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 800; line-height: 1; margin-bottom: 24px; }
+    .hero p { font-size: 1.25rem; color: var(--text2); max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+    .hero-visual { margin-top: 60px; position: relative; max-width: 900px; width: 100%; margin-left: auto; margin-right: auto; }
+    .showcase-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 24px; padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.6); position: relative; z-index: 2; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 100px; }
+    .f-card { background: var(--bg-soft); border: 1px solid var(--border); padding: 40px; border-radius: 20px; transition: var(--transition); }
+    .f-card:hover { border-color: var(--gold); transform: translateY(-10px); }
+    .f-icon { font-size: 2.5rem; margin-bottom: 24px; display: block; }
   </style>
 </head>
 <body>
-<canvas id="starCanvas"></canvas>
 
-<!-- NAV -->
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="nav-logo">
-      <div class="logo-icon">🎮</div>
-      <span class="gradient-text">SKILLUP</span>
-    </a>
+    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span>SKILLUP</span></a>
     <div class="nav-links">
-      <a href="index.html" class="active">Home</a>
+      <a href="index.html">Home</a>
       <a href="roadmap.html">Roadmap</a>
+      <a href="coding_lab.html">Coding Lab</a>
       <a href="leaderboard.html">Leaderboard</a>
-      <a href="mentors.html">Mentors</a>
     </div>
     <div class="nav-actions">
-      <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
-      <a href="signup.html" class="btn btn-primary btn-sm">Join Free</a>
+      <a href="login.html" class="btn btn-outline">Login</a>
+      <a href="signup.html" class="btn btn-gold">Join Free</a>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="orb orb-purple orb1"></div>
-  <div class="orb orb-cyan orb2"></div>
-  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;">
-    <div class="hero-content fade-up">
-      <div class="hero-badge">⚡ The Future of Student Learning</div>
-      <h1>Level Up Your <span class="gradient-text">Dev Career</span> Like a Game</h1>
-      <p>SKILLUP turns your coding journey into an epic adventure — with XP points, achievement badges, streak rewards, and senior mentors guiding every step.</p>
-      <div class="hero-btns">
-        <a href="signup.html" class="btn btn-primary">Start Your Journey 🎮</a>
-        <a href="roadmap.html" class="btn btn-yellow">View Roadmap ⚡</a>
-      </div>
-      <div class="flex gap-24 mt-32">
-        <div><div class="stat-value gradient-text" style="font-size:1.8rem;" data-count="1240">0</div><div class="stat-label">Students</div></div>
-        <div><div class="stat-value" style="font-size:1.8rem;color:var(--yellow);" data-count="87">0</div><div class="stat-label">Mentors</div></div>
-        <div><div class="stat-value" style="font-size:1.8rem;color:var(--lime);" data-count="94">0</div><div class="stat-label">% Placed</div></div>
+  <div class="hero-bg-glow"></div>
+  <div class="container">
+    <div class="reveal active">
+      <div style="background:rgba(245,166,35,0.1); color:var(--gold); display:inline-block; padding:8px 20px; border-radius:99px; font-weight:700; font-size:0.85rem; margin-bottom:24px; border:1px solid rgba(245,166,35,0.2);">🚀 NEXT GEN LEARNING PLATFORM</div>
+      <h1>Level up your <br><span style="color:var(--gold);">dev career.</span></h1>
+      <p>Gamified learning, structural roadmaps, and elite peer mentorship. Built for the next generation of engineers.</p>
+      <div style="display:flex; gap:16px; justify-content:center;">
+        <a href="signup.html" class="btn btn-gold" style="padding:16px 40px; font-size:1.1rem;">Start Your Journey 🎮</a>
+        <a href="roadmap.html" class="btn btn-outline" style="padding:16px 40px; font-size:1.1rem;">Explore Levels</a>
       </div>
     </div>
-    <div class="hero-visual fade-up-d2">
-      <div class="game-card">
-        <div class="flex-between mb-12">
-          <div class="level-badge">⚡ Level 2 — DSA</div>
-          <div class="xp-badge">⭐ 340 XP</div>
-        </div>
-        <div class="progress-wrap mb-12">
-          <div class="progress-bar" data-progress="68" style="width:0%"></div>
-        </div>
-        <div style="font-size:0.78rem;color:var(--text2);margin-bottom:16px;">340 / 500 XP to Level 3</div>
-        <div class="mini-level">
-          <div class="lvl-icon lvl-unlocked">🧠</div>
-          <div><div style="font-size:0.88rem;font-weight:600;">Level 1: Basics</div><div style="font-size:0.75rem;color:var(--green);">✅ Completed</div></div>
-          <div class="xp-badge" style="margin-left:auto;font-size:0.72rem;">+100 XP</div>
-        </div>
-        <div class="mini-level" style="border-color:var(--border-h);background:rgba(214,169,58,0.08);">
-          <div class="lvl-icon lvl-unlocked">⚡</div>
-          <div><div style="font-size:0.88rem;font-weight:600;">Level 2: DSA</div><div style="font-size:0.75rem;color:var(--cyan);">🔄 In Progress</div></div>
-          <div style="margin-left:auto;font-size:0.75rem;color:var(--text2);">68%</div>
-        </div>
-        <div class="mini-level" style="opacity:0.5;">
-          <div class="lvl-icon lvl-locked">🛠️</div>
-          <div><div style="font-size:0.88rem;font-weight:600;">Level 3: Projects</div><div style="font-size:0.75rem;color:var(--text3);">🔒 Locked</div></div>
-        </div>
-        <div class="stats-row">
-          <div class="mini-stat"><div style="font-size:1.3rem;">🔥</div><div style="font-size:0.9rem;font-weight:700;color:#ff6b35;">12</div><div style="font-size:0.7rem;color:var(--text2);">Streak</div></div>
-          <div class="mini-stat"><div style="font-size:1.3rem;">🏅</div><div style="font-size:0.9rem;font-weight:700;color:var(--gold);">5</div><div style="font-size:0.7rem;color:var(--text2);">Badges</div></div>
-          <div class="mini-stat"><div style="font-size:1.3rem;">🏆</div><div style="font-size:0.9rem;font-weight:700;color:var(--purple-l);">#8</div><div style="font-size:0.7rem;color:var(--text2);">Rank</div></div>
-        </div>
+
+    <div class="hero-visual reveal active" style="transition-delay: 0.2s;">
+      <div class="showcase-card float-anim">
+         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
+            <div style="text-align:left;">
+               <div style="font-size:0.8rem; color:var(--text3); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">Current Status</div>
+               <h3 style="font-size:1.4rem;">Level 4: Advanced Projects</h3>
+            </div>
+            <div style="background:var(--gold); color:#000; padding:8px 20px; border-radius:12px; font-weight:800;">⭐ +450 XP</div>
+         </div>
+         <div class="progress-wrap" style="height:12px; margin-bottom:32px;">
+            <div class="progress-bar" style="width:75%; background:var(--gold); box-shadow:0 0 20px rgba(245,166,35,0.5);"></div>
+         </div>
+         <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;">
+            <div style="text-align:center;"><div style="font-size:1.5rem; margin-bottom:8px;">🔥</div><div style="font-weight:800;">12</div><div style="font-size:0.7rem; color:var(--text3);">Streak</div></div>
+            <div style="text-align:center;"><div style="font-size:1.5rem; margin-bottom:8px;">🏅</div><div style="font-weight:800;">8</div><div style="font-size:0.7rem; color:var(--text3);">Badges</div></div>
+            <div style="text-align:center;"><div style="font-size:1.5rem; margin-bottom:8px;">🏆</div><div style="font-weight:800;">#4</div><div style="font-size:0.7rem; color:var(--text3);">Rank</div></div>
+            <div style="text-align:center;"><div style="font-size:1.5rem; margin-bottom:8px;">⚡</div><div style="font-weight:800;">1.2k</div><div style="font-size:0.7rem; color:var(--text3);">XP</div></div>
+         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:60px;" class="fade-up">
-      <div class="funky-chip mb-12">✨ Why SKILLUP?</div>
-      <h2 style="font-size:2.5rem;margin-bottom:16px;">Everything you need to <span class="gradient-text">succeed</span></h2>
-      <p class="muted" style="max-width:500px;margin:0 auto;">Combining gamification, mentorship and a structured roadmap — all in one platform.</p>
+<section class="container" style="padding-bottom:100px;">
+  <div class="feature-grid">
+    <div class="f-card reveal">
+      <span class="f-icon">🗺️</span>
+      <h3>Proven Roadmaps</h3>
+      <p style="color:var(--text3);">From absolute zero to internship-ready with a clear, 7-level journey designed by experts.</p>
     </div>
-    <div class="grid-3">
-      <div class="feature-card fade-up-d1">
-        <div class="feature-icon" style="background:rgba(214,169,58,0.12);border:1px solid rgba(214,169,58,0.35);">🗺️</div>
-        <h3 style="margin-bottom:10px;">Structured Roadmap</h3>
-        <p class="muted">7 crystal-clear levels from Basics to Internship-Ready. Never wonder "what next?" again.</p>
-      </div>
-      <div class="feature-card fade-up-d2">
-        <div class="feature-icon" style="background:rgba(255,230,0,0.1);border:1px solid rgba(255,230,0,0.35);">⭐</div>
-        <h3 style="margin-bottom:10px;">XP & Gamification</h3>
-        <p class="muted">Earn XP for every task, maintain streaks, unlock badges, and compete on the leaderboard.</p>
-      </div>
-      <div class="feature-card fade-up-d3">
-        <div class="feature-icon" style="background:rgba(214,169,58,0.08);border:1px solid rgba(214,169,58,0.3);">🤝</div>
-        <h3 style="margin-bottom:10px;">Peer Mentorship</h3>
-        <p class="muted">Stuck? Message a senior student 2–3 levels ahead. Get real help, give back when you grow.</p>
-      </div>
-      <div class="feature-card fade-up-d1">
-        <div class="feature-icon" style="background:rgba(214,169,58,0.08);border:1px solid rgba(214,169,58,0.3);">📊</div>
-        <h3 style="margin-bottom:10px;">Progress Dashboard</h3>
-        <p class="muted">Visual XP bars, streak calendars, task completion charts — track every win.</p>
-      </div>
-      <div class="feature-card fade-up-d2">
-        <div class="feature-icon" style="background:rgba(214,169,58,0.12);border:1px solid rgba(214,169,58,0.3);">🏆</div>
-        <h3 style="margin-bottom:10px;">Class Leaderboard</h3>
-        <p class="muted">See who's ahead, who's behind. Healthy competition fuels consistency.</p>
-      </div>
-      <div class="feature-card fade-up-d3">
-        <div class="feature-icon" style="background:rgba(255,107,0,0.12);border:1px solid rgba(255,107,0,0.35);">🔥</div>
-        <h3 style="margin-bottom:10px;">Daily Streaks</h3>
-        <p class="muted">Build unstoppable habits with daily streak tracking and fire multipliers.</p>
-      </div>
+    <div class="f-card reveal" style="transition-delay: 0.1s;">
+      <span class="f-icon">🤝</span>
+      <h3>Peer Mentorship</h3>
+      <p style="color:var(--text3);">Don't learn alone. Connect with seniors who have already cleared the path you're on.</p>
     </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="how-it-works">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:60px;">
-      <div class="funky-chip mb-12">⚙️ How It Works</div>
-      <h2 style="font-size:2.5rem;">Simple. Clear. <span class="gradient-text">Powerful.</span></h2>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:36px;max-width:700px;margin:0 auto;">
-      <div class="step-line fade-up">
-        <div class="step-num">1</div>
-        <div><h3 style="margin-bottom:8px;">Sign Up & Choose Your Path</h3><p class="muted">Create an account, set your starting level, and get a personalised roadmap instantly.</p></div>
-      </div>
-      <div class="step-line fade-up-d1">
-        <div class="step-num">2</div>
-        <div><h3 style="margin-bottom:8px;">Complete Tasks & Earn XP</h3><p class="muted">Follow the level guide, complete coding tasks, and watch your XP bar fill up like a game.</p></div>
-      </div>
-      <div class="step-line fade-up-d2">
-        <div class="step-num">3</div>
-        <div><h3 style="margin-bottom:8px;">Level Up & Get Mentored</h3><p class="muted">Unlock the next level, earn badges, and get guidance from seniors who were in your shoes.</p></div>
-      </div>
-      <div class="step-line fade-up-d3">
-        <div class="step-num">4</div>
-        <div><h3 style="margin-bottom:8px;">Land Your First Internship 🚀</h3><p class="muted">Reach Level 7 — Internship Ready — with resume, GitHub, projects, and interview prep done.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LEVEL PREVIEW -->
-<section class="levels-preview">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:60px;">
-      <div class="funky-chip mb-12">🎮 The Journey</div>
-      <h2 style="font-size:2.5rem;">7 Levels to <span class="gradient-text">Internship Ready</span></h2>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;">
-      <div class="level-chip fade-up"><span class="emoji">🧠</span><div><strong>Level 1 — Basics</strong><div class="muted" style="font-size:0.82rem;">Programming fundamentals</div></div><div class="tag tag-lime" style="margin-left:auto;">Start Here</div></div>
-      <div class="level-chip fade-up-d1"><span class="emoji">⚡</span><div><strong>Level 2 — DSA</strong><div class="muted" style="font-size:0.82rem;">Problem solving & algorithms</div></div></div>
-      <div class="level-chip fade-up-d2"><span class="emoji">🛠️</span><div><strong>Level 3 — Projects</strong><div class="muted" style="font-size:0.82rem;">Build your first real project</div></div></div>
-      <div class="level-chip fade-up-d3"><span class="emoji">📄</span><div><strong>Level 4 — Resume + GitHub</strong><div class="muted" style="font-size:0.82rem;">Polish your online presence</div></div></div>
-      <div class="level-chip fade-up-d4"><span class="emoji">🎯</span><div><strong>Level 5 — Interview Prep</strong><div class="muted" style="font-size:0.82rem;">Aptitude, HR & mock interviews</div></div></div>
-      <div class="level-chip fade-up-d5"><span class="emoji">📬</span><div><strong>Level 6 — Job Apply</strong><div class="muted" style="font-size:0.82rem;">Applications & networking</div></div></div>
-      <div class="level-chip fade-up"><span class="emoji">🚀</span><div><strong>Level 7 — Internship Ready</strong><div class="muted" style="font-size:0.82rem;">Final boss — you're set!</div></div><div class="funky-chip" style="margin-left:auto;font-size:0.68rem;">🏆 Goal</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-  <div class="container">
-    <div class="cta-box">
-      <div class="orb orb-purple" style="width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.2;"></div>
-      <div style="position:relative;z-index:1;">
-        <div style="font-size:4rem;margin-bottom:16px;" class="float-anim">🚀</div>
-        <h2 style="font-size:2.8rem;margin-bottom:16px;">Ready to start your <span class="gradient-text">journey?</span></h2>
-        <p class="muted" style="max-width:480px;margin:0 auto 36px;">Join 1,200+ students already leveling up. It's free to start — no credit card required.</p>
-        <a href="signup.html" class="btn btn-primary" style="font-size:1.05rem;padding:16px 40px;">Create Free Account 🎮</a>
-        <p style="margin-top:16px;font-size:0.8rem;color:var(--text2);">No credit card · No BS · Just levels 🔥</p>
-      </div>
+    <div class="f-card reveal" style="transition-delay: 0.2s;">
+      <span class="f-icon">🎮</span>
+      <h3>Gamified Growth</h3>
+      <p style="color:var(--text3);">Turn studying into a game. Earn XP, maintain streaks, and climb the global leaderboard.</p>
     </div>
   </div>
 </section>
 
 <footer class="footer">
   <div class="container">
-    <div class="nav-logo" style="justify-content:center;margin-bottom:12px;"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></div>
-    <p>Built with ❤️ for college students who want to become great developers.</p>
-    <p style="margin-top:8px;">© 2025 SKILLUP — All Rights Reserved</p>
+    <div class="nav-logo" style="justify-content:center; margin-bottom:20px;"><div class="logo-icon">🎮</div><span>SKILLUP</span></div>
+    <p>© 2025 SKILLUP — Building the next generation of tech talent.</p>
   </div>
 </footer>
 
+<!-- Feedback FAB -->
+<a href="feedback.html" class="feedback-fab">💬</a>
+
 <script src="static/js/main.js"></script>
+<script>
+  // Simple intersection observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
 </body>
 </html>
