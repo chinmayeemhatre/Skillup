@@ -257,39 +257,53 @@
 
     <!-- ════════ CHALLENGE PANEL ════════ -->
     <div id="panelChallenge" class="tab-panel">
-      <div class="challenge-wrap" id="challengeWrap">
-        <!-- Problem column -->
-        <div class="problem-panel">
-          <div class="problem-card">
-            <div id="challengeDiff" class="diff-badge diff-medium">⚡ Medium</div>
-            <h2 id="challengeTitle" style="font-size:1.25rem;margin-bottom:12px;"></h2>
-            <p id="challengeDesc" class="muted" style="font-size:0.9rem;line-height:1.85;"></p>
-            <div id="challengeExamples"></div>
-            <div id="challengeConstraints" style="margin-top:14px;font-size:0.83rem;color:var(--text3);line-height:1.7;"></div>
+      <!-- Challenge Test Intro -->
+      <div id="challengeIntro" class="card" style="text-align:center;padding:50px 32px;">
+        <div style="font-size:4rem;margin-bottom:16px;" class="float-anim">⏳</div>
+        <h2 style="font-size:1.8rem;margin-bottom:12px;">Level Challenge Test</h2>
+        <p class="muted" style="max-width:440px;margin:0 auto 28px;line-height:1.8;">15 questions · 30-minute timer · Topic-based assessment<br>Prove your mastery to complete the challenge!</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
+          <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:18px 28px;text-align:center;">
+            <div id="chalQCount" style="font-size:1.8rem;font-weight:800;color:var(--yellow);">15</div>
+            <div style="font-size:0.78rem;color:var(--text2);">Questions</div>
           </div>
-          <div class="section-title" style="margin-bottom:12px;"><div class="dot"></div>Hints <span class="tag tag-yellow" style="margin-left:8px;">Click to reveal</span></div>
-          <div id="hintsList"></div>
+          <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:18px 28px;text-align:center;">
+            <div style="font-size:1.8rem;font-weight:800;color:#ff6b35;">30:00</div>
+            <div style="font-size:0.78rem;color:var(--text2);">Time Limit</div>
+          </div>
+          <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:18px 28px;text-align:center;">
+            <div id="chalXPReward" style="font-size:1.8rem;font-weight:800;color:var(--yellow-l);">+XP</div>
+            <div style="font-size:0.78rem;color:var(--text2);">Max Reward</div>
+          </div>
         </div>
-        <!-- Editor column -->
-        <div class="editor-panel">
-          <div class="editor-toolbar">
-            <div class="lang-pill" id="langPill">
-              <button class="lang-btn active" onclick="setLang('python',this)">Python</button>
-              <button class="lang-btn" onclick="setLang('javascript',this)">JavaScript</button>
-              <button class="lang-btn" onclick="setLang('cpp',this)">C++</button>
-            </div>
-            <button class="btn-icon" onclick="resetCode()" title="Reset to starter">↺</button>
+        <button class="btn btn-primary" style="padding:14px 44px;font-size:1rem;" onclick="startChallenge()">Start Test 🚀</button>
+      </div>
+      <!-- Active Challenge Area -->
+      <div id="challengeArea" style="display:none;">
+        <div class="quiz-meta">
+          <div>
+            <div style="font-size:0.82rem;color:var(--text2);margin-bottom:8px;">Question <span id="cCurrent">1</span> of <span id="cTotal">15</span></div>
+            <div class="progress-dots" id="cProgressDots" style="flex-wrap:wrap;"></div>
           </div>
-          <textarea class="code-editor" id="codeEditor" spellcheck="false" placeholder="Write your solution here..."></textarea>
-          <div class="output-box" id="outputBox"></div>
-          <div style="display:flex;gap:10px;margin-top:14px;">
-            <button class="btn btn-secondary" style="flex:1;" onclick="runCode()">▶ Run Code</button>
-            <button class="btn btn-primary" style="flex:1;" onclick="submitCode()">Submit ✓</button>
-          </div>
-          <p style="font-size:0.77rem;color:var(--text3);margin-top:10px;text-align:center;">
-            💡 Code runs in simulation mode — backend execution with test cases coming soon
-          </p>
+          <div class="timer-box" id="cTimerBox">⏱ <span id="cTimerDisplay">30:00</span></div>
         </div>
+        <div id="cQuestionDisplay"></div>
+      </div>
+      <!-- Challenge Results -->
+      <div id="challengeResult" style="display:none;" class="score-result">
+        <div class="score-circle" id="cScoreCircle">
+          <div>
+            <div style="font-size:2.6rem;font-weight:900;" id="cScorePct">0%</div>
+            <div style="font-size:0.8rem;color:var(--text2);" id="cScoreRatio">0/15</div>
+          </div>
+        </div>
+        <h2 style="font-size:1.8rem;margin-bottom:8px;" id="cScoreMsg">Great job!</h2>
+        <p class="muted" style="margin-bottom:20px;" id="cScoreSubMsg"></p>
+        <div id="cXpEarned" style="margin-bottom:28px;"></div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <a href="roadmap.html" class="btn btn-primary">Return to Roadmap 🗺️</a>
+        </div>
+        <div id="cReviewSection" style="margin-top:36px;text-align:left;"></div>
       </div>
     </div>
   </main>
@@ -409,6 +423,7 @@ print(s.college)               # KGISL (inherited class attr)`
         }
       ],
       resources: [
+        { icon:"🎥", title:"Programming Basics - Full Course", type:"Video Tutorial", url:"https://www.youtube.com/watch?v=kqtD5dpn9C8" },
         { icon:"📖", title:"Python Official Docs", type:"Documentation", url:"https://docs.python.org/3/" },
         { icon:"🌐", title:"W3Schools Python Tutorial", type:"Interactive Tutorial", url:"https://www.w3schools.com/python/" },
         { icon:"🎓", title:"CS50x — Harvard Free Course", type:"Free Course", url:"https://cs50.harvard.edu/x/" },
@@ -422,49 +437,23 @@ print(s.college)               # KGISL (inherited class attr)`
       { q:"What numbers does range(1, 5) produce?", options:["1, 2, 3, 4, 5","1, 2, 3, 4","0, 1, 2, 3, 4","1 to 5 inclusive"], answer:1, explanation:"range(1, 5) generates integers from 1 (inclusive) to 5 (exclusive): 1, 2, 3, 4." },
       { q:"Which OOP principle allows child classes to override parent methods?", options:["Encapsulation","Abstraction","Polymorphism","Inheritance"], answer:2, explanation:"Polymorphism allows objects of different types to share the same interface. Child classes can override parent methods to change behaviour." }
     ],
-    challenge: {
-      title:"FizzBuzz",
-      difficulty:"easy",
-      desc:"Write a function fizzbuzz(n) that prints numbers from 1 to n.\n• Multiples of 3 → print 'Fizz'\n• Multiples of 5 → print 'Buzz'\n• Multiples of both 3 and 5 → print 'FizzBuzz'\n• Otherwise → print the number",
-      examples:[
-        { input:"n = 15", output:"1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz" }
-      ],
-      constraints:"1 ≤ n ≤ 100",
-      hints:[
-        "Use the modulo operator (%) to check divisibility. e.g. n % 3 == 0 means divisible by 3.",
-        "Always check 'FizzBuzz' (divisible by BOTH 3 AND 5) BEFORE checking Fizz or Buzz separately.",
-        "Use a for loop: for i in range(1, n + 1)"
-      ],
-      starter:{
-        python:`def fizzbuzz(n):
-    for i in range(1, n + 1):
-        # Your code here
-        pass
-
-fizzbuzz(15)`,
-        javascript:`function fizzbuzz(n) {
-  for (let i = 1; i <= n; i++) {
-    // Your code here
-  }
-}
-
-fizzbuzz(15);`,
-        cpp:`#include <iostream>
-using namespace std;
-
-void fizzbuzz(int n) {
-    for (int i = 1; i <= n; i++) {
-        // Your code here
-    }
-}
-
-int main() {
-    fizzbuzz(15);
-    return 0;
-}`
-      },
-      sampleOutput:"1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz"
-    }
+    challenge: [
+      { q:"Which of the following is a mutable data type in Python?", options:["tuple","string","list","int"], answer:2, explanation:"Lists are mutable, meaning their contents can be changed after creation." },
+      { q:"What is the correct syntax to output 'Hello World' in Python?", options:["p('Hello World')","echo 'Hello World'","print('Hello World')","printf('Hello World')"], answer:2, explanation:"Python uses the print() function to output text to the console." },
+      { q:"How do you insert comments in Python code?", options:["/* This is a comment */","// This is a comment","# This is a comment","<!-- This is a comment -->"], answer:2, explanation:"In Python, comments start with the hash character (#)." },
+      { q:"Which operator is used for exponentiation (power) in Python?", options:["^","**","//","%"], answer:1, explanation:"The ** operator is used for exponentiation. For example, 2**3 equals 8." },
+      { q:"What will be the output of `bool('False')`?", options:["True","False","Error","None"], answer:0, explanation:"Any non-empty string in Python evaluates to True, even the string 'False'." },
+      { q:"Which method can be used to remove any whitespace from both the beginning and the end of a string?", options:["strip()","trim()","ptrim()","len()"], answer:0, explanation:"The strip() method removes leading and trailing whitespace." },
+      { q:"How do you start a while loop in Python?", options:["while x > y {","while (x > y)","while x > y:","while x > y"], answer:2, explanation:"Python uses a colon (:) to indicate the start of a code block." },
+      { q:"What is the correct file extension for Python files?", options:[".pyth",".pt",".pyt",".py"], answer:3, explanation:"Python scripts use the .py file extension." },
+      { q:"How do you create a variable with the numeric value 5?", options:["x = int(5)","x = 5","Both are correct","None of the above"], answer:2, explanation:"Both create a variable with the integer value 5, though x = 5 is more idiomatic." },
+      { q:"Which built-in function returns the length of a list?", options:["length()","size()","len()","count()"], answer:2, explanation:"The len() function returns the number of items in an object." },
+      { q:"What is a correct way to create a function in Python?", options:["function my_func():","def my_func():","create my_func():","my_func() def:"], answer:1, explanation:"The def keyword is used to declare a function in Python." },
+      { q:"Which collection is ordered, changeable, and allows duplicate members?", options:["Dictionary","Tuple","Set","List"], answer:3, explanation:"Lists are ordered, mutable, and allow duplicate elements." },
+      { q:"How do you access the first element of a list named 'my_list'?", options:["my_list[1]","my_list[0]","my_list.first()","my_list{0}"], answer:1, explanation:"Python lists are 0-indexed, so the first element is at index 0." },
+      { q:"What does the `range(5)` function generate?", options:["0, 1, 2, 3, 4, 5","1, 2, 3, 4, 5","0, 1, 2, 3, 4","1, 2, 3, 4"], answer:2, explanation:"range(n) generates numbers from 0 up to, but not including, n." },
+      { q:"Which of the following represents a dictionary in Python?", options:["[1, 2, 3]","(1, 2, 3)","{'name': 'Alice', 'age': 25}","{1, 2, 3}"], answer:2, explanation:"Dictionaries are enclosed in curly braces and contain key-value pairs separated by colons." }
+    ]
   },
 
   // ── LEVEL 2: DSA ─────────────────────────────────────────
@@ -619,10 +608,10 @@ print(bfs(root))       # [5, 3, 7, 1, 4, 6, 8]  ← level order`
         }
       ],
       resources: [
+        { icon:"🎥", title:"Data Structures and Algorithms - Full Course", type:"Video Tutorial", url:"https://www.youtube.com/watch?v=RBSGKlAvoiM" },
         { icon:"📊", title:"Visualgo — Algorithm Visualiser", type:"Interactive Tool", url:"https://visualgo.net/en" },
         { icon:"🏋️", title:"LeetCode — Curated DSA Problems", type:"Practice Platform", url:"https://leetcode.com/problemset/" },
         { icon:"📚", title:"NeetCode.io — DSA Roadmap", type:"Structured Guide", url:"https://neetcode.io/roadmap" },
-        { icon:"🎥", title:"Abdul Bari — Algorithms (YouTube)", type:"Video Lectures", url:"https://www.youtube.com/@abdul_bari" },
         { icon:"📖", title:"Big-O Complexity Cheat Sheet", type:"Quick Reference", url:"https://www.bigocheatsheet.com/" }
       ]
     },
@@ -633,84 +622,217 @@ print(bfs(root))       # [5, 3, 7, 1, 4, 6, 8]  ← level order`
       { q:"In a Binary Search Tree (BST), in-order traversal gives elements in what order?", options:["Random order","Reverse sorted","Ascending (sorted) order","Level-by-level order"], answer:2, explanation:"In-order traversal (Left → Root → Right) on a BST always produces elements in sorted ascending order — a key BST property." },
       { q:"What is the WORST-case time complexity of QuickSort?", options:["O(n log n)","O(n)","O(n²)","O(log n)"], answer:2, explanation:"QuickSort degrades to O(n²) when the pivot is always the min or max element (e.g. sorted input with last-element pivot). Average case is O(n log n)." }
     ],
-    challenge: {
-      title:"Binary Search Implementation",
-      difficulty:"medium",
-      desc:"Implement binary search to find the index of a target value in a sorted array of distinct integers.\n\nReturn the INDEX of target if found, otherwise return -1.\n\nYour solution must run in O(log n) time.",
-      examples:[
-        { input:"nums = [-1, 0, 3, 5, 9, 12],  target = 9",  output:"4" },
-        { input:"nums = [-1, 0, 3, 5, 9, 12],  target = 2",  output:"-1" }
+    challenge: [
+      { q:"Which data structure is based on the LIFO principle?", options:["Queue","Stack","Linked List","Tree"], answer:1, explanation:"Stacks operate on a Last-In, First-Out (LIFO) basis." },
+      { q:"What is the worst-case time complexity of accessing an element in an Array by index?", options:["O(1)","O(n)","O(log n)","O(n^2)"], answer:0, explanation:"Arrays allow random access, so accessing an element by its index takes O(1) time." },
+      { q:"Which of the following is true about a Singly Linked List?", options:["Nodes have pointers to both next and previous nodes","Random access is O(1)","Nodes are stored in contiguous memory","Insertion at the head is O(1)"], answer:3, explanation:"In a singly linked list, inserting a new node at the head only requires changing the head pointer, which takes O(1) time." },
+      { q:"What is the time complexity of Binary Search on a sorted array?", options:["O(1)","O(n)","O(log n)","O(n log n)"], answer:2, explanation:"Binary search repeatedly divides the search interval in half, resulting in an O(log n) time complexity." },
+      { q:"Which algorithm design paradigm is QuickSort based on?", options:["Dynamic Programming","Greedy Approach","Divide and Conquer","Backtracking"], answer:2, explanation:"QuickSort divides the array into subarrays around a pivot, sorts them independently, and combines them." },
+      { q:"What is the height of a balanced Binary Search Tree with N nodes?", options:["O(N)","O(log N)","O(1)","O(N log N)"], answer:1, explanation:"A balanced BST keeps its height to O(log N), ensuring efficient search, insertion, and deletion." },
+      { q:"Which data structure is typically used to implement Breadth-First Search (BFS)?", options:["Stack","Queue","Priority Queue","Hash Table"], answer:1, explanation:"BFS processes nodes level by level, making a FIFO Queue the appropriate data structure." },
+      { q:"In a Hash Table, what is the process of mapping keys to indices called?", options:["Indexing","Hashing","Mapping","Chaining"], answer:1, explanation:"Hashing involves passing a key through a hash function to determine its index in the array." },
+      { q:"What is the worst-case time complexity of searching in an unbalanced Binary Search Tree?", options:["O(log n)","O(n)","O(1)","O(n log n)"], answer:1, explanation:"If the tree becomes highly unbalanced (like a linked list), searching degenerates to O(n)." },
+      { q:"Which sorting algorithm repeatedly swaps adjacent elements if they are in the wrong order?", options:["Merge Sort","Quick Sort","Bubble Sort","Insertion Sort"], answer:2, explanation:"Bubble Sort compares and swaps adjacent elements until the list is sorted." },
+      { q:"What is a common application of the 'Two-Pointer' technique?", options:["Graph traversal","Finding a pair with a given sum in a sorted array","Parsing an expression tree","Implementing a stack"], answer:1, explanation:"The two-pointer technique is extremely efficient for finding pairs or subarrays in sorted arrays." },
+      { q:"Which traversal of a Binary Search Tree (BST) visits the nodes in ascending order?", options:["Pre-order","In-order","Post-order","Level-order"], answer:1, explanation:"In-order traversal (Left, Root, Right) of a BST visits nodes in sorted, ascending order." },
+      { q:"What does the Floyd's Tortoise and Hare algorithm detect?", options:["Shortest path","Minimum spanning tree","Cycles in a Linked List","Connected components"], answer:2, explanation:"This algorithm uses two pointers moving at different speeds to detect if a cycle exists in a linked list." },
+      { q:"What is the space complexity of iterative Binary Search?", options:["O(n)","O(log n)","O(n log n)","O(1)"], answer:3, explanation:"Iterative binary search only uses a few pointers (left, right, mid), requiring constant O(1) extra space." },
+      { q:"Which scenario describes the 'worst case' for QuickSort?", options:["Array is already sorted","Elements are completely random","Array contains only negative numbers","Array has an odd number of elements"], answer:0, explanation:"If the pivot is repeatedly chosen poorly (like the last element of a sorted array), QuickSort degrades to O(n^2)." }
+    ]
+  },
+
+  // ── LEVELS 3-7 (Fully Populated) ────
+  3: {
+    title: "Level 3: Projects", shortTitle: "Projects", icon: "🛠️", totalXP: 500, status: "locked", currentXP: 0, maxXP: 500, progress: 0,
+    desc: "Build real projects — a portfolio that speaks louder than grades. Web apps, REST APIs, and deployment await.",
+    theory: {
+      sections: [
+        { title: "🌐 Frontend Development", content: "Frontend is what users see. Use frameworks like React, Vue, or plain HTML/CSS/JS. Focus on responsive design and accessibility.", code: "function Button() { return <button>Click me</button>; }" },
+        { title: "⚙️ Backend & APIs", content: "The backend processes business logic. REST APIs use HTTP methods (GET, POST, PUT, DELETE) to communicate.", code: "app.get('/api/data', (req, res) => res.json({ msg: 'Hello' }));" },
+        { title: "🗄️ Databases", content: "Store data persistently. SQL (relational, structured) vs NoSQL (document, flexible). MongoDB is a popular NoSQL choice.", code: "db.users.insertOne({ name: 'Aarav', role: 'Student' });" }
       ],
-      constraints:"• 1 ≤ nums.length ≤ 10,000\n• All values in nums are unique and sorted ascending\n• -10,000 ≤ nums[i], target ≤ 10,000",
-      hints:[
-        "Initialise two pointers: left = 0, right = len(nums) - 1",
-        "In each iteration calculate: mid = left + (right - left) // 2  (avoids overflow)",
-        "If nums[mid] < target → the target is in the RIGHT half; set left = mid + 1"
+      resources: [
+        { icon: "🎥", title: "React Crash Course", type: "Video Tutorial", url: "https://youtube.com" },
+        { icon: "📖", title: "MDN Web Docs", type: "Documentation", url: "https://developer.mozilla.org" }
+      ]
+    },
+    quiz: [
+      { q: "What does REST stand for?", options: ["Representational State Transfer", "Remote Execution Syntax", "Random End State", "Rapid Execution"], answer: 0, explanation: "REST stands for Representational State Transfer, an architectural style for APIs." },
+      { q: "Which of the following is a NoSQL database?", options: ["MySQL", "PostgreSQL", "MongoDB", "SQLite"], answer: 2, explanation: "MongoDB stores data in flexible, JSON-like documents." },
+      { q: "Which HTTP method is typically used to create a new resource?", options: ["GET", "PUT", "POST", "DELETE"], answer: 2, explanation: "POST is used to submit an entity to the specified resource, often causing a change in state or side effects." },
+      { q: "What is React primarily used for?", options: ["Database management", "Building user interfaces", "Server-side routing", "Creating REST APIs"], answer: 1, explanation: "React is a JavaScript library for building user interfaces." },
+      { q: "Which CSS property controls responsiveness using a 12-column system?", options: ["Grid / Flexbox", "float", "position: absolute", "display: inline"], answer: 0, explanation: "CSS Grid and Flexbox are modern tools for responsive layouts." }
+    ],
+    challenge: [
+      { q: "What command is used to initialise a new Node.js project?", options: ["npm init", "node start", "npm create", "node init"], answer: 0, explanation: "npm init creates a package.json file." },
+      { q: "Which status code represents 'Not Found'?", options: ["200", "404", "500", "403"], answer: 1, explanation: "404 is the standard HTTP status code for Not Found." },
+      { q: "What does API stand for?", options: ["Application Programming Interface", "Advanced Program Integration", "Applied Protocol Interface", "Automated Process Interaction"], answer: 0, explanation: "API stands for Application Programming Interface." },
+      { q: "Which hook in React is used to manage state?", options: ["useEffect", "useState", "useContext", "useReducer"], answer: 1, explanation: "useState lets you add React state to function components." },
+      { q: "What does CORS stand for?", options: ["Cross-Origin Resource Sharing", "Central Object Reference System", "Control Origin Request Security", "Cross-Object Routing Service"], answer: 0, explanation: "CORS is a mechanism that allows restricted resources on a web page to be requested from another domain." },
+      { q: "In MongoDB, a collection is equivalent to what in SQL?", options: ["Row", "Column", "Table", "Database"], answer: 2, explanation: "A collection in MongoDB is analogous to a table in relational databases." },
+      { q: "Which tool is commonly used to bundle JavaScript files?", options: ["Nodemon", "Express", "Webpack", "Mongoose"], answer: 2, explanation: "Webpack is a static module bundler for modern JavaScript applications." },
+      { q: "What does JWT stand for?", options: ["Java Web Toolkit", "JSON Web Token", "JavaScript Worker Thread", "Just Web Transfer"], answer: 1, explanation: "JWT (JSON Web Token) is used for securely transmitting information as a JSON object." },
+      { q: "Which of these is NOT a valid HTTP method?", options: ["PATCH", "FETCH", "OPTIONS", "HEAD"], answer: 1, explanation: "FETCH is an API/function in browsers, not an HTTP method (like GET or POST)." },
+      { q: "What is the purpose of a package.json file?", options: ["Store HTML templates", "Manage dependencies and scripts", "Define CSS styles", "Configure the database"], answer: 1, explanation: "It holds various metadata relevant to the project, including dependencies." },
+      { q: "In React, what is a 'prop'?", options: ["A function that returns HTML", "Data passed from parent to child component", "An internal state variable", "A styling object"], answer: 1, explanation: "Props (properties) are arguments passed into React components." },
+      { q: "Which SQL command is used to retrieve data?", options: ["GET", "EXTRACT", "SELECT", "PULL"], answer: 2, explanation: "The SELECT statement is used to select data from a database." },
+      { q: "What is the virtual DOM in React?", options: ["A direct copy of the database", "A lightweight copy of the actual DOM", "A browser extension", "A styling technique"], answer: 1, explanation: "React uses a virtual DOM to efficiently update the browser's DOM." },
+      { q: "Which environment variable is commonly used to set the port in Node.js?", options: ["SERVER_PORT", "PORT", "NODE_PORT", "APP_PORT"], answer: 1, explanation: "process.env.PORT is the standard convention." },
+      { q: "What does CRUD stand for?", options: ["Create, Read, Update, Delete", "Copy, Run, Undo, Deploy", "Compile, Run, Update, Debug", "Create, Route, Upload, Download"], answer: 0, explanation: "CRUD represents the four basic operations of persistent storage." }
+    ]
+  },
+  4: {
+    title: "Level 4: Resume & GitHub", shortTitle: "Resume & GitHub", icon: "📄", totalXP: 400, status: "locked", currentXP: 0, maxXP: 400, progress: 0,
+    desc: "Polish your online presence — make recruiters notice you.",
+    theory: {
+      sections: [
+        { title: "📄 Crafting a Winning Resume", content: "Keep it to one page. Use action verbs (Developed, Led, Optimised). Highlight impact with numbers (e.g., 'improved performance by 20%').", code: "Experience:\n- Built a React dashboard reducing load time by 30%." },
+        { title: "🐙 GitHub Profile Optimization", content: "A good README.md is your developer portfolio. Pin your best repositories. Make sure you have a consistent commit history.", code: "<!-- GitHub Profile README -->\nHi, I'm Aarav! 🚀\nI build things for the web." },
+        { title: "🌐 Online Presence", content: "LinkedIn is just as important. Connect with recruiters and share your project milestones publicly.", code: "linkedin.com/in/aarav-sharma" }
       ],
-      starter:{
-        python:`def search(nums, target):
-    left, right = 0, len(nums) - 1
-    while left <= right:
-        mid = left + (right - left) // 2
-        # TODO: compare nums[mid] with target and update left/right
-        pass
-    return -1  # not found
-
-# Test cases
-print(search([-1, 0, 3, 5, 9, 12], 9))   # Expected: 4
-print(search([-1, 0, 3, 5, 9, 12], 2))   # Expected: -1`,
-        javascript:`function search(nums, target) {
-  let left = 0, right = nums.length - 1;
-  while (left <= right) {
-    const mid = Math.floor(left + (right - left) / 2);
-    // TODO: compare nums[mid] with target and update left/right
-  }
-  return -1; // not found
-}
-
-console.log(search([-1, 0, 3, 5, 9, 12], 9)); // 4
-console.log(search([-1, 0, 3, 5, 9, 12], 2)); // -1`,
-        cpp:`class Solution {
-public:
-    int search(vector<int>& nums, int target) {
-        int left = 0, right = nums.size() - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            // TODO: compare nums[mid] with target and update left/right
-        }
-        return -1; // not found
-    }
-};`
-      },
-      sampleOutput:"Test 1: 4  ✓\nTest 2: -1 ✓\nAll test cases passed! 🎉"
-    }
+      resources: [
+        { icon: "🎥", title: "Resume Tips for Tech Jobs", type: "Video Tutorial", url: "https://youtube.com" },
+        { icon: "📖", title: "GitHub Profile README Guide", type: "Documentation", url: "https://docs.github.com" }
+      ]
+    },
+    quiz: [
+      { q: "How long should a student/new grad resume ideally be?", options: ["1 page", "2 pages", "3 pages", "As long as needed"], answer: 0, explanation: "Recruiters spend ~6 seconds per resume. Keep it concise." },
+      { q: "What file name is used for your personal GitHub profile page?", options: ["profile.md", "README.md in a repo with your username", "index.html", "about.md"], answer: 1, explanation: "A repo matching your username with a README.md creates a profile page." },
+      { q: "Which format is best for submitting resumes online?", options: ["Word Document (.docx)", "PDF (.pdf)", "Plain Text (.txt)", "Image (.png)"], answer: 1, explanation: "PDF ensures your formatting remains exactly as you intended." },
+      { q: "What should you prioritize in the 'Experience' section?", options: ["List of duties", "Impact and results with metrics", "Salary expectations", "Reasons for leaving"], answer: 1, explanation: "Metrics (e.g., 'increased speed by X%') show tangible value." },
+      { q: "What is a 'pinned' repository on GitHub?", options: ["A private repo", "A deleted repo", "A highlighted repo shown at the top of your profile", "A forked repo"], answer: 2, explanation: "Pinning repos showcases your best work to visitors." }
+    ],
+    challenge: [
+      { q: "What is the recommended structure for bullet points?", options: ["Task -> Duty", "Action Verb -> Context -> Result", "Problem -> Excuse", "Chronological list of everything done"], answer: 1, explanation: "Using the XYZ formula (Accomplished X as measured by Y, by doing Z) is highly effective." },
+      { q: "Should you include a photo on a standard US/UK/Tech resume?", options: ["Yes, always", "Only if you are good-looking", "No, it is generally discouraged to prevent bias", "Yes, in the top right corner"], answer: 2, explanation: "In many regions, photos are discouraged to maintain objective hiring." },
+      { q: "Which tool is standard for version control in the software industry?", options: ["Dropbox", "Google Drive", "Git", "FTP"], answer: 2, explanation: "Git is the industry standard for version control." },
+      { q: "What is a 'commit message'?", options: ["An email to your boss", "A brief description of changes saved to the repository", "An error log", "A comment in the code"], answer: 1, explanation: "Commit messages explain what changes were made and why." },
+      { q: "How can you make a repository stand out?", options: ["Leave it empty", "Write a clear and comprehensive README.md", "Make it private", "Only upload the final compiled binary"], answer: 1, explanation: "A good README explains what the project does, how to install it, and how to use it." },
+      { q: "What is an ATS in the context of hiring?", options: ["Automated Tracking System", "Applicant Tracking System", "Advanced Tech Screening", "Application Testing Suite"], answer: 1, explanation: "ATS parses resumes for keywords before a human sees them." },
+      { q: "Why should you avoid complex multi-column resume layouts?", options: ["They are ugly", "They are too colourful", "ATS parsers often fail to read them correctly", "They take up too much ink"], answer: 2, explanation: "Many ATS systems read left-to-right, top-to-bottom, messing up columns." },
+      { q: "Which of the following is NOT typically included in a tech resume?", options: ["Skills", "Projects", "Education", "Marital Status"], answer: 3, explanation: "Personal details like marital status or age are irrelevant to your technical ability." },
+      { q: "What does 'forking' a repository do?", options: ["Deletes it", "Creates a personal copy of someone else's project", "Merges it with another project", "Locks it from edits"], answer: 1, explanation: "Forking allows you to freely experiment with changes without affecting the original project." },
+      { q: "What is a Pull Request (PR)?", options: ["Downloading code", "Requesting a file from the server", "Proposing your changes be merged into the main project", "Pulling a colleague away for a meeting"], answer: 2, explanation: "A PR is how you contribute code to a repository." },
+      { q: "Which section is crucial for a student with no professional experience?", options: ["Summary", "Projects and Extracurriculars", "References", "Hobbies"], answer: 1, explanation: "Personal/academic projects demonstrate practical coding skills." },
+      { q: "What is 'Open Source'?", options: ["Software that is broken", "Software whose source code is publicly available and modifiable", "A private company repository", "Software that costs money"], answer: 1, explanation: "Open source software encourages collaborative improvement." },
+      { q: "Should you tailor your resume for different jobs?", options: ["No, one size fits all", "Yes, highlight skills relevant to the specific job description", "Only for management roles", "Only if the company asks"], answer: 1, explanation: "Tailoring increases your chances of passing the ATS and catching the recruiter's eye." },
+      { q: "What is a GitHub 'Streak'?", options: ["Consecutive days of making contributions", "Deleting files quickly", "Winning coding competitions", "Ignoring reviews"], answer: 0, explanation: "A streak shows consistent daily coding activity." },
+      { q: "Where should your contact info (email, GitHub, LinkedIn) be located on a resume?", options: ["At the very bottom", "Hidden on the second page", "At the very top", "In the middle"], answer: 2, explanation: "Recruiters need to easily find how to contact you." }
+    ]
   },
-
-  // ── LEVELS 3-7 (stubs — full content in semester 2) ────
-  3:{ title:"Level 3: Projects", shortTitle:"Projects", icon:"🛠️", totalXP:500, status:"locked", currentXP:0, maxXP:500, progress:0,
-      desc:"Build real projects — a portfolio that speaks louder than grades. Web apps, REST APIs, and deployment await.",
-      theory:{sections:[],resources:[]}, quiz:[],
-      challenge:{title:"Build a Todo App",difficulty:"medium",desc:"Create a full-stack Todo application with CRUD operations.",examples:[],constraints:"",hints:["Use React for the frontend","Use Express.js for the backend","Store todos in MongoDB"],starter:{python:"",javascript:`// Build your Todo App here\n// Frontend: React\n// Backend: Express.js\n// Database: MongoDB`,cpp:""},sampleOutput:"Todo App running at http://localhost:3000 ✓"}
+  5: {
+    title: "Level 5: Interview Prep", shortTitle: "Interview Prep", icon: "🎯", totalXP: 600, status: "locked", currentXP: 0, maxXP: 600, progress: 0,
+    desc: "100 LeetCode + mock interviews + aptitude + HR preparation.",
+    theory: {
+      sections: [
+        { title: "🗣️ Behavioral Interviews", content: "Use the STAR method: Situation, Task, Action, Result. Focus on what *you* did, not just the team.", code: "Situation: Our server crashed.\nTask: I needed to restore it.\nAction: I found the bug and deployed a hotfix.\nResult: Downtime reduced to 5 mins." },
+        { title: "🧠 System Design Basics", content: "Even juniors are asked high-level design. Learn about Load Balancers, Caching (Redis), and Database Sharding.", code: "Client -> Load Balancer -> Web Servers -> Database" },
+        { title: "💻 Whiteboard Coding", content: "Always talk through your thought process before writing code. Clarify constraints and edge cases first.", code: "1. Ask questions\n2. Brute force approach\n3. Optimize (Hash maps? Two pointers?)\n4. Code\n5. Dry run" }
+      ],
+      resources: [
+        { icon: "🎥", title: "Mock Interview Example", type: "Video Tutorial", url: "https://youtube.com" }
+      ]
+    },
+    quiz: [
+      { q: "What does STAR stand for in behavioral interviews?", options: ["Situation, Task, Action, Result", "Start, Think, Act, Review", "System, Tech, Architecture, Requirement", "Standardization, Testing, Analysis, Reporting"], answer: 0, explanation: "STAR is a framework for structuring your answers." },
+      { q: "When given a coding problem, what should be your first step?", options: ["Start coding immediately", "Ask clarifying questions and outline edge cases", "Say 'I don't know'", "Write a brute-force solution without speaking"], answer: 1, explanation: "Communication is key. Clarify constraints before solving." },
+      { q: "What is the purpose of a Load Balancer?", options: ["To store data", "To compile code faster", "To distribute network traffic across multiple servers", "To balance binary trees"], answer: 2, explanation: "Load balancers ensure no single server becomes overwhelmed." },
+      { q: "Why is caching used in System Design?", options: ["To delete old data", "To speed up data retrieval by storing frequently accessed data in memory", "To secure passwords", "To balance traffic"], answer: 1, explanation: "Caches like Redis provide sub-millisecond data access." },
+      { q: "What should you do if you get stuck during an interview?", options: ["Stay completely silent", "Give up", "Communicate your thought process and ask for a hint", "Start guessing randomly"], answer: 2, explanation: "Interviewers want to see how you handle difficulty and collaborate." }
+    ],
+    challenge: [
+      { q: "What is 'Horizontal Scaling'?", options: ["Upgrading the RAM of a server", "Adding more servers to a pool", "Scaling an image", "Optimizing an algorithm"], answer: 1, explanation: "Horizontal scaling means adding more machines into your pool of resources." },
+      { q: "What is 'Vertical Scaling'?", options: ["Adding more servers", "Upgrading the CPU/RAM of an existing server", "Stacking databases physically", "Creating deeper folder structures"], answer: 1, explanation: "Vertical scaling (scaling up) means adding more power to an existing machine." },
+      { q: "Which tool is commonly used as an in-memory cache?", options: ["PostgreSQL", "Redis", "Nginx", "Docker"], answer: 1, explanation: "Redis is a popular in-memory data structure store used as a cache." },
+      { q: "What does 'ACID' stand for in databases?", options: ["Atomicity, Consistency, Isolation, Durability", "Active, Clean, Indexed, Distributed", "Automated, Checked, Integrated, Deployed", "All Code Is Done"], answer: 0, explanation: "ACID properties guarantee database transactions are processed reliably." },
+      { q: "In a behavioral interview, what does 'Action' refer to in STAR?", options: ["The final outcome", "The context of the problem", "The specific steps YOU took to solve the problem", "The task assigned to the team"], answer: 2, explanation: "Action focuses on your specific contributions and decision-making." },
+      { q: "What is a 'brute force' solution?", options: ["The most optimized solution", "A solution that relies on physical hardware", "A naive solution that checks all possibilities", "A solution using AI"], answer: 2, explanation: "Brute force is often the first step before optimizing." },
+      { q: "Why is 'Big O' notation important in interviews?", options: ["It proves you took math classes", "It evaluates the time and space efficiency of your algorithm", "It is used to name variables", "It encrypts data"], answer: 1, explanation: "Big O defines how an algorithm scales as input size grows." },
+      { q: "What is a 'mock interview'?", options: ["An interview that insults you", "A real interview for a fake job", "A practice interview simulating real conditions", "A group discussion"], answer: 2, explanation: "Mock interviews help you practice under pressure." },
+      { q: "Which data structure is typically used for breadth-first search?", options: ["Stack", "Queue", "Heap", "Tree"], answer: 1, explanation: "A queue ensures nodes are processed in the order they were discovered." },
+      { q: "What is the typical time limit for a technical whiteboard question?", options: ["5 minutes", "15-20 minutes", "30-45 minutes", "2 hours"], answer: 2, explanation: "Most technical rounds give you about 45 minutes to solve a problem and discuss it." },
+      { q: "What is a microservices architecture?", options: ["A monolithic application", "Small, independent services communicating over a network", "A tiny server", "Using micro-controllers"], answer: 1, explanation: "Microservices break down an app into loosely coupled services." },
+      { q: "What does 'CAP theorem' stand for?", options: ["Consistency, Availability, Partition tolerance", "Compute, Analyze, Process", "Cache, API, Protocol", "Code, Algorithm, Performance"], answer: 0, explanation: "CAP theorem states a distributed system can only guarantee 2 of the 3." },
+      { q: "If you don't know the answer to a trivia question, what's the best response?", options: ["Make something up", "Admit you don't know, but explain how you would find out", "Change the subject", "End the interview"], answer: 1, explanation: "Honesty and resourcefulness are highly valued traits." },
+      { q: "What is the primary benefit of Indexing in a database?", options: ["Saves disk space", "Speeds up data retrieval (SELECT queries)", "Encrypts data automatically", "Prevents duplicate rows"], answer: 1, explanation: "Indexes act like a book's index, making lookups significantly faster." },
+      { q: "What is a 'dry run' of your code?", options: ["Running it without electricity", "Manually tracing through the code with an example input", "Running it on a test server", "Deleting comments"], answer: 1, explanation: "A dry run helps catch logical errors before actual execution." }
+    ]
   },
-  4:{ title:"Level 4: Resume + GitHub", shortTitle:"Resume & GitHub", icon:"📄", totalXP:400, status:"locked", currentXP:0, maxXP:400, progress:0,
-      desc:"Polish your online presence — make recruiters notice you.",
-      theory:{sections:[],resources:[]}, quiz:[],
-      challenge:{title:"GitHub Profile README",difficulty:"easy",desc:"Create an impressive GitHub profile README.",examples:[],constraints:"",hints:["Use markdown headers","Add tech stack badges","Include a GitHub stats widget"],starter:{python:"",javascript:"",cpp:""},sampleOutput:"Profile README looks great! ✓"}
+  6: {
+    title: "Level 6: Job Apply", shortTitle: "Job Apply", icon: "📬", totalXP: 500, status: "locked", currentXP: 0, maxXP: 500, progress: 0,
+    desc: "Start applying — internships, campus placements, referrals.",
+    theory: {
+      sections: [
+        { title: "📧 Cold Emailing", content: "Reach out to recruiters or engineers directly. Be brief, show you researched them, and attach your resume.", code: "Subject: SE Intern Application - Aarav Sharma\nHi [Name],\nI noticed [Company] is hiring interns. I recently built a React dashboard..." },
+        { title: "🤝 Referrals", content: "A referral bypasses the ATS. Ask university alumni or LinkedIn connections politely.", code: "Hi [Name],\nI'm a CS student at [Uni]. I saw you work at [Company]. Do you have 10 mins for a quick chat?" },
+        { title: "🎯 Tracking Applications", content: "Use a spreadsheet or Kanban board to track where you applied, when, and interview stages.", code: "Columns: Company | Role | Date Applied | Status | Follow-up Date" }
+      ],
+      resources: [
+        { icon: "🎥", title: "How to Ask for a Referral", type: "Video Tutorial", url: "https://youtube.com" }
+      ]
+    },
+    quiz: [
+      { q: "What is the main benefit of getting a referral?", options: ["Guaranteed job offer", "Higher salary", "Your resume is seen by a human recruiter faster", "No technical interview needed"], answer: 2, explanation: "Referrals often bypass the initial automated screening." },
+      { q: "How long should a cold email to a recruiter be?", options: ["3-4 paragraphs detailing your life story", "Short, concise (3-4 sentences), with a clear call to action", "Just an attachment with no text", "A highly technical essay"], answer: 1, explanation: "Recruiters are busy. Get straight to the point." },
+      { q: "When reaching out on LinkedIn, you should always:", options: ["Send a blank connection request", "Include a personalized note explaining why you are connecting", "Ask for a job immediately", "Spam all their posts"], answer: 1, explanation: "A personalized note significantly increases acceptance rates." },
+      { q: "What is the best way to track job applications?", options: ["Mental notes", "A dedicated spreadsheet (e.g., Notion, Excel) tracking dates and status", "Just checking emails", "Printing them out"], answer: 1, explanation: "A spreadsheet helps you follow up effectively." },
+      { q: "What is an ATS?", options: ["Applicant Tracking System", "Automated Testing Suite", "Application Transfer Server", "Advanced Technical Screening"], answer: 0, explanation: "ATS software manages the recruiting process." }
+    ],
+    challenge: [
+      { q: "When is the best time to apply for Summer Internships?", options: ["May of that year", "August/September of the previous year", "January of that year", "During finals week"], answer: 1, explanation: "Tech recruitment for summer usually kicks off very early in the Fall." },
+      { q: "What should you include in the subject line of a cold email?", options: ["Hello", "Need a job please", "Specifics (e.g., SE Intern Application - [Your Name] - [University])", "Urgent!"], answer: 2, explanation: "A clear subject line helps the recruiter identify the email's purpose immediately." },
+      { q: "If a company rejects you, what is a professional response?", options: ["Argue with them", "Ignore it completely", "Send a brief thank you note for their time and ask to stay connected", "Send an angry email"], answer: 2, explanation: "Building a network is a long-term game; today's rejection might be tomorrow's offer." },
+      { q: "What is a 'cover letter'?", options: ["The envelope your resume comes in", "A document expanding on your resume, tailored to the specific role", "A letter of recommendation", "Your graduation certificate"], answer: 1, explanation: "It provides context to your resume and explains why you fit the company culture." },
+      { q: "How can you bypass the 'Apply Online' black hole?", options: ["Apply multiple times", "Find the hiring manager on LinkedIn and message them", "Submit a paper resume by mail", "Use a fake name"], answer: 1, explanation: "Direct networking is much more effective than cold applying." },
+      { q: "What should you do after an interview?", options: ["Wait passively", "Send a thank-you email within 24 hours", "Call them every day", "Post about the questions online"], answer: 1, explanation: "A polite thank-you email reiterates your interest." },
+      { q: "Is it okay to ask for feedback after a rejection?", options: ["Yes, always politely ask if they can share brief feedback", "No, it's illegal", "No, it looks desperate", "Only if you yell at them"], answer: 0, explanation: "While many won't reply due to policy, some will offer valuable insights." },
+      { q: "How many applications should you aim for if you're cold-applying without experience?", options: ["1-5", "10-20", "100+", "Exactly 3"], answer: 2, explanation: "Cold applying is a numbers game. Cast a wide net." },
+      { q: "What does 'Ghosting' mean in recruiting?", options: ["Working undercover", "When a company stops communicating with you without explanation", "Using invisible ink on a resume", "Deleting your LinkedIn"], answer: 1, explanation: "Unfortunately common, ghosting means they never send a rejection email." },
+      { q: "If an application asks for salary expectations, what is a safe strategy?", options: ["Put $1,000,000", "Put $0", "Write 'Negotiable' or provide a researched range", "Leave it blank"], answer: 2, explanation: "Research market rates, but 'Negotiable' keeps doors open." },
+      { q: "What is the purpose of an 'informational interview'?", options: ["To secretly beg for a job", "To learn about a person's career path and company culture, building a relationship", "To interview the CEO", "To get free food"], answer: 1, explanation: "It's about learning and networking, not asking for a job directly." },
+      { q: "Which platform is primarily used for professional networking?", options: ["Instagram", "TikTok", "LinkedIn", "Snapchat"], answer: 2, explanation: "LinkedIn is the standard professional network." },
+      { q: "Should you apply if you don't meet 100% of the requirements?", options: ["No, it's a waste of time", "Yes, apply if you meet at least 50-60% of them", "Only if you know the CEO", "Yes, but lie on your resume"], answer: 1, explanation: "Job descriptions are often 'wish lists'. Apply anyway." },
+      { q: "What is an 'elevator pitch'?", options: ["A 30-second summary of who you are and what you do", "A pitch for a new elevator design", "A long 10-minute speech", "A technique used by salespeople"], answer: 0, explanation: "It's a quick, compelling introduction used in networking." },
+      { q: "Why should you customize your resume for different job applications?", options: ["To trick the ATS", "To align your skills with the specific keywords and requirements of that job", "To make it look prettier", "Because every company requires a different font"], answer: 1, explanation: "Customization shows you are a specific fit for their exact needs." }
+    ]
   },
-  5:{ title:"Level 5: Interview Prep", shortTitle:"Interview Prep", icon:"🎯", totalXP:600, status:"locked", currentXP:0, maxXP:600, progress:0,
-      desc:"100 LeetCode + mock interviews + aptitude + HR preparation.",
-      theory:{sections:[],resources:[]}, quiz:[],
-      challenge:{title:"Two Sum (LeetCode #1)",difficulty:"hard",desc:"Given an array of integers and a target sum, return indices of the two numbers that add up to the target.",examples:[{input:"nums=[2,7,11,15], target=9",output:"[0,1]"}],constraints:"Each test has exactly one solution",hints:["Use a HashMap for O(n) solution","For each number, check if target-number is in the map"],starter:{python:`def twoSum(nums, target):\n    seen = {}\n    for i, n in enumerate(nums):\n        # Your code here\n        pass`,javascript:`function twoSum(nums, target) {\n  const map = {};\n  // Your code here\n}`,cpp:""},sampleOutput:"[0, 1]  ✓"}
-  },
-  6:{ title:"Level 6: Job Apply", shortTitle:"Job Apply", icon:"📬", totalXP:500, status:"locked", currentXP:0, maxXP:500, progress:0,
-      desc:"Start applying — internships, campus placements, referrals.",
-      theory:{sections:[],resources:[]}, quiz:[],
-      challenge:{title:"Write a Cover Letter",difficulty:"easy",desc:"Write a compelling cover letter for a Software Engineer internship.",examples:[],constraints:"",hints:["Open with a strong hook","Mention specific company projects","End with a clear call to action"],starter:{python:"",javascript:"// Write your cover letter content here",cpp:""},sampleOutput:"Cover letter submitted! ✓"}
-  },
-  7:{ title:"Level 7: Internship Ready 🚀", shortTitle:"Internship Ready", icon:"🚀", totalXP:1000, status:"locked", currentXP:0, maxXP:1000, progress:0,
-      desc:"You've made it — internship offer in hand. You are a developer!",
-      theory:{sections:[],resources:[]}, quiz:[],
-      challenge:{title:"Final Boss: System Design",difficulty:"hard",desc:"Design a URL shortener system (like bit.ly). Explain your architecture choices.",examples:[],constraints:"Handle 1M requests/day",hints:["Consider using a hash function","Think about database choice: SQL vs NoSQL","Consider caching with Redis"],starter:{python:"",javascript:`// System Design: URL Shortener\n// Describe your approach:\n\n// 1. API Design:\n//    POST /shorten  { url: "..." }  → { short: "abc123" }\n//    GET  /:code                    → redirect to original\n\n// 2. Database Schema:\n//    urls: { code, originalUrl, createdAt, clicks }`,cpp:""},sampleOutput:"System design accepted! Legend badge unlocked 🏆"}
+  7: {
+    title: "Level 7: Internship Ready 🚀", shortTitle: "Internship Ready", icon: "🚀", totalXP: 1000, status: "locked", currentXP: 0, maxXP: 1000, progress: 0,
+    desc: "You've made it — internship offer in hand. You are a developer!",
+    theory: {
+      sections: [
+        { title: "🎉 Handling Offers", content: "Don't accept immediately. Review the contract, check timelines, and ask for time if you have other pending interviews.", code: "Thank you so much for the offer! I am very excited. Could I have until [Date] to review the details?" },
+        { title: "🤝 Negotiation", content: "Internships are rarely negotiated, but full-time offers are. Be polite, present your market research, and never give ultimatums.", code: "Based on my research of market rates in [City], is there any flexibility on the base salary?" },
+        { title: "💼 Surviving Week 1", content: "Ask questions, document everything, set up your local environment, and communicate blockers early.", code: "git clone <repo>\nnpm install\nnpm start" }
+      ],
+      resources: [
+        { icon: "🎥", title: "How to Negotiate Your Salary", type: "Video Tutorial", url: "https://youtube.com" }
+      ]
+    },
+    quiz: [
+      { q: "What should you do when you receive a job offer over the phone?", options: ["Accept immediately", "Express excitement and ask for the written offer and some time to review", "Hang up", "Ask for double the money on the spot"], answer: 1, explanation: "Always ask for the official written offer before committing." },
+      { q: "Is it acceptable to ask for a few days to review an offer?", options: ["Yes, it is standard professional practice", "No, they will revoke it", "Only if you pretend to be sick", "Yes, but ask for a month"], answer: 0, explanation: "Most companies expect you to take 2-5 days to review." },
+      { q: "What is 'onboarding'?", options: ["A boat ride", "The process of integrating a new employee into the company", "Being fired", "A coding test"], answer: 1, explanation: "Onboarding includes setting up laptops, accounts, and learning company culture." },
+      { q: "If you get stuck on a bug during your internship, what's the best approach?", options: ["Hide it", "Ask for help immediately without trying", "Timebox it (e.g., try for 1 hour), then document what you tried and ask a senior", "Quit the internship"], answer: 2, explanation: "Show initiative, but don't stay blocked for days." },
+      { q: "What is an 'exploding offer'?", options: ["An offer that pays extremely well", "An offer with an unreasonably short deadline (e.g., 24 hours)", "A scam", "A promotion"], answer: 1, explanation: "Exploding offers pressure candidates to accept quickly." }
+    ],
+    challenge: [
+      { q: "What is a 'NDA'?", options: ["New Developer Agreement", "Non-Disclosure Agreement", "National Data Association", "Network Development API"], answer: 1, explanation: "An NDA legally binds you to keep company secrets confidential." },
+      { q: "What does 'equity' mean in a job offer?", options: ["Equal treatment", "Stock options or shares in the company", "A type of bonus", "Health insurance"], answer: 1, explanation: "Equity means you own a small piece of the company." },
+      { q: "What is 'imposter syndrome'?", options: ["A virus", "Feeling like a fraud despite your achievements", "A design pattern", "A type of hacker"], answer: 1, explanation: "Very common in tech; it's the feeling you don't belong despite being qualified." },
+      { q: "During your first week, what is the most important thing to do?", options: ["Rewrite the entire codebase", "Ask questions and take detailed notes", "Take a vacation", "Argue with the senior engineer"], answer: 1, explanation: "Your goal is to learn the domain and codebase." },
+      { q: "What is a '1-on-1'?", options: ["A coding battle", "A regular private meeting between you and your manager", "A basketball game", "A performance review where you get fired"], answer: 1, explanation: "1-on-1s are for discussing career growth, blockers, and feedback." },
+      { q: "If you have competing offers, what should you do?", options: ["Lie and say you have 10 offers", "Politely inform the companies to leverage a better package or faster decision", "Ignore both", "Accept both and work two jobs"], answer: 1, explanation: "Transparency can speed up timelines and improve your offer." },
+      { q: "What is a 'code review'?", options: ["A magazine for programmers", "Peers reviewing your code before it is merged into the main branch", "A test given during interviews", "Deleting bad code"], answer: 1, explanation: "Code reviews maintain code quality and share knowledge." },
+      { q: "What does LGTM mean in a PR comment?", options: ["Let's Go To Meeting", "Looks Good To Me", "Leave Github To Me", "Little Giant Tree Monkey"], answer: 1, explanation: "LGTM signifies approval of the pull request." },
+      { q: "What is a 'stand-up' meeting?", options: ["A comedy show", "A short daily meeting to share what you did yesterday, plan today, and list blockers", "A meeting where there are no chairs", "An hour-long presentation"], answer: 1, explanation: "Stand-ups keep agile teams aligned." },
+      { q: "How should you respond to constructive criticism in a code review?", options: ["Take it personally and argue", "Ignore the comments", "Thank the reviewer, learn from it, and update the code", "Complain to your manager"], answer: 2, explanation: "Reviews are about improving the code, not attacking the coder." },
+      { q: "What is 'Agile' methodology?", options: ["Writing code very fast", "An iterative approach to software development emphasizing flexibility", "A specific programming language", "A workout routine"], answer: 1, explanation: "Agile breaks work into small, manageable sprints." },
+      { q: "What is the purpose of 'version control' (Git) in a team setting?", options: ["To spy on employees", "To allow multiple developers to work on the same codebase without overwriting each other's work", "To backup files to a USB drive", "To compile code"], answer: 1, explanation: "Git merges contributions and tracks history." },
+      { q: "When is it appropriate to merge your code into the 'main' or 'master' branch?", options: ["Whenever you want", "On Friday at 5 PM", "Only after passing tests and receiving approval via code review", "Before writing tests"], answer: 2, explanation: "The main branch must remain stable and deployable." },
+      { q: "What does it mean to be a 'T-shaped' developer?", options: ["You only know one thing perfectly", "You have broad knowledge in many areas and deep expertise in one", "You type with your arms spread", "You are a team leader"], answer: 1, explanation: "T-shaped skills make you versatile yet highly valuable in a specific domain." },
+      { q: "Congratulations! What is the final step to officially completing your SKILLUP journey?", options: ["Delete your account", "Celebrate, sign the offer, and keep learning!", "Stop coding forever", "Buy a yacht"], answer: 1, explanation: "Learning never stops in tech. Enjoy the success and prepare for the next challenge!" }
+    ]
   }
 };
 
@@ -720,6 +842,19 @@ public:
 const params = new URLSearchParams(window.location.search);
 let currentLevel = parseInt(params.get('level')) || 2;
 if (currentLevel < 1 || currentLevel > 7) currentLevel = 2;
+
+// Determine unlocked level from localStorage
+const unlockedLevel = parseInt(localStorage.getItem('skillup_unlocked_level')) || 2;
+for (let i = 1; i <= 7; i++) {
+  if (i < unlockedLevel) {
+    LEVEL_DATA[i].status = "done";
+  } else if (i === unlockedLevel) {
+    LEVEL_DATA[i].status = "active";
+  } else {
+    LEVEL_DATA[i].status = "locked";
+  }
+}
+
 const lvl = LEVEL_DATA[currentLevel];
 
 // Render header immediately
@@ -797,16 +932,66 @@ function escHtml(str) {
 }
 
 /* ==========================================================
-   ── Tab Switcher ──
+   ── Tab Switcher & Theory Completion ──
    ========================================================== */
+function isTheoryCompleted() {
+  return localStorage.getItem('skillup_theory_done_' + currentLevel) === 'true';
+}
+
+function updateTabUI() {
+  const qBtn = document.getElementById('tabQuiz');
+  const cBtn = document.getElementById('tabChallenge');
+  if (!isTheoryCompleted() && lvl.status !== 'locked') {
+    if(qBtn) { qBtn.style.opacity = '0.6'; qBtn.innerHTML = '🔒 Quiz'; }
+    if(cBtn) { cBtn.style.opacity = '0.6'; cBtn.innerHTML = '🔒 Challenge'; }
+  } else {
+    if(qBtn) { qBtn.style.opacity = '1'; qBtn.innerHTML = '🧠 Quiz'; }
+    if(cBtn) { cBtn.style.opacity = '1'; cBtn.innerHTML = '💻 Challenge'; }
+  }
+}
+window.addEventListener('DOMContentLoaded', updateTabUI);
+
 function switchLvlTab(tab, btn) {
+  if ((tab === 'quiz' || tab === 'challenge') && !isTheoryCompleted() && lvl.status !== 'locked') {
+    showToast('Please complete the Theory section first!', 'error', '🔒');
+    return;
+  }
   ['theory','quiz','challenge'].forEach(t => {
     document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1))?.classList.remove('active');
   });
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel' + tab.charAt(0).toUpperCase() + tab.slice(1))?.classList.add('active');
-  btn?.classList.add('active');
+  if (btn) btn.classList.add('active');
 }
+
+function markTheoryComplete() {
+  localStorage.setItem('skillup_theory_done_' + currentLevel, 'true');
+  showToast('Theory completed! Quiz & Challenge unlocked.', 'success', '🔓');
+  updateTabUI();
+  
+  // Re-render theory to remove the complete button
+  const completeBtn = document.getElementById('btnCompleteTheory');
+  if (completeBtn) completeBtn.style.display = 'none';
+
+  switchLvlTab('quiz', document.getElementById('tabQuiz'));
+}
+
+/* ==========================================================
+   ── Theory Renderer Extension ──
+   ========================================================== */
+// Override the end of renderTheory from earlier to add the Complete Button
+const origRenderTheory = window.renderTheory;
+window.renderTheory = function() {
+  if (origRenderTheory) origRenderTheory();
+  // Wait for DOM
+};
+setTimeout(() => {
+  const container = document.getElementById('panelTheory');
+  if (container && lvl.status !== 'locked' && !isTheoryCompleted()) {
+    const btnHtml = `<div style="text-align:center;margin-top:40px;"><button id="btnCompleteTheory" class="btn btn-primary" style="padding:16px 40px;font-size:1.05rem;" onclick="markTheoryComplete()">Mark Theory as Complete & Unlock Quiz 🔓</button></div>`;
+    container.insertAdjacentHTML('beforeend', btnHtml);
+  }
+}, 100);
 
 /* ==========================================================
    ── Quiz Engine ──
@@ -958,119 +1143,151 @@ function startTimer() {
 }
 
 /* ==========================================================
-   ── Code Challenge Renderer ──
+   ── Challenge Test Engine ──
    ========================================================== */
-let currentLang = 'python';
+let cState = { qs:[], ans:[], cur:0, timer:null, timeLeft:1800, running:false };
 
-(function renderChallenge() {
-  const ch  = lvl.challenge;
-  const wrap = document.getElementById('challengeWrap');
+document.getElementById('chalQCount').textContent = lvl.challenge?.length || 15;
+document.getElementById('chalXPReward').textContent = `+${Math.round(lvl.totalXP * 0.3)} XP`;
 
-  if (lvl.status === 'locked' || !ch || !ch.title) {
-    wrap.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:64px 20px;background:var(--glass);border:1px solid var(--border);border-radius:14px;">
-        <div style="font-size:4rem;margin-bottom:16px;">${lvl.status === 'locked' ? '🔒' : '🚧'}</div>
-        <h2 style="margin-bottom:12px;">${lvl.status === 'locked' ? 'Level Locked' : 'Coming Soon'}</h2>
-        <p class="muted" style="margin-bottom:24px;">${lvl.status === 'locked' ? 'Complete the previous levels first!' : 'Challenge content is being prepared!'}</p>
-        <a href="roadmap.html" class="btn btn-primary">View Roadmap 🗺️</a>
-      </div>`;
-    return;
+function startChallenge() {
+  if (!lvl.challenge || !lvl.challenge.length) { showToast('Challenge for this level is coming soon!','info','🚧'); return; }
+  if (lvl.status === 'locked') { showToast('Unlock this level first!','error','🔒'); return; }
+
+  cState = { qs:[...lvl.challenge], ans:new Array(lvl.challenge.length).fill(null), cur:0, timeLeft:1800, running:true, timer:null };
+
+  document.getElementById('challengeIntro').style.display  = 'none';
+  document.getElementById('challengeArea').style.display   = 'block';
+  document.getElementById('challengeResult').style.display = 'none';
+  document.getElementById('cTotal').textContent = cState.qs.length;
+
+  renderCDots();
+  renderCQuestion();
+  startCTimer();
+}
+
+function renderCDots() {
+  document.getElementById('cProgressDots').innerHTML = cState.qs.map((_,i) => {
+    let cls = 'q-dot';
+    if      (i === cState.cur)           cls += ' current';
+    else if (cState.ans[i] !== null)     cls += ' answered';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+function renderCQuestion() {
+  const q   = cState.qs[cState.cur];
+  const ans = cState.ans[cState.cur];
+  document.getElementById('cCurrent').textContent = cState.cur + 1;
+  const letters = ['A','B','C','D'];
+
+  document.getElementById('cQuestionDisplay').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Question ${cState.cur + 1} of ${cState.qs.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => {
+          let cls = 'opt';
+          if (ans !== null) {
+            cls += ' answered';
+            if (i === q.answer)              cls += ' correct';
+            else if (i === ans && ans !== q.answer) cls += ' wrong';
+          }
+          return `<button class="${cls}" onclick="selectCAnswer(${i})">
+            <span class="opt-letter">${letters[i]}</span>${opt}</button>`;
+        }).join('')}
+      </div>
+      <div class="expl-box ${ans !== null ? 'show' : ''}">
+        💡&nbsp;<span>${q.explanation}</span>
+      </div>
+      <div class="quiz-nav">
+        ${cState.cur > 0 ? `<button class="btn btn-secondary btn-sm" onclick="prevCQ()">← Prev</button>` : ''}
+        ${cState.cur < cState.qs.length - 1
+          ? `<button class="btn btn-primary btn-sm" onclick="nextCQ()">Next →</button>`
+          : `<button class="btn btn-primary btn-sm" style="background:var(--green);border-color:var(--green);" onclick="finishChallenge()">Submit Test ✓</button>`
+        }
+      </div>
+    </div>`;
+  renderCDots();
+}
+
+function selectCAnswer(idx) {
+  if (cState.ans[cState.cur] !== null) return;
+  cState.ans[cState.cur] = idx;
+  renderCQuestion();
+}
+
+function nextCQ() { if (cState.cur < cState.qs.length - 1) { cState.cur++; renderCQuestion(); } }
+function prevCQ() { if (cState.cur > 0) { cState.cur--; renderCQuestion(); } }
+
+function finishChallenge() {
+  clearInterval(cState.timer);
+  const correct = cState.ans.filter((a, i) => a === cState.qs[i].answer).length;
+  const total   = cState.qs.length;
+  const pct     = Math.round((correct / total) * 100);
+  const xp      = Math.round(lvl.totalXP * 0.3 * (correct / total));
+
+  document.getElementById('challengeArea').style.display   = 'none';
+  document.getElementById('challengeResult').style.display = 'block';
+
+  const circle = document.getElementById('cScoreCircle');
+  circle.className = 'score-circle ' + (pct >= 80 ? 'great' : pct >= 60 ? 'good' : 'poor');
+  document.getElementById('cScorePct').textContent   = pct + '%';
+  document.getElementById('cScoreRatio').textContent = `${correct}/${total} correct`;
+
+  const msgs = {
+    perfect:  ['🏆 Perfect Score!',    'You have completely mastered this level!'],
+    great:    ['🎉 Challenge Passed!',  'Excellent work. You are ready for the next level!'],
+    good:     ['👍 Solid Effort!',      'Good foundation, but there is room for improvement.'],
+    poor:     ['📖 Keep Learning!',     'Review the topics again before moving forward.']
+  };
+  const [msg, sub] = pct === 100 ? msgs.perfect : pct >= 80 ? msgs.great : pct >= 60 ? msgs.good : msgs.poor;
+  document.getElementById('cScoreMsg').textContent    = msg;
+  document.getElementById('cScoreSubMsg').textContent = sub;
+  document.getElementById('cXpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.05rem;padding:10px 22px;justify-content:center;">⭐ +${xp} XP Earned!</div>`;
+
+  // Save to localStorage
+  const scores = JSON.parse(localStorage.getItem('skillup_chal_scores') || '[]');
+  scores.push({ level: currentLevel, score: pct, correct, total, xp, date: new Date().toISOString() });
+  localStorage.setItem('skillup_chal_scores', JSON.stringify(scores));
+
+  // Unlock next level if score >= 80%
+  if (pct >= 80) {
+    const currentUnlocked = parseInt(localStorage.getItem('skillup_unlocked_level')) || 2;
+    if (currentLevel >= currentUnlocked && currentLevel < 7) {
+      localStorage.setItem('skillup_unlocked_level', currentLevel + 1);
+    }
   }
 
-  // Populate problem info
-  document.getElementById('challengeTitle').textContent = ch.title;
-  document.getElementById('challengeDesc').innerHTML = ch.desc.replace(/\n/g,'<br>');
-  const diffEl = document.getElementById('challengeDiff');
-  diffEl.className = `diff-badge diff-${ch.difficulty}`;
-  diffEl.textContent = ch.difficulty === 'easy' ? '🟢 Easy' : ch.difficulty === 'medium' ? '⚡ Medium' : '🔴 Hard';
+  // Show wrong answer review
+  const wrong = cState.qs.map((q,i) => ({q, i, uAns: cState.ans[i], ok: cState.ans[i] === q.answer })).filter(x => !x.ok);
+  if (wrong.length) {
+    document.getElementById('cReviewSection').innerHTML = `
+      <div class="section-title"><div class="dot"></div>Review — Wrong Answers</div>
+      ${wrong.map(({q, uAns}) => `
+        <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:16px 18px;margin-bottom:12px;">
+          <div style="font-weight:600;font-size:0.92rem;margin-bottom:10px;">${q.q}</div>
+          <div style="font-size:0.85rem;">❌ Your answer: <span style="color:#ef4444;">${uAns !== null ? q.options[uAns] : 'Not answered'}</span></div>
+          <div style="font-size:0.85rem;">✅ Correct:     <span style="color:var(--green);">${q.options[q.answer]}</span></div>
+          <div style="font-size:0.83rem;color:var(--text2);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);">💡 ${q.explanation}</div>
+        </div>`).join('')}`;
+  }
 
-  document.getElementById('challengeExamples').innerHTML = ch.examples.map((ex, i) => `
-    <div style="margin-top:16px;">
-      <div style="font-size:0.78rem;font-weight:700;color:var(--text3);margin-bottom:6px;">EXAMPLE ${i+1}</div>
-      <div class="io-block">
-        <div class="io-label">Input</div>${ex.input}
-        <div class="io-label" style="margin-top:10px;">Output</div>${ex.output}
-      </div>
-    </div>`).join('');
-
-  if (ch.constraints)
-    document.getElementById('challengeConstraints').innerHTML = `<strong>Constraints:</strong><br>${ch.constraints.replace(/\n/g,'<br>')}`;
-
-  document.getElementById('hintsList').innerHTML = ch.hints.map((h, i) => `
-    <div class="hint-accordion">
-      <div class="hint-head" onclick="toggleHint(this)">
-        <span>💡 Hint ${i+1}</span><span style="color:var(--text3);font-size:1.1rem;transition:transform 0.3s;">+</span>
-      </div>
-      <div class="hint-body">${h}</div>
-    </div>`).join('');
-
-  // Set initial code
-  setLang('python', document.querySelector('.lang-btn'));
-})();
-
-function toggleHint(header) {
-  const body  = header.nextElementSibling;
-  const arrow = header.querySelector('span:last-child');
-  body.classList.toggle('open');
-  arrow.textContent = body.classList.contains('open') ? '−' : '+';
+  if (pct >= 80) { launchConfetti(); showToast(`Challenge passed! +${xp} XP 🎉`, 'success', '⭐'); }
+  else showToast(`Challenge complete — score: ${pct}%`, 'info', '📊');
 }
 
-function setLang(lang, btn) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  const editor = document.getElementById('codeEditor');
-  if (editor) editor.value = lvl.challenge?.starter?.[lang] || '';
-  const out = document.getElementById('outputBox');
-  if (out) { out.className = 'output-box'; out.textContent = ''; }
-}
-
-function resetCode() {
-  const editor = document.getElementById('codeEditor');
-  if (editor) editor.value = lvl.challenge?.starter?.[currentLang] || '';
-  showToast('Code reset to starter template','info','↺');
-}
-
-function runCode() {
-  const code   = document.getElementById('codeEditor')?.value?.trim();
-  const outBox = document.getElementById('outputBox');
-  if (!code || !outBox) return;
-
-  outBox.className = 'output-box show';
-  outBox.textContent = '⚙️  Running code...';
-
-  setTimeout(() => {
-    const attempted = code.length > 100 && !code.includes('pass') && !code.match(/\/\/ TODO/);
-    if (attempted) {
-      outBox.className  = 'output-box show success';
-      outBox.textContent = `> Running ${currentLang} solution...\n\n${lvl.challenge.sampleOutput || '✓ Output generated successfully'}`;
-    } else {
-      outBox.className  = 'output-box show error';
-      outBox.textContent = '> ⚠️  Please complete your solution before running.\n   Replace the TODO comments with your logic.';
-    }
-  }, 800);
-}
-
-function submitCode() {
-  const code   = document.getElementById('codeEditor')?.value?.trim();
-  const outBox = document.getElementById('outputBox');
-  if (!code || code.length < 60) { showToast('Write a complete solution first!','error','❌'); return; }
-
-  outBox.className  = 'output-box show';
-  outBox.textContent = '⚙️  Submitting solution...';
-
-  setTimeout(() => {
-    // Persist to localStorage (connects to backend in production)
-    const subs = JSON.parse(localStorage.getItem('skillup_submissions') || '[]');
-    subs.push({ level: currentLevel, lang: currentLang, code, ts: new Date().toISOString() });
-    localStorage.setItem('skillup_submissions', JSON.stringify(subs));
-
-    outBox.className  = 'output-box show success';
-    outBox.textContent = `✅  Solution accepted!\n\n${lvl.challenge.sampleOutput}\n\n+${Math.round(lvl.totalXP * 0.3)} XP added to your profile!`;
-
-    launchConfetti();
-    showToast(`Solution submitted! +${Math.round(lvl.totalXP * 0.3)} XP 🏆`,'success','🏆');
-  }, 1500);
+function startCTimer() {
+  cState.timeLeft = 1800;
+  clearInterval(cState.timer);
+  cState.timer = setInterval(() => {
+    cState.timeLeft--;
+    const m = String(Math.floor(cState.timeLeft / 60)).padStart(2,'0');
+    const s = String(cState.timeLeft % 60).padStart(2,'0');
+    document.getElementById('cTimerDisplay').textContent = `${m}:${s}`;
+    if (cState.timeLeft <= 180) document.getElementById('cTimerBox').classList.add('warning');
+    if (cState.timeLeft <= 0) { clearInterval(cState.timer); finishChallenge(); }
+  }, 1000);
 }
 </script>
 </body>

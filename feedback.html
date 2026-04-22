@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback — SKILLUP</title>
+  <link rel="stylesheet" href="static/css/style.css"/>
+  <style>
+    .feedback-hero { padding: 60px 0; text-align: center; position: relative; }
+    .feedback-hero .orb1 { width: 400px; height: 400px; top: -50px; left: -100px; opacity: 0.15; background: var(--pink); }
+    .feedback-hero .orb2 { width: 300px; height: 300px; bottom: -50px; right: -50px; opacity: 0.15; background: var(--cyan); }
+    
+    .feedback-container { max-width: 650px; margin: 0 auto; position: relative; z-index: 2; padding-bottom: 80px; }
+    
+    .feedback-card {
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 0 40px rgba(214,169,58,0.08);
+    }
+
+    .rating-group { display: flex; gap: 8px; font-size: 2rem; margin-bottom: 16px; justify-content: center; cursor: pointer; }
+    .star { color: var(--text3); transition: var(--t); }
+    .star:hover, .star.active { color: var(--gold); text-shadow: 0 0 12px rgba(214,169,58,0.5); transform: scale(1.1); }
+
+    .feedback-type { display: flex; gap: 12px; margin-bottom: 24px; }
+    .type-btn {
+      flex: 1; text-align: center; padding: 12px;
+      background: var(--glass2); border: 1px solid var(--border);
+      border-radius: 8px; cursor: pointer; transition: var(--t);
+      font-size: 0.9rem; font-weight: 600; color: var(--text2);
+    }
+    .type-btn:hover { border-color: rgba(214,169,58,0.3); color: var(--text); background: rgba(214,169,58,0.05); }
+    .type-btn.selected { border-color: var(--gold); color: var(--yellow-l); background: rgba(214,169,58,0.12); box-shadow: inset 0 0 10px rgba(214,169,58,0.1); }
+  </style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🎮</div>
+      <span class="gradient-text">SKILLUP</span>
+    </a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="roadmap.html">Roadmap</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="mentors.html">Mentors</a>
+      <a href="feedback.html" class="active">Feedback</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-avatar" title="Profile">A</div>
+    </div>
+  </div>
+</nav>
+
+<div style="padding-top: 68px; min-height: 100vh;">
+  <div class="orb orb-pink orb1"></div>
+  <div class="orb orb-cyan orb2"></div>
+
+  <section class="feedback-hero fade-up">
+    <div class="container">
+      <div class="funky-chip mb-12">We value your input</div>
+      <h1 style="font-size:3rem;margin-bottom:12px;">Share Your <span class="gradient-text">Feedback</span></h1>
+      <p class="muted" style="max-width:500px;margin:0 auto;">Help us improve SKILLUP by letting us know what you love or what we can do better.</p>
+    </div>
+  </section>
+
+  <div class="feedback-container fade-up-d1">
+    <div class="feedback-card">
+      <form id="feedbackForm" onsubmit="submitFeedback(event)">
+        <div style="text-align:center;margin-bottom:24px;">
+          <h3 style="margin-bottom:8px;">How would you rate your experience?</h3>
+          <div class="rating-group" id="ratingStars">
+            <div class="star" data-val="1">★</div>
+            <div class="star" data-val="2">★</div>
+            <div class="star" data-val="3">★</div>
+            <div class="star" data-val="4">★</div>
+            <div class="star" data-val="5">★</div>
+          </div>
+          <input type="hidden" id="ratingValue" value="0">
+        </div>
+
+        <div class="input-group mb-24">
+          <label class="input-label">What kind of feedback is this?</label>
+          <div class="feedback-type">
+            <div class="type-btn selected" onclick="selectType(this, 'suggestion')">💡 Suggestion</div>
+            <div class="type-btn" onclick="selectType(this, 'bug')">🐛 Bug Report</div>
+            <div class="type-btn" onclick="selectType(this, 'praise')">🔥 Praise</div>
+          </div>
+          <input type="hidden" id="feedbackType" value="suggestion">
+        </div>
+
+        <div class="input-group mb-24">
+          <label class="input-label">Title (Optional)</label>
+          <input type="text" class="input" placeholder="Summarize your feedback">
+        </div>
+
+        <div class="input-group mb-32">
+          <label class="input-label">Detailed Feedback</label>
+          <textarea class="input" placeholder="Tell us more about your experience or suggestion..." required style="height: 140px;"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:14px;">Send Feedback 🚀</button>
+      </form>
+      
+      <div id="successState" style="display:none;text-align:center;padding:40px 0;">
+        <div style="font-size:4rem;margin-bottom:16px;">🎉</div>
+        <h2 style="margin-bottom:12px;" class="gradient-text">Thank You!</h2>
+        <p class="muted mb-24">Your feedback has been received and will help us make SKILLUP even better.</p>
+        <button class="btn btn-secondary" onclick="window.location.reload()">Submit Another</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="nav-logo" style="justify-content:center;margin-bottom:12px;"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></div>
+    <p>Built with ❤️ for college students who want to become great developers.</p>
+    <p style="margin-top:8px;">© 2025 SKILLUP — All Rights Reserved</p>
+  </div>
+</footer>
+
+<script src="static/js/main.js"></script>
+<script>
+  // Rating stars logic
+  const stars = document.querySelectorAll('.star');
+  const ratingInput = document.getElementById('ratingValue');
+  
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const val = parseInt(star.dataset.val);
+      ratingInput.value = val;
+      stars.forEach((s, idx) => {
+        if (idx < val) s.classList.add('active');
+        else s.classList.remove('active');
+      });
+    });
+  });
+
+  // Type selection
+  function selectType(el, type) {
+    document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('feedbackType').value = type;
+  }
+
+  // Submit mock
+  function submitFeedback(e) {
+    e.preventDefault();
+    document.getElementById('feedbackForm').style.display = 'none';
+    document.getElementById('successState').style.display = 'block';
+    if(typeof showToast === 'function') {
+      showToast('Feedback submitted successfully!', 'success', '💌');
+    }
+  }
+</script>
+</body>
+</html>
