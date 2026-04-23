@@ -6,9 +6,9 @@
   <title>Dashboard — SKILLUP</title>
   <link rel="stylesheet" href="static/css/style.css"/>
   <style>
-    .welcome-banner{background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(6,182,212,0.1));border:1px solid var(--border2);border-radius:8px;padding:28px 32px;position:relative;overflow:hidden;margin-bottom:28px;}
+    .welcome-banner{background:rgba(117,98,158,0.08);border:1px solid var(--purple);border-radius:8px;padding:28px 32px;position:relative;overflow:hidden;margin-bottom:28px;}
     .welcome-banner .orb{position:absolute;width:250px;height:250px;right:-60px;top:-60px;opacity:0.2;border-radius:50%;background:var(--purple);filter:blur(60px);}
-    .level-ring{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-size:2.2rem;box-shadow:0 0 30px rgba(124,58,237,0.4);animation:glow 3s ease infinite;flex-shrink:0;}
+    .level-ring{width:90px;height:90px;border-radius:50%;background:var(--cyan);display:grid;place-items:center;font-size:2.2rem;box-shadow:0 0 30px rgba(77,150,160,0.25);animation:glow 3s ease infinite;flex-shrink:0;color:#fff;}
     .xp-section{margin-bottom:8px;}
     .xp-labels{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text2);margin-bottom:6px;}
     .task-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--glass);border:1px solid var(--border);border-radius:6px;transition:var(--t);margin-bottom:10px;}
@@ -28,7 +28,7 @@
     .streak-week{display:flex;gap:8px;}
     .day-box{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:0.7rem;color:var(--text3);}
     .day-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);display:grid;place-items:center;font-size:0.75rem;transition:var(--t);}
-    .day-circle.done{background:linear-gradient(135deg,#ff6b35,#f59e0b);border-color:#f59e0b;color:#fff;box-shadow:0 0 8px rgba(245,158,11,0.4);}
+    .day-circle.done{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 0 8px rgba(179,116,66,0.25);}
     .day-circle.today{border-color:#f59e0b;color:var(--gold);animation:pulse-ring 1.5s ease infinite;}
     .quick-action{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 12px;background:var(--glass);border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:var(--t);text-align:center;text-decoration:none;color:var(--text);}
     .quick-action:hover{border-color:var(--border2);transform:translateY(-2px);}
@@ -40,7 +40,7 @@
 <!-- NAV -->
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <a href="index.html" class="nav-logo"><img src="static/images/logo.png" alt="SKILLUP"></a>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="dashboard.html" class="active">Dashboard</a>
@@ -78,7 +78,7 @@
     <!-- Mini profile card -->
     <div style="position:absolute;bottom:20px;left:16px;right:16px;">
       <div style="background:var(--glass);border:1px solid var(--border);border-radius:4px;padding:24px;display:flex;align-items:center;gap:18px;">
-        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-weight:800;font-size:0.9rem;flex-shrink:0;">A</div>
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--purple);display:grid;place-items:center;font-weight:800;font-size:0.9rem;flex-shrink:0;color:#fff;">A</div>
         <div style="min-width:0;">
           <div style="font-size:0.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Aarav Sharma</div>
           <div class="level-badge" style="font-size:0.7rem;padding:2px 8px;margin-top:3px;">⚡ Level 2</div>
@@ -405,5 +405,6 @@
   document.addEventListener('DOMContentLoaded', loadDashboard);
 </script>
 <a href="feedback.html" class="feedback-fab">💬</a>
+<a href="feedback.html" class="floating-feedback" title="Give Feedback">📝</a>
 </body>
 </html>

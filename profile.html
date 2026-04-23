@@ -6,14 +6,14 @@
   <title>My Profile — SKILLUP</title>
   <link rel="stylesheet" href="static/css/style.css"/>
   <style>
-    .profile-banner{background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(6,182,212,0.15));border:1px solid var(--border2);border-radius:8px;padding:36px;position:relative;overflow:hidden;margin-bottom:28px;}
+    .profile-banner{background:rgba(0,242,255,0.1);border:1px solid var(--cyan);border-radius:8px;padding:36px;position:relative;overflow:hidden;margin-bottom:28px;}
     .profile-avatar-wrap{position:relative;display:inline-block;margin-bottom:16px;}
-    .profile-avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;font-size:2.2rem;font-weight:900;border:3px solid var(--border2);box-shadow:0 0 30px rgba(124,58,237,0.4);}
+    .profile-avatar{width:90px;height:90px;border-radius:50%;background:var(--purple);display:grid;place-items:center;font-size:2.2rem;font-weight:900;border:3px solid var(--purple-l);box-shadow:0 0 30px rgba(191,0,255,0.4);color:#fff;}
     .edit-av{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--purple);display:grid;place-items:center;font-size:0.8rem;cursor:pointer;border:2px solid var(--bg);}
-    .rank-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(124,58,237,0.2));border:1px solid rgba(245,158,11,0.4);border-radius:4px;padding:6px 16px;font-size:0.85rem;font-weight:700;color:var(--gold);}
+    .rank-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,204,0,0.15);border:1px solid var(--yellow);border-radius:4px;padding:6px 16px;font-size:0.85rem;font-weight:700;color:var(--yellow-l);}
     .tab-bar{display:flex;gap:4px;background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:4px;margin-bottom:28px;}
     .tab-btn{flex:1;text-align:center;padding:10px;border-radius:4px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:var(--t);color:var(--text2);}
-    .tab-btn.active{background:linear-gradient(135deg,var(--purple),var(--purple-l));color:#fff;box-shadow:0 0 15px rgba(124,58,237,0.3);}
+    .tab-btn.active{background:var(--purple);color:#fff;box-shadow:0 0 15px rgba(191,0,255,0.3);}
     .tab-panel{display:none;}
     .tab-panel.active{display:block;}
     .activity-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}
@@ -28,7 +28,7 @@
 <body>
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <a href="index.html" class="nav-logo"><img src="static/images/logo.png" alt="SKILLUP"></a>
     <div class="nav-links">
       <a href="dashboard.html">Dashboard</a><a href="roadmap.html">Roadmap</a>
       <a href="leaderboard.html">Leaderboard</a>
@@ -271,5 +271,6 @@
 
   document.addEventListener('DOMContentLoaded', loadProfile);
 </script>
+<a href="feedback.html" class="floating-feedback" title="Give Feedback">📝</a>
 </body>
 </html>

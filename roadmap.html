@@ -7,17 +7,17 @@
   <link rel="stylesheet" href="static/css/style.css"/>
   <style>
     .roadmap-wrap{max-width:860px;margin:0 auto;position:relative;}
-    .center-line{position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--purple),var(--cyan),var(--green));border-radius:2px;z-index:0;}
+    .center-line{position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:3px;background:var(--cyan);border-radius:2px;z-index:0;}
     .rm-node{display:flex;align-items:flex-start;gap:0;margin-bottom:52px;position:relative;z-index:1;}
     .rm-node:nth-child(even){flex-direction:row-reverse;}
     .rm-side{flex:1;padding:0 40px;}
     .rm-node:nth-child(even) .rm-side{text-align:right;}
     .rm-center{flex-shrink:0;display:flex;flex-direction:column;align-items:center;z-index:2;}
     .node-ball{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;border:3px solid transparent;transition:var(--t);cursor:pointer;}
-    .node-ball.unlocked{background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(6,182,212,0.3));border-color:var(--border2);box-shadow:0 0 20px rgba(124,58,237,0.35);}
-    .node-ball.active{background:linear-gradient(135deg,var(--purple),var(--cyan));border-color:var(--cyan-l);box-shadow:0 0 35px rgba(124,58,237,0.6);animation:glow 2.5s ease infinite;}
+    .node-ball.unlocked{background:rgba(117,98,158,0.15);border-color:var(--purple);box-shadow:0 0 20px rgba(117,98,158,0.25);}
+    .node-ball.active{background:var(--cyan);border-color:var(--cyan-l);box-shadow:0 0 35px rgba(77,150,160,0.4);animation:glow 2.5s ease infinite;color:#fff;}
     .node-ball.locked{background:rgba(255,255,255,0.04);border-color:var(--border);filter:grayscale(1) opacity(0.5);}
-    .node-ball.done{background:linear-gradient(135deg,#10b981,#06b6d4);border-color:#10b981;box-shadow:0 0 20px rgba(16,185,129,0.4);}
+    .node-ball.done{background:var(--green);border-color:var(--green);box-shadow:0 0 20px rgba(16,185,129,0.4);color:#fff;}
     .rm-card{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:6px;padding:22px;transition:var(--t);}
     .rm-card.active{border-color:var(--border2);box-shadow:0 0 25px rgba(124,58,237,0.15);}
     .rm-card.done{border-color:rgba(16,185,129,0.3);box-shadow:0 0 15px rgba(16,185,129,0.08);}
@@ -34,7 +34,7 @@
 <!-- NAV -->
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <a href="index.html" class="nav-logo"><img src="static/images/logo.png" alt="SKILLUP"></a>
     <div class="nav-links">
       <a href="dashboard.html">Dashboard</a>
       <a href="roadmap.html" class="active">Roadmap</a>
@@ -330,5 +330,6 @@ async function initRoadmap() {
 
 document.addEventListener('DOMContentLoaded', initRoadmap);
 </script>
+<a href="feedback.html" class="floating-feedback" title="Give Feedback">📝</a>
 </body>
 </html>

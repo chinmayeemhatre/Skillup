@@ -60,9 +60,9 @@
     /* Score result */
     .score-result{text-align:center;padding:40px 20px;animation:fadeUp 0.5s ease;}
     .score-circle{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;margin:0 auto 24px;font-family:'Syne',sans-serif;}
-    .score-circle.great{background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.15));border:3px solid var(--green);box-shadow:0 0 40px rgba(16,185,129,0.3);}
-    .score-circle.good{background:linear-gradient(135deg,rgba(214,169,58,0.2),rgba(245,158,11,0.15));border:3px solid var(--yellow);box-shadow:0 0 40px rgba(214,169,58,0.3);}
-    .score-circle.poor{background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(220,38,38,0.1));border:3px solid #ef4444;}
+    .score-circle.great{background:rgba(16,185,129,0.15);border:3px solid var(--green);box-shadow:0 0 40px rgba(16,185,129,0.3);}
+    .score-circle.good{background:rgba(255,204,0,0.15);border:3px solid var(--yellow);box-shadow:0 0 40px rgba(255,204,0,0.3);}
+    .score-circle.poor{background:rgba(239,68,68,0.15);border:3px solid #ef4444;}
 
     /* ── Challenge / Code Editor ── */
     .challenge-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
@@ -118,7 +118,7 @@
 <!-- ── NAV ── -->
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="nav-logo"><div class="logo-icon">🎮</div><span class="gradient-text">SKILLUP</span></a>
+    <a href="index.html" class="nav-logo"><img src="static/images/logo.png" alt="SKILLUP"></a>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="dashboard.html">Dashboard</a>

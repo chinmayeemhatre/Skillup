@@ -25,7 +25,7 @@
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(214,169,58,0.15) 0%, rgba(13,11,20,0) 70%);
+      background: radial-gradient(circle, rgba(77,150,160,0.1) 0%, rgba(13,11,20,0) 70%);
       pointer-events: none;
       z-index: 0;
     }
@@ -39,7 +39,7 @@
       max-width: 900px;
       width: 100%;
       margin-top: 60px;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 100px rgba(214,169,58,0.1);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 100px rgba(77,150,160,0.05);
       position: relative;
       z-index: 2;
     }
@@ -70,7 +70,7 @@
     }
 
     .glow-button {
-      background: linear-gradient(135deg, var(--yellow), var(--orange));
+      background: var(--pink);
       color: var(--bg);
       padding: 16px 36px;
       border-radius: 12px;
@@ -78,7 +78,7 @@
       font-weight: 800;
       border: none;
       cursor: pointer;
-      box-shadow: 0 0 30px rgba(214,169,58,0.4);
+      box-shadow: 0 0 30px rgba(192,77,112,0.3);
       transition: all 0.3s ease;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -95,10 +95,7 @@
 <!-- NAV -->
 <nav class="navbar">
   <div class="container">
-    <a href="index.html" class="nav-logo">
-      <div class="logo-icon">🎮</div>
-      <span class="gradient-text">SKILLUP</span>
-    </a>
+    <a href="index.html" class="nav-logo"><img src="static/images/logo.png" alt="SKILLUP"></a>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="roadmap.html">Roadmap</a>
@@ -142,7 +139,7 @@
       </div>
       
       <div class="progress-wrap" style="height: 12px; margin-bottom:24px;">
-        <div class="progress-bar" style="width: 75%; background: linear-gradient(90deg, var(--yellow), var(--orange)); box-shadow: 0 0 10px rgba(214,169,58,0.8);"></div>
+        <div class="progress-bar" style="width: 75%; background: var(--pink); box-shadow: 0 0 10px rgba(192,77,112,0.4);"></div>
       </div>
 
       <div class="feature-strip">
@@ -170,10 +167,7 @@
 <!-- Footer -->
 <footer class="footer" style="border-top: 1px solid var(--border); padding: 40px 0;">
   <div class="container text-center">
-    <div class="nav-logo" style="justify-content:center;margin-bottom:12px;">
-      <div class="logo-icon">🎮</div>
-      <span class="gradient-text">SKILLUP</span>
-    </div>
+    <div class="nav-logo" style="justify-content:center;margin-bottom:12px;"><img src="static/images/logo.png" alt="SKILLUP"></div>
     <p class="muted">Redefining education for the next generation of engineers.</p>
   </div>
 </footer>
