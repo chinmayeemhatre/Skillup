@@ -4,6 +4,7 @@ const { protect, admin } = require('../middleware/auth');
 const User  = require('../models/User');
 const Level = require('../models/Level');
 const Score = require('../models/Score');
+const Feedback = require('../models/Feedback');
 
 // Apply protection to all admin routes
 router.use(protect);
@@ -44,6 +45,21 @@ router.get('/users', async (req, res) => {
     res.json({ success: true, users });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Error fetching users' });
+  }
+});
+
+/**
+ * GET /api/admin/feedback
+ * Fetch all platform feedback
+ */
+router.get('/feedback', async (req, res) => {
+  try {
+    const feedback = await Feedback.find()
+      .populate('user', 'name email username')
+      .sort({ createdAt: -1 });
+    res.json({ success: true, feedback });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 });
 

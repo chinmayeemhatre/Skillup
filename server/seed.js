@@ -17,6 +17,7 @@ dotenv.config();
 const User  = require('./models/User');
 const Level = require('./models/Level');
 const Score = require('./models/Score');
+const Feedback = require('./models/Feedback');
 
 // ── Sample Level Data ─────────────────────────────────────────
 const levelsData = [
@@ -197,7 +198,12 @@ async function seed() {
 
     // Clear existing data if --clear flag
     if (process.argv.includes('--clear')) {
-      await Promise.all([User.deleteMany({}), Level.deleteMany({}), Score.deleteMany({})]);
+      await Promise.all([
+        User.deleteMany({}), 
+        Level.deleteMany({}), 
+        Score.deleteMany({}),
+        Feedback.deleteMany({})
+      ]);
       console.log('🗑️  Cleared existing data');
     }
 
@@ -238,6 +244,36 @@ async function seed() {
       created++;
     }
     console.log(`✅ Seeded ${created} new users (skipped ${usersData.length - created} existing)`);
+
+    // Seed some sample feedback from students
+    const studentUsers = await User.find({ role: 'student' }).limit(3);
+    if (studentUsers.length > 0) {
+      const feedbackData = [
+        { 
+          user: studentUsers[0]._id, 
+          rating: 5, 
+          type: 'praise', 
+          title: 'Amazing UI!', 
+          content: 'The high-tech golden theme is absolutely stunning. Best learning platform I have used.' 
+        },
+        { 
+          user: studentUsers[1]._id, 
+          rating: 4, 
+          type: 'suggestion', 
+          title: 'More C++ content', 
+          content: 'I would love to see more DSA challenges specifically for C++ in Level 2.' 
+        },
+        { 
+          user: studentUsers[2]._id, 
+          rating: 2, 
+          type: 'bug', 
+          title: 'Quiz timer glitch', 
+          content: 'The timer occasionally skips a few seconds on mobile view. Please check.' 
+        }
+      ];
+      await Feedback.insertMany(feedbackData);
+      console.log('✅ Seeded 3 sample feedback records');
+    }
 
     console.log('\n🎮 SKILLUP database seeded successfully!');
     console.log('   Demo login: aarav@skillup.dev / password123\n');

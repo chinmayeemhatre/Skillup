@@ -94,6 +94,17 @@
       </div>
     </div>
 
+    <!-- User Feedback Section -->
+    <div class="admin-section">
+      <div class="section-header">
+        <h2>User Feedback</h2>
+        <button class="btn btn-outline btn-sm" onclick="fetchFeedback()">Refresh Feedback 🔄</button>
+      </div>
+      <div id="feedbackList" style="margin-top: 20px;">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
     <!-- Recent Activity Section -->
     <div class="admin-section">
       <h2>Recent Activity</h2>
@@ -123,7 +134,36 @@
     });
 
     async function initAdmin() {
-      await Promise.all([fetchStats(), fetchUsers()]);
+      await Promise.all([fetchStats(), fetchUsers(), fetchFeedback()]);
+    }
+
+    async function fetchFeedback() {
+      try {
+        const res = await SkillupAPI.getAdminFeedback();
+        if (res.success) {
+          const container = document.getElementById('feedbackList');
+          if (!res.feedback || res.feedback.length === 0) {
+            container.innerHTML = '<p class="muted">No feedback received yet.</p>';
+            return;
+          }
+          container.innerHTML = res.feedback.map(f => `
+            <div style="padding: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 15px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <div style="font-weight:700;">${f.title || 'Untitled Feedback'}</div>
+                <div style="font-size:0.8rem; color:var(--gold);">${'★'.repeat(f.rating)}${'☆'.repeat(5-f.rating)}</div>
+              </div>
+              <p style="font-size:0.9rem; line-height:1.6; color:var(--text2);">${f.content}</p>
+              <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text3);">
+                <div>By <span style="color:var(--cyan);">${f.user?.name || 'Anonymous'}</span> (@${f.user?.username || 'user'})</div>
+                <div style="padding: 2px 8px; border-radius:4px; background:rgba(255,255,255,0.05);">${f.type.toUpperCase()}</div>
+                <div>${new Date(f.createdAt).toLocaleDateString()}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        showToast('Error fetching feedback', 'error', '❌');
+      }
     }
 
     async function fetchStats() {
@@ -204,6 +244,7 @@
     // Extend SkillupAPI with admin methods
     SkillupAPI.getAdminStats = () => SkillupAPI.apiFetch('/admin/stats');
     SkillupAPI.getAdminUsers = () => SkillupAPI.apiFetch('/admin/users');
+    SkillupAPI.getAdminFeedback = () => SkillupAPI.apiFetch('/admin/feedback');
     SkillupAPI.deleteUser = (id) => SkillupAPI.apiFetch(`/admin/users/${id}`, { method: 'DELETE' });
   </script>
 </body>
