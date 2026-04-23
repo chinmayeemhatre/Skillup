@@ -6,7 +6,7 @@
   <title>Mentors — SKILLUP</title>
   <link rel="stylesheet" href="static/css/style.css"/>
   <style>
-    .mentor-card{background:var(--glass);border:1px solid var(--border);border-radius:18px;padding:22px;transition:var(--t);display:flex;flex-direction:column;gap:14px;}
+    .mentor-card{background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:22px;transition:var(--t);display:flex;flex-direction:column;gap:14px;}
     .mentor-card:hover{border-color:rgba(192,54,90,0.25);transform:translateY(-3px);}
     .mentor-top{display:flex;align-items:center;gap:14px;}
     .mentor-av{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;font-weight:800;flex-shrink:0;color:#fff;}
@@ -15,18 +15,18 @@
     .dot-away{width:7px;height:7px;border-radius:50%;background:var(--yellow);}
     .dot-offline{width:7px;height:7px;border-radius:50%;background:var(--text3);}
     .skill-tags{display:flex;flex-wrap:wrap;gap:6px;}
-    .skill-tag{padding:3px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;background:rgba(112,71,192,0.1);border:1px solid rgba(112,71,192,0.25);color:var(--purple-l);}
-    .mentor-stats{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+    .skill-tag{padding:3px 10px;border-radius:4px;font-size:0.7rem;font-weight:700;background:rgba(112,71,192,0.1);border:1px solid rgba(112,71,192,0.25);color:var(--purple-l);}
+    .mentor-stats{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;}
     .m-stat{flex:1;text-align:center;padding:10px 6px;border-right:1px solid var(--border);}
     .m-stat:last-child{border-right:none;}
     .m-stat-val{font-size:1rem;font-weight:800;font-family:'Syne',sans-serif;}
     .m-stat-lbl{font-size:0.67rem;color:var(--text2);}
     .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
-    .filt-btn{padding:7px 16px;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:var(--glass);transition:var(--t);}
+    .filt-btn{padding:7px 16px;border-radius:4px;font-size:0.8rem;font-weight:700;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:var(--glass);transition:var(--t);}
     .filt-btn.active{background:var(--pink);color:#fff;border-color:var(--pink);}
     .filt-btn:hover:not(.active){border-color:var(--pink-l);color:var(--pink-l);}
     .mentor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
-    .request-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:8px;font-size:0.7rem;background:rgba(196,154,26,0.1);color:var(--yellow-l);border:1px solid rgba(196,154,26,0.25);}
+    .request-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:3px;font-size:0.7rem;background:rgba(196,154,26,0.1);color:var(--yellow-l);border:1px solid rgba(196,154,26,0.25);}
     .search-bar{position:relative;margin-bottom:20px;}
     .search-bar input{padding-left:38px;}
     .search-bar span{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);}
