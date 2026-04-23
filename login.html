@@ -76,15 +76,34 @@
   </p>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
-  function handleLogin() {
-    const u = document.getElementById('loginUser').value.trim();
-    const p = document.getElementById('loginPass').value.trim();
-    if (!u || !p) { showToast('Please fill all fields', 'error', '❌'); return; }
-    showToast('Logging you in...', 'info', '🔄');
-    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+  // If already logged in, go to dashboard
+  if (SkillupAPI.isLoggedIn()) window.location.href = 'dashboard.html';
+
+  async function handleLogin() {
+    const email = document.getElementById('loginUser').value.trim();
+    const pass  = document.getElementById('loginPass').value.trim();
+    if (!email || !pass) { showToast('Please fill all fields', 'error', '❌'); return; }
+
+    const btn = document.querySelector('button[onclick="handleLogin()"]');
+    btn.disabled = true;
+    btn.textContent = 'Logging in...';
+    showToast('Verifying credentials...', 'info', '🔄');
+
+    try {
+      await SkillupAPI.login(email, pass);
+      showToast('Welcome back! 🎮', 'success', '✅');
+      launchConfetti();
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+    } catch (err) {
+      showToast(err.message || 'Login failed', 'error', '❌');
+      btn.disabled = false;
+      btn.textContent = 'Login to SKILLUP 🚀';
+    }
   }
+
   function togglePwd(id) {
     const el = document.getElementById(id);
     el.type = el.type === 'password' ? 'text' : 'password';
@@ -93,6 +112,11 @@
     document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
+
+  // Allow Enter key to submit
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleLogin();
+  });
 </script>
 </body>
 </html>

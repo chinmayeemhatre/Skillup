@@ -24,6 +24,15 @@ const userSchema = new mongoose.Schema({
     minlength: [2,  'Name must be at least 2 characters'],
     maxlength: [50, 'Name must be at most 50 characters']
   },
+  username: {
+    type:      String,
+    unique:    true,
+    trim:      true,
+    minlength: [3, 'Username must be at least 3 characters'],
+    maxlength: [30, 'Username must be at most 30 characters'],
+    lowercase: true,
+    index:     true
+  },
   email: {
     type: String,
     required:  [true, 'Email is required'],
@@ -112,9 +121,15 @@ userSchema.virtual('levelProgressPct').get(function () {
   return Math.min(100, Math.round(((this.xp - prev) / (next - prev)) * 100));
 });
 
-// ── Pre-save: Hash password before storing ───────────────────
+// ── Pre-save: Hash password and generate username ────────────
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+  // Generate username from email if missing
+  if (!this.username && this.email) {
+    this.username = this.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math.floor(100 + Math.random() * 900);
+  }
+
+  // Skip if password wasn't changed, or if seed script already hashed it
+  if (!this.isModified('password') || this.$skipPasswordHash) return next();
   const salt  = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
   next();
@@ -150,8 +165,7 @@ userSchema.methods.updateStreak = function () {
   this.lastActiveAt     = now;
 };
 
-// ── Index: fast email lookups ─────────────────────────────────
-userSchema.index({ email: 1 });
-userSchema.index({ xp: -1 }); // leaderboard queries
+// ── Index: fast leaderboard lookups ──────────────────────────
+userSchema.index({ xp: -1 });
 
 module.exports = mongoose.model('User', userSchema);

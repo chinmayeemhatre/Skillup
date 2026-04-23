@@ -178,14 +178,15 @@ const levelsData = [
 
 // ── Sample Users ──────────────────────────────────────────────
 const usersData = [
-  { name:'Aarav Sharma',   email:'aarav@skillup.dev',   password:'password123', xp:340, level:2, college:'KGISL', role:'student' },
-  { name:'Priya Nair',     email:'priya@skillup.dev',   password:'password123', xp:980, level:4, college:'KGISL', role:'mentor'  },
-  { name:'Rahul Gupta',    email:'rahul@skillup.dev',   password:'password123', xp:1450,level:5, college:'KGISL', role:'mentor'  },
-  { name:'Karan Mehta',    email:'karan@skillup.dev',   password:'password123', xp:2100,level:6, college:'NIT',   role:'mentor'  },
-  { name:'Sneha Reddy',    email:'sneha@skillup.dev',   password:'password123', xp:450, level:2, college:'VIT',   role:'student' },
-  { name:'Arjun Singh',    email:'arjun@skillup.dev',   password:'password123', xp:180, level:1, college:'SRM',   role:'student' },
-  { name:'Divya Krishnan', email:'divya@skillup.dev',   password:'password123', xp:720, level:3, college:'Anna University', role:'student' },
-  { name:'Rohan Das',      email:'rohan@skillup.dev',   password:'password123', xp:1100,level:4, college:'BITS',  role:'student' }
+  { name:'SKILLUP Admin',  email:'admin@skillup.dev',   password:'adminpassword', username:'admin', xp:9999,level:7, college:'SKILLUP HQ', role:'admin' },
+  { name:'Aarav Sharma',   email:'aarav@skillup.dev',   password:'password123',   username:'aarav', xp:340, level:2, college:'KGISL', role:'student' },
+  { name:'Priya Nair',     email:'priya@skillup.dev',   password:'password123',   username:'priya', xp:980, level:4, college:'KGISL', role:'mentor'  },
+  { name:'Rahul Gupta',    email:'rahul@skillup.dev',   password:'password123',   username:'rahul', xp:1450,level:5, college:'KGISL', role:'mentor'  },
+  { name:'Karan Mehta',    email:'karan@skillup.dev',   password:'password123',   username:'karan', xp:2100,level:6, college:'NIT',   role:'mentor'  },
+  { name:'Sneha Reddy',    email:'sneha@skillup.dev',   password:'password123',   username:'sneha', xp:450, level:2, college:'VIT',   role:'student' },
+  { name:'Arjun Singh',    email:'arjun@skillup.dev',   password:'password123',   username:'arjun', xp:180, level:1, college:'SRM',   role:'student' },
+  { name:'Chinmayee M',    email:'chinuu@skillup.dev',  password:'password123',   username:'chinuu.05', xp:720, level:3, college:'Anna University', role:'student' },
+  { name:'Rohan Das',      email:'rohan@skillup.dev',   password:'password123',   username:'rohan', xp:1100,level:4, college:'BITS',  role:'student' }
 ];
 
 // ── Seed function ─────────────────────────────────────────────
@@ -222,6 +223,7 @@ async function seed() {
       const user = new User({
         name:     userData.name,
         email:    userData.email,
+        username: userData.username,
         password: hash,
         xp:       userData.xp,
         level:    userData.level,

@@ -61,8 +61,8 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Community</div>
-      <div class="sidebar-link disabled"><span class="icon">🤝</span> Mentors <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
-      <div class="sidebar-link disabled"><span class="icon">💬</span> Messages <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
+      <a href="mentors.html" class="sidebar-link"><span class="icon">🤝</span> Mentors</a>
+      <a href="chat.html" class="sidebar-link"><span class="icon">💬</span> Messages</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Account</div>
@@ -143,50 +143,103 @@
   </main>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
-  const students = [
-    {rank:1,name:'Karan Mehta',initials:'K',color:'#f59e0b,#ef4444',level:6,lvlName:'Job Apply',xp:1240,maxXp:1500,streak:28,badges:12},
-    {rank:2,name:'Priya Nair',initials:'P',color:'#ec4899,#7c3aed',level:4,lvlName:'Resume',xp:820,maxXp:1000,streak:14,badges:8},
-    {rank:3,name:'Rohan Das',initials:'R',color:'#06b6d4,#7c3aed',level:4,lvlName:'Resume',xp:710,maxXp:1000,streak:9,badges:7},
-    {rank:4,name:'Sneha Patel',initials:'S',color:'#10b981,#06b6d4',level:3,lvlName:'Projects',xp:580,maxXp:700,streak:21,badges:6},
-    {rank:5,name:'Arjun Rao',initials:'A',color:'#7c3aed,#ec4899',level:3,lvlName:'Projects',xp:520,maxXp:700,streak:6,badges:5},
-    {rank:6,name:'Divya Iyer',initials:'D',color:'#f59e0b,#10b981',level:3,lvlName:'Projects',xp:480,maxXp:700,streak:11,badges:5},
-    {rank:7,name:'Vikram Singh',initials:'V',color:'#ef4444,#f59e0b',level:2,lvlName:'DSA',xp:390,maxXp:500,streak:3,badges:4},
-    {rank:8,name:'Aarav Sharma',initials:'A',color:'#7c3aed,#06b6d4',level:2,lvlName:'DSA',xp:340,maxXp:500,streak:12,badges:5,isMe:true},
-    {rank:9,name:'Meera Joshi',initials:'M',color:'#06b6d4,#10b981',level:2,lvlName:'DSA',xp:290,maxXp:500,streak:5,badges:3},
-    {rank:10,name:'Raj Kumar',initials:'R',color:'#9d5cf5,#f59e0b',level:2,lvlName:'DSA',xp:240,maxXp:500,streak:2,badges:2},
-    {rank:11,name:'Aisha Khan',initials:'A',color:'#ec4899,#f59e0b',level:1,lvlName:'Basics',xp:90,maxXp:200,streak:8,badges:1},
-    {rank:12,name:'Suresh Babu',initials:'S',color:'#7c3aed,#ec4899',level:1,lvlName:'Basics',xp:60,maxXp:200,streak:1,badges:1},
+  const LEVEL_NAMES = ['','Basics','DSA','Projects','Resume & GitHub','Interview Prep','Job Apply','Internship Ready'];
+  const COLORS = [
+    '#f59e0b,#ef4444','#ec4899,#7c3aed','#06b6d4,#7c3aed','#10b981,#06b6d4',
+    '#7c3aed,#ec4899','#f59e0b,#10b981','#ef4444,#f59e0b','#9d5cf5,#f59e0b',
+    '#06b6d4,#10b981','#7c3aed,#06b6d4','#ec4899,#f59e0b','#7c3aed,#ec4899'
   ];
+
+  let allStudents = [];
+  const currentUser = SkillupAPI.getUser();
+
+  async function loadLeaderboard() {
+    try {
+      const { leaderboard } = await SkillupAPI.getLeaderboard();
+      allStudents = leaderboard;
+
+      // Update podium with real top 3
+      renderPodium(leaderboard);
+      renderTable(leaderboard);
+
+      // Update rank banner
+      if (currentUser) {
+        const myEntry = leaderboard.find(u => u.name === currentUser.name);
+        const rankBanner = document.querySelector('.card-glow > div:last-child');
+        if (rankBanner && myEntry) {
+          rankBanner.innerHTML = `You are ranked <strong class="gradient-text">#${myEntry.rank}</strong> out of <strong>${leaderboard.length}</strong> students · Keep going! 🔥`;
+        }
+      }
+    } catch(err) {
+      console.warn('Leaderboard load error:', err.message);
+      // Fallback — keep static data visible
+    }
+  }
+
+  function renderPodium(data) {
+    if (data.length < 3) return;
+    const [first, second, third] = data;
+    const podium = document.querySelector('.podium');
+    if (!podium) return;
+    podium.innerHTML = `
+      <div class="podium-slot podium-2">
+        <div class="podium-avatar" style="background:linear-gradient(135deg,${COLORS[1]});">${second.name.charAt(0)}<div class="podium-crown" style="position:absolute;top:-16px;font-size:1rem;">🥈</div></div>
+        <div class="podium-name">${second.name}</div>
+        <div class="podium-xp">⭐ ${second.xp.toLocaleString()} XP</div>
+        <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl ${second.level}</div>
+        <div class="podium-block">2</div>
+      </div>
+      <div class="podium-slot podium-1">
+        <div class="podium-avatar" style="background:linear-gradient(135deg,${COLORS[0]});"><span class="crown">👑</span>${first.name.charAt(0)}</div>
+        <div class="podium-name" style="font-size:0.95rem;">${first.name}</div>
+        <div class="podium-xp" style="font-size:0.85rem;">⭐ ${first.xp.toLocaleString()} XP</div>
+        <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl ${first.level}</div>
+        <div class="podium-block">1</div>
+      </div>
+      <div class="podium-slot podium-3">
+        <div class="podium-avatar" style="background:linear-gradient(135deg,${COLORS[2]});">${third.name.charAt(0)}<div style="position:absolute;top:-16px;font-size:1rem;">🥉</div></div>
+        <div class="podium-name">${third.name}</div>
+        <div class="podium-xp">⭐ ${third.xp.toLocaleString()} XP</div>
+        <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl ${third.level}</div>
+        <div class="podium-block">3</div>
+      </div>`;
+  }
 
   function renderTable(data) {
     const tbody = document.getElementById('lbBody');
-    tbody.innerHTML = data.map(s => `
-      <tr class="lb-row${s.isMe?' me':''}" data-name="${s.name}">
-        <td><div class="rank-num ${s.rank<=3?'rank-'+s.rank:''}">${s.rank<=3?['🥇','🥈','🥉'][s.rank-1]:s.rank}</div></td>
+    const xpMaxMap = [0, 100, 500, 1000, 1400, 2000, 2500, 3500];
+    tbody.innerHTML = data.map((s, i) => {
+      const color = COLORS[i % COLORS.length];
+      const isMe = currentUser && s.name === currentUser.name;
+      const maxXp = xpMaxMap[s.level] || 3500;
+      const rankIcon = s.rank <= 3 ? ['🥇','🥈','🥉'][s.rank-1] : s.rank;
+      const rankClass = s.rank <= 3 ? `rank-${s.rank}` : '';
+      return `
+      <tr class="lb-row${isMe ? ' me' : ''}" data-name="${s.name}">
+        <td><div class="rank-num ${rankClass}">${rankIcon}</div></td>
         <td>
           <div style="display:flex;align-items:center;gap:12px;">
-            <div class="lb-avatar" style="background:linear-gradient(135deg,${s.color});">${s.initials}</div>
+            <div class="lb-avatar" style="background:linear-gradient(135deg,${color});">${s.name.charAt(0)}</div>
             <div>
-              <div style="font-size:0.9rem;font-weight:600;">${s.name}${s.isMe?' <span class="tag tag-purple" style="font-size:0.65rem;padding:2px 8px;">You</span>':''}</div>
-              <div style="font-size:0.75rem;color:var(--text2);">@${s.name.split(' ').join('_').toLowerCase()}</div>
+              <div style="font-size:0.9rem;font-weight:600;">${s.name}${isMe ? ' <span class="tag tag-purple" style="font-size:0.65rem;padding:2px 8px;">You</span>' : ''}</div>
+              <div style="font-size:0.75rem;color:var(--text2);">${s.college || 'SKILLUP Student'}</div>
             </div>
           </div>
         </td>
-        <td><div class="level-badge" style="font-size:0.75rem;padding:3px 10px;">Lvl ${s.level} — ${s.lvlName}</div></td>
+        <td><div class="level-badge" style="font-size:0.75rem;padding:3px 10px;">Lvl ${s.level} — ${LEVEL_NAMES[s.level] || 'Learning'}</div></td>
         <td>
           <div style="font-size:0.9rem;font-weight:700;color:var(--gold);margin-bottom:4px;">⭐ ${s.xp.toLocaleString()}</div>
-          <div class="xp-bar-mini"><div class="xp-fill" style="width:${Math.round(s.xp/s.maxXp*100)}%"></div></div>
+          <div class="xp-bar-mini"><div class="xp-fill" style="width:${Math.min(100,Math.round(s.xp/maxXp*100))}%"></div></div>
         </td>
         <td><span style="font-size:1rem;">🔥</span> <strong style="color:#ff6b35;">${s.streak}</strong> <span class="muted" style="font-size:0.78rem;">days</span></td>
-        <td><span style="font-size:0.9rem;">🏅</span> <strong style="font-size:0.9rem;">${s.badges}</strong></td>
-      </tr>`).join('');
+        <td><span style="font-size:0.9rem;">🏅</span> <strong style="font-size:0.9rem;">${s.badgeCount}</strong></td>
+      </tr>`;
+    }).join('');
   }
 
-  renderTable(students);
-
-  const origFilter = window.filterLeaderboard;
   window.filterLeaderboard = (q) => {
     document.querySelectorAll('.lb-row').forEach(row => {
       row.style.display = row.dataset.name.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
@@ -196,10 +249,12 @@
   function setFilter(btn, type) {
     document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    if (type === 'week') renderTable([...students].sort((a,b) => b.streak - a.streak));
-    else if (type === 'level') renderTable([...students].sort((a,b) => b.level - a.level));
-    else renderTable(students);
+    if (type === 'week') renderTable([...allStudents].sort((a,b) => b.streak - a.streak));
+    else if (type === 'level') renderTable([...allStudents].sort((a,b) => b.level - a.level));
+    else renderTable(allStudents);
   }
+
+  document.addEventListener('DOMContentLoaded', loadLeaderboard);
 </script>
 </body>
 </html>

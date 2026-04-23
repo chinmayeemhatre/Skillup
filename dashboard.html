@@ -199,26 +199,27 @@
           </div>
         </div>
 
+        <!-- Path to Mentor -->
+        <div class="card mb-24" id="mentorPathCard">
+          <div class="section-title"><div class="dot"></div>Become a Mentor 🎓</div>
+          <div style="padding:15px; background:rgba(192,54,90,0.05); border:1px dashed var(--pink); border-radius:12px; margin-bottom:12px;">
+            <div style="font-size:0.9rem; font-weight:700; margin-bottom:4px;">Mentor Requirements</div>
+            <div style="font-size:0.75rem; color:var(--text2);">Reach Level 4 + Reach 1000 XP</div>
+          </div>
+          <div id="mentorStatusText" style="font-size:0.85rem; font-weight:600; color:var(--text); margin-bottom:8px;">Loading status...</div>
+          <div class="progress-container" style="height:8px; background:rgba(255,255,255,0.05);"><div class="progress-bar" id="mentorProgressBar" style="width:0%; background:var(--gold);"></div></div>
+        </div>
+
         <!-- Available Mentors -->
         <div class="card">
           <div class="section-title"><div class="dot"></div>Available Mentors</div>
-          <div class="mini-mentor">
-            <div class="mentor-avatar" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">R</div>
-            <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Rahul Gupta</div><div style="font-size:0.75rem;color:var(--text2);">Level 5 · 🏅 Mentor badge</div></div>
-            <div class="activity-dot online"></div>
-            <a href="chat.html" class="btn btn-cyan btn-sm">Message</a>
-          </div>
-          <div class="mini-mentor">
-            <div class="mentor-avatar" style="background:linear-gradient(135deg,#ec4899,#7c3aed);">P</div>
-            <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Priya Nair</div><div style="font-size:0.75rem;color:var(--text2);">Level 4 · ⭐ Top Helper</div></div>
-            <div class="activity-dot online"></div>
-            <a href="chat.html" class="btn btn-cyan btn-sm">Message</a>
-          </div>
-          <div class="mini-mentor">
-            <div class="mentor-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">K</div>
-            <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Karan Mehta</div><div style="font-size:0.75rem;color:var(--text2);">Level 6 · 🎯 DSA Expert</div></div>
-            <div class="activity-dot away"></div>
-            <a href="chat.html" class="btn btn-secondary btn-sm">Message</a>
+          <div id="miniMentorList">
+            <div class="mini-mentor">
+              <div class="mentor-avatar" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">R</div>
+              <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">Rahul Gupta</div><div style="font-size:0.75rem;color:var(--text2);">Level 5 · 🏅 Mentor badge</div></div>
+              <div class="activity-dot online"></div>
+              <a href="chat.html" class="btn btn-cyan btn-sm">Message</a>
+            </div>
           </div>
           <a href="mentors.html" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-top:8px;">Browse All Mentors →</a>
         </div>
@@ -227,8 +228,162 @@
   </main>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
+  // Auth guard
+  SkillupAPI.requireAuth();
+
+  async function loadDashboard() {
+    try {
+      const { progress } = await SkillupAPI.getProgress();
+      const { user, gamification, levelProgress } = progress;
+
+      // — Welcome banner —
+      const initial = (user.name || 'U').charAt(0).toUpperCase();
+      document.querySelector('.welcome-banner h2').textContent = user.name;
+      document.querySelector('.welcome-banner .level-badge').textContent = `⚡ Level ${gamification.level} — ${getLevelTitle(gamification.level)}`;
+      document.querySelector('.welcome-banner .xp-badge').textContent = `⭐ ${gamification.xp.toLocaleString()} XP`;
+      const streakEl = document.querySelector('.welcome-banner strong');
+      if (streakEl) streakEl.textContent = gamification.streak.current;
+
+      // — XP bar —
+      const xpLabelEl = document.getElementById('currentXP');
+      const maxXPEl   = document.getElementById('maxXP');
+      if (xpLabelEl) { xpLabelEl.dataset.xp = gamification.xpInLevel; animateCounter(xpLabelEl, gamification.xpInLevel); }
+      if (maxXPEl)   { maxXPEl.dataset.xp = gamification.xpNeeded; maxXPEl.textContent = `${gamification.xpNeeded} XP`; }
+      const bar = document.querySelector('[data-progress]');
+      if (bar) animateProgressBar(bar, gamification.levelPct);
+
+      // — Stat cards —
+      const statVals = document.querySelectorAll('.stat-value[data-count]');
+      if (statVals[0]) { statVals[0].dataset.count = gamification.xp; animateCounter(statVals[0], gamification.xp); }
+      if (statVals[1]) { statVals[1].dataset.count = gamification.streak.current; animateCounter(statVals[1], gamification.streak.current); }
+      if (statVals[2]) { statVals[2].dataset.count = gamification.badgeCount; animateCounter(statVals[2], gamification.badgeCount); }
+
+      // — Sidebar mini-card —
+      const sidebarAvatar = document.querySelector('.sidebar [style*="font-weight:800"]');
+      if (sidebarAvatar) sidebarAvatar.textContent = initial;
+      const sidebarName = document.querySelector('.sidebar [style*="font-size:0.85rem;font-weight:700"]');
+      if (sidebarName) sidebarName.textContent = user.name;
+      const sidebarBadge = document.querySelector('.sidebar .level-badge');
+      if (sidebarBadge) sidebarBadge.textContent = `⚡ Level ${gamification.level}`;
+
+      // — Nav avatar —
+      const navAvatar = document.querySelector('.nav-avatar');
+      if (navAvatar) { navAvatar.textContent = initial; navAvatar.title = user.name; }
+      const navXp = document.querySelector('.nav-xp');
+      if (navXp) navXp.textContent = `⭐ ${gamification.xp.toLocaleString()} XP`;
+
+      // — Level ring emoji —
+      const ringEl = document.querySelector('.level-ring');
+      if (ringEl) ringEl.textContent = getLevelEmoji(gamification.level);
+
+      // — Badges —
+      renderBadges(gamification.badges);
+
+      // — Level progress —
+      renderLevelMap(levelProgress, gamification.level);
+
+      // — Mentor Path —
+      updateMentorPath(gamification.level, gamification.xp);
+
+      // — Mini Mentor List —
+      loadMiniMentors();
+
+    } catch (err) {
+      console.error('Error loading dashboard:', err);
+      showToast('Session expired. Please login again.', 'error', '🚪');
+      // SkillupAPI.handleLogout();
+    }
+  }
+
+  function updateMentorPath(level, xp) {
+    const mentorStatusText = document.getElementById('mentorStatusText');
+    const mentorProgressBar = document.getElementById('mentorProgressBar');
+    const mentorPathCard = document.getElementById('mentorPathCard');
+
+    if (level >= 4 && xp >= 1000) {
+      mentorStatusText.innerHTML = 'You are eligible to be a Mentor! 🚀<br><span style="font-size:0.7rem; color:var(--green);">Apply now in settings</span>';
+      mentorProgressBar.style.width = '100%';
+      mentorProgressBar.style.background = 'var(--green)';
+    } else {
+      const levelsLeft = Math.max(0, 4 - level);
+      const xpLeft = Math.max(0, 1000 - xp);
+      const pct = Math.min(100, (level / 4) * 50 + (xp / 1000) * 50);
+      
+      mentorStatusText.textContent = `${levelsLeft} levels and ${xpLeft} XP left to become a Mentor!`;
+      mentorProgressBar.style.width = pct + '%';
+    }
+  }
+
+  async function loadMiniMentors() {
+    try {
+      const { mentors } = await SkillupAPI.getMentors();
+      const list = document.getElementById('miniMentorList');
+      if (!mentors || mentors.length === 0) {
+        list.innerHTML = '<p class="muted" style="font-size:0.8rem; padding:10px;">No mentors available right now.</p>';
+        return;
+      }
+      
+      const colors = ['#7c3aed,#06b6d4', '#ec4899,#7c3aed', '#f59e0b,#ef4444', '#10b981,#3b82f6'];
+      list.innerHTML = mentors.slice(0, 3).map((m, i) => `
+        <div class="mini-mentor">
+          <div class="mentor-avatar" style="background:linear-gradient(135deg,${colors[i % colors.length]});">${m.name.charAt(0)}</div>
+          <div style="flex:1;"><div style="font-size:0.88rem;font-weight:600;">${m.name}</div><div style="font-size:0.75rem;color:var(--text2);">Level ${m.level} · ${m.college || 'SKILLUP'}</div></div>
+          <div class="activity-dot online"></div>
+          <a href="chat.html?mentor=${m._id}" class="btn btn-cyan btn-sm">Message</a>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('Error loading mini mentors:', err);
+    }
+  }
+
+  function getLevelTitle(lvl) {
+    const titles = ['','Basics','DSA','Projects','Resume & GitHub','Interview Prep','Job Apply','Internship Ready 🚀'];
+    return titles[lvl] || 'Learning';
+  }
+  function getLevelEmoji(lvl) {
+    const emojis = ['','🧠','⚡','🛠️','📄','🎯','📬','🚀'];
+    return emojis[lvl] || '⭐';
+  }
+
+  function renderBadges(badges) {
+    const badgeRow = document.querySelector('.badge-row');
+    if (!badgeRow || !badges) return;
+    const badgeSection = badgeRow.closest('.card');
+    const countTag = badgeSection?.querySelector('.tag-gold');
+    if (countTag) countTag.textContent = `${badges.length} earned`;
+
+    // Replace badge items
+    badgeRow.innerHTML = badges.map(b => `
+      <div class="badge-item">
+        <div class="badge-icon earned">${b.icon}</div>
+        <div class="badge-name">${b.name}</div>
+      </div>`).join('');
+
+    // Show some locked placeholders
+    const locked = [
+      { icon: '🛠️', name: 'Builder' }, { icon: '🎯', name: 'Sharp Aim' }, { icon: '🚀', name: 'Rocket' }
+    ].filter(l => !badges.find(b => b.name === l.name)).slice(0, 3);
+    locked.forEach(l => {
+      badgeRow.innerHTML += `<div class="badge-item"><div class="badge-icon locked">${l.icon}</div><div class="badge-name">${l.name}</div></div>`;
+    });
+  }
+
+  function renderStreak(streak) {
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const today = new Date().getDay(); // 0=Sun
+    const todayIdx = today === 0 ? 6 : today - 1; // convert to Mon=0 index
+    const circles = document.querySelectorAll('.day-circle');
+    circles.forEach((circle, i) => {
+      circle.classList.remove('done', 'today');
+      if (i === todayIdx) circle.classList.add('today');
+      else if (i < todayIdx && i >= Math.max(0, todayIdx - (streak.current - 1))) circle.classList.add('done');
+    });
+  }
+
   function toggleTask(checkbox, xp) {
     const checked = checkbox.classList.toggle('checked');
     checkbox.textContent = checked ? '✓' : '';
@@ -245,6 +400,9 @@
       title.style.color = '';
     }
   }
+
+  // Load on startup
+  document.addEventListener('DOMContentLoaded', loadDashboard);
 </script>
 <a href="feedback.html" class="feedback-fab">💬</a>
 </body>

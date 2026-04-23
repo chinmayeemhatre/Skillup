@@ -137,8 +137,12 @@
   </div>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
+  // If already logged in, go to dashboard
+  if (SkillupAPI.isLoggedIn()) window.location.href = 'dashboard.html';
+
   let selectedLevel = '1';
   function goStep(n) {
     [1,2,3].forEach(i => { document.getElementById('step'+i).style.display = i===n ? '' : 'none'; });
@@ -166,9 +170,37 @@
     const l = levels[Math.max(score-1,0)];
     fill.style.width = l.w; fill.style.background = l.c; txt.textContent = l.t; txt.style.color = l.c;
   }
-  function handleSignup() {
-    showToast('Creating your account...', 'info', '🎮');
-    setTimeout(() => { launchConfetti(); setTimeout(() => window.location.href = 'dashboard.html', 1500); }, 1000);
+  async function handleSignup() {
+    const fname    = document.getElementById('fname').value.trim();
+    const lname    = document.getElementById('lname').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('pwd').value.trim();
+    const pwd2     = document.getElementById('pwd2').value.trim();
+    const college  = document.getElementById('college').value.trim();
+
+    if (!fname || !email || !password) { showToast('Please fill all required fields', 'error', '❌'); return; }
+    if (password !== pwd2) { showToast('Passwords do not match', 'error', '❌'); return; }
+    if (password.length < 6) { showToast('Password must be at least 6 characters', 'error', '❌'); return; }
+
+    const btn = document.querySelector('#step3 .btn-primary');
+    btn.disabled = true;
+    btn.textContent = 'Creating account...';
+    showToast('Setting up your account 🎮', 'info', '🔄');
+
+    try {
+      await SkillupAPI.register({
+        name: `${fname} ${lname}`.trim(),
+        username: document.getElementById('username').value.trim(),
+        email, password, college
+      });
+      showToast('Account created! Welcome to SKILLUP 🚀', 'success', '🎉');
+      launchConfetti();
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+    } catch (err) {
+      showToast(err.message || 'Registration failed', 'error', '❌');
+      btn.disabled = false;
+      btn.textContent = '🚀 Create Account!';
+    }
   }
 </script>
 </body>

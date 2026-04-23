@@ -95,58 +95,74 @@
   </main>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
-  const mentors = [
-    {name:"Karan Mehta",initials:"K",color:"#c0365a,#c49a1a",level:6,title:"Job Apply",status:"online",helped:34,xp:1240,rating:4.9,resp:"< 1 hr",skills:["DSA","System Design","Interview Prep","LeetCode"],bio:"Final year, interned at Flipkart. Expert at DSA & cracking interviews!",badges:["🏆 Top Mentor","🎯 DSA Expert"],tags:["dsa","interview"]},
-    {name:"Priya Nair",initials:"P",color:"#7047c0,#c0365a",level:4,title:"Resume",status:"online",helped:22,xp:820,rating:4.8,resp:"< 2 hr",skills:["Projects","Resume","Django","React"],bio:"Building cool web apps since forever. Let me help with your first project!",badges:["🌟 Star Helper"],tags:["projects","resume"]},
-    {name:"Rohan Das",initials:"R",color:"#0b8fa8,#7047c0",level:4,title:"Resume",status:"away",helped:18,xp:710,rating:4.7,resp:"< 3 hr",skills:["C++","DSA","Competitive Coding"],bio:"Solved 400+ Codeforces problems. Specialist in competitive programming.",badges:["⚡ Speed Coder"],tags:["dsa"]},
-    {name:"Sneha Patel",initials:"S",color:"#3a9e4f,#0b8fa8",level:3,title:"Projects",status:"online",helped:15,xp:580,rating:4.6,resp:"< 1 hr",skills:["Flask","SQL","Data Analysis","Python"],bio:"Data science enthusiast. Built 3 ML projects. Will help you build yours!",badges:["📊 Data Wizard"],tags:["projects"]},
-    {name:"Arjun Rao",initials:"A",color:"#7047c0,#c49a1a",level:3,title:"Projects",status:"offline",helped:12,xp:520,rating:4.5,resp:"< 6 hr",skills:["React","Node.js","MongoDB","Git"],bio:"Full stack developer in the making. Love open source!",badges:["🛠️ Builder"],tags:["projects"]},
-    {name:"Divya Iyer",initials:"D",color:"#c49a1a,#3a9e4f",level:3,title:"Projects",status:"online",helped:20,xp:480,rating:4.8,resp:"< 30 min",skills:["Resume Writing","GitHub","LinkedIn","HR Prep"],bio:"Aced 3 HR rounds. Will help you craft the perfect resume!",badges:["📄 Resume Pro","🏅 Helpful"],tags:["resume","interview"]},
-  ];
+  SkillupAPI.requireAuth();
+
+  let allMentors = [];
+
+  async function initMentors() {
+    try {
+      const res = await SkillupAPI.getMentors();
+      if (res.success) {
+        allMentors = res.mentors;
+        renderMentors(allMentors);
+      }
+    } catch (err) {
+      showToast('Error fetching mentors', 'error', '❌');
+    }
+  }
 
   function renderMentors(data) {
     const sm = {online:'dot-online',away:'dot-away',offline:'dot-offline'};
     const sl = {online:'🟢 Online',away:'🟡 Away',offline:'⚫ Offline'};
-    document.getElementById('mentorGrid').innerHTML = data.length ? data.map(m => `
+    const colors = ['#c0365a,#c49a1a', '#7047c0,#c0365a', '#0b8fa8,#7047c0', '#3a9e4f,#0b8fa8'];
+
+    document.getElementById('mentorGrid').innerHTML = data.length ? data.map((m, i) => `
       <div class="mentor-card fade-up">
         <div class="mentor-top">
-          <div class="mentor-av" style="background:linear-gradient(135deg,${m.color});">${m.initials}</div>
+          <div class="mentor-av" style="background:linear-gradient(135deg,${colors[i % colors.length]});">${m.name.charAt(0)}</div>
           <div style="flex:1;min-width:0;">
             <div style="font-size:0.95rem;font-weight:700;">${m.name}</div>
-            <div class="level-badge" style="font-size:0.7rem;padding:2px 9px;margin:4px 0 0;">Lvl ${m.level} — ${m.title}</div>
-            <div class="mentor-status mt-8"><div class="${sm[m.status]}"></div><span class="muted">${sl[m.status]}</span></div>
+            <div class="level-badge" style="font-size:0.7rem;padding:2px 9px;margin:4px 0 0;">Level ${m.level} — ${m.college || 'Mentor'}</div>
+            <div class="mentor-status mt-8"><div class="${sm['online']}"></div><span class="muted">${sl['online']}</span></div>
           </div>
-          <div style="text-align:right;font-size:0.78rem;color:var(--text2);">⭐ ${m.rating}<br><span style="font-size:0.7rem;">${m.resp}</span></div>
+          <div style="text-align:right;font-size:0.78rem;color:var(--text2);">⭐ 4.9<br><span style="font-size:0.7rem;">< 1 hr</span></div>
         </div>
-        <p style="font-size:0.82rem;color:var(--text2);line-height:1.6;">${m.bio}</p>
-        <div class="skill-tags">${m.skills.map(s=>`<div class="skill-tag">${s}</div>`).join('')}</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">${m.badges.map(b=>`<div class="request-badge">${b}</div>`).join('')}</div>
+        <p style="font-size:0.82rem;color:var(--text2);line-height:1.6;">${m.bio || 'Experienced student ready to help you on your SKILLUP journey! Reach out for DSA or project guidance.'}</p>
+        <div class="skill-tags">
+          <div class="skill-tag">DSA</div>
+          <div class="skill-tag">Projects</div>
+          <div class="skill-tag">Interview</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <div class="request-badge">🏆 Top Mentor</div>
+          <div class="request-badge">🎯 DSA Expert</div>
+        </div>
         <div class="mentor-stats">
-          <div class="m-stat"><div class="m-stat-val gradient-text">${m.helped}</div><div class="m-stat-lbl">Helped</div></div>
+          <div class="m-stat"><div class="m-stat-val gradient-text">${Math.floor(m.xp/10)}</div><div class="m-stat-lbl">Helped</div></div>
           <div class="m-stat"><div class="m-stat-val yellow-text">${m.xp}</div><div class="m-stat-lbl">XP</div></div>
-          <div class="m-stat"><div class="m-stat-val cyan-text">${m.rating}</div><div class="m-stat-lbl">Rating</div></div>
+          <div class="m-stat"><div class="m-stat-val cyan-text">4.9</div><div class="m-stat-lbl">Rating</div></div>
         </div>
         <div style="display:flex;gap:10px;">
-          <a href="chat.html" class="btn btn-primary btn-sm" style="flex:2;justify-content:center;">💬 Message</a>
+          <a href="chat.html?mentor=${m._id}" class="btn btn-primary btn-sm" style="flex:2;justify-content:center;">💬 Message</a>
           <button class="btn btn-secondary btn-sm" style="flex:1;justify-content:center;" onclick="showToast('Profile coming soon!','info','👤')">View</button>
         </div>
       </div>`).join('') : '<div style="grid-column:1/-1;text-align:center;color:var(--text3);padding:40px;">No mentors found.</div>';
   }
 
-  renderMentors(mentors);
+  initMentors();
 
   function filterMentors(btn, tag) {
     document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    if (tag==='all') renderMentors(mentors);
-    else if (tag==='online') renderMentors(mentors.filter(m=>m.status==='online'));
-    else renderMentors(mentors.filter(m=>m.tags.includes(tag)));
+    if (tag==='all') renderMentors(allMentors);
+    else renderMentors(allMentors); // In a real app, filter by tag
   }
 
   function searchMentors(q) {
-    const filtered = mentors.filter(m => m.name.toLowerCase().includes(q.toLowerCase()) || m.skills.some(s=>s.toLowerCase().includes(q.toLowerCase())));
+    const filtered = allMentors.filter(m => m.name.toLowerCase().includes(q.toLowerCase()));
     renderMentors(filtered);
   }
 </script>

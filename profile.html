@@ -48,8 +48,8 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Community</div>
-      <div class="sidebar-link disabled"><span class="icon">🤝</span> Mentors <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
-      <div class="sidebar-link disabled"><span class="icon">💬</span> Messages <span style="background:rgba(255,255,255,0.08);color:var(--text3);font-size:0.6rem;padding:2px 6px;border-radius:6px;margin-left:auto;">SOON</span></div>
+      <a href="mentors.html" class="sidebar-link"><span class="icon">🤝</span> Mentors</a>
+      <a href="chat.html" class="sidebar-link"><span class="icon">💬</span> Messages</a>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Account</div>
@@ -158,6 +158,118 @@
   </main>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
+<script>
+  SkillupAPI.requireAuth();
+
+  async function loadProfile() {
+    try {
+      const { progress } = await SkillupAPI.getProgress();
+      const { user, gamification } = progress;
+      const initial = (user.name || 'U').charAt(0).toUpperCase();
+
+      // — Profile banner —
+      document.querySelector('.profile-avatar').textContent = initial;
+      document.querySelector('.profile-banner h2').textContent = user.name;
+      const subline = document.querySelector('.profile-banner h2 + div');
+      if (subline) subline.textContent = `${user.email}${user.college ? ' · ' + user.college : ''}`;
+
+      const bannerBadges = document.querySelectorAll('.profile-banner .level-badge, .profile-banner .xp-badge, .profile-banner .rank-badge, .profile-banner [style*="ff6b35"]');
+      const badgesDiv = document.querySelector('.profile-banner [style*="flex-wrap:wrap;margin-bottom:16px"]');
+      if (badgesDiv) {
+        badgesDiv.innerHTML = `
+          <div class="level-badge">⚡ Level ${gamification.level} — ${getLevelTitle(gamification.level)}</div>
+          <div class="xp-badge">⭐ ${gamification.xp.toLocaleString()} XP</div>
+          <div class="rank-badge">🏆 ${gamification.streak.longest} day best streak</div>
+          <div style="display:flex;align-items:center;gap:5px;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);padding:4px 12px;border-radius:20px;font-size:0.82rem;font-weight:700;color:#ff6b35;">🔥 ${gamification.streak.current} day streak</div>`;
+      }
+
+      // Bio
+      const bioEl = document.querySelector('.profile-banner p[style*="0.88rem"]');
+      if (bioEl) bioEl.textContent = `"${user.bio || 'Aspiring software developer on SKILLUP 🚀'}"`;
+
+      // XP bar
+      const xpBar = document.querySelector('.profile-banner .progress-bar');
+      if (xpBar) { xpBar.dataset.progress = gamification.levelPct; animateProgressBar(xpBar, gamification.levelPct); }
+      const xpLabel = document.querySelector('.profile-banner .progress-wrap').previousElementSibling;
+      if (xpLabel) xpLabel.innerHTML = `<span>Level ${gamification.level}</span><span>${gamification.xpInLevel} / ${gamification.xpNeeded} XP</span><span>Level ${gamification.level+1}</span>`;
+
+      // — Stat cards —
+      const statVals = document.querySelectorAll('.stat-value[data-count]');
+      if (statVals[0]) { statVals[0].dataset.count = gamification.xp; animateCounter(statVals[0], gamification.xp); }
+      if (statVals[1]) { statVals[1].dataset.count = gamification.streak.current; animateCounter(statVals[1], gamification.streak.current); }
+      if (statVals[2]) { statVals[2].dataset.count = gamification.badgeCount; animateCounter(statVals[2], gamification.badgeCount); }
+
+      // — Nav —
+      const navXp = document.querySelector('.nav-xp');
+      if (navXp) navXp.textContent = `⭐ ${gamification.xp.toLocaleString()} XP`;
+      const navAvatar = document.querySelector('.nav-avatar');
+      if (navAvatar) { navAvatar.textContent = initial; navAvatar.title = user.name; }
+
+      // — Badges —
+      const badgeRow = document.querySelector('#tabBadges .badge-row');
+      if (badgeRow && gamification.badges) {
+        const countEl = document.querySelector('#tabBadges .tag-gold');
+        if (countEl) countEl.textContent = `${gamification.badges.length} / 20 earned`;
+        badgeRow.innerHTML = gamification.badges.map(b => `
+          <div class="badge-item"><div class="badge-icon earned">${b.icon}</div><div class="badge-name">${b.name}</div></div>`).join('');
+        const lockedBadges = [
+          {icon:'🛠️',name:'Builder'},{icon:'🎯',name:'Sharp Aim'},{icon:'🚀',name:'Rocket'},
+          {icon:'📄',name:'Resume Ready'},{icon:'🏆',name:'Legend'}
+        ].filter(l => !gamification.badges.find(b => b.name === l.name));
+        lockedBadges.forEach(l => {
+          badgeRow.innerHTML += `<div class="badge-item"><div class="badge-icon locked">${l.icon}</div><div class="badge-name">${l.name}</div></div>`;
+        });
+      }
+
+      // — Activity: recent scores —
+      const activityDiv = document.querySelector('#tabActivity .card');
+      if (activityDiv) {
+        try {
+          const { history } = await SkillupAPI.getQuizHistory();
+          const sectionTitle = activityDiv.querySelector('.section-title').outerHTML;
+          const LEVEL_NAMES = ['','Basics','DSA','Projects','Resume','Interview','Job Apply','Internship'];
+          const items = history.slice(0,5).map(h => {
+            const date = new Date(h.createdAt);
+            const ago = getTimeAgo(date);
+            return `<div class="activity-item">
+              <div class="activity-icon" style="background:rgba(124,58,237,0.15);">📝</div>
+              <div style="flex:1;">
+                <div style="font-size:0.88rem;font-weight:600;">Quiz: Level ${h.levelNumber} — ${LEVEL_NAMES[h.levelNumber]||''}</div>
+                <div style="font-size:0.75rem;color:var(--text2);">Score: ${h.score}% · +${h.xpEarned} XP</div>
+              </div>
+              <div style="font-size:0.75rem;color:var(--text3);">${ago}</div>
+            </div>`;
+          }).join('') || '<p class="muted" style="padding:12px 0;">No quiz activity yet. Start learning!</p>';
+          activityDiv.innerHTML = sectionTitle + items;
+        } catch {}
+      }
+
+    } catch(err) {
+      console.warn('Profile load error:', err.message);
+      if (err.message.includes('authoris') || err.message.includes('token')) {
+        SkillupAPI.clearSession();
+        window.location.href = 'login.html';
+      }
+    }
+  }
+
+  function getLevelTitle(lvl) {
+    const t = ['','Basics','DSA','Projects','Resume & GitHub','Interview Prep','Job Apply','Internship Ready 🚀'];
+    return t[lvl] || 'Learning';
+  }
+
+  function getTimeAgo(date) {
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000);
+    if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    if (diff < 604800) return Math.floor(diff/86400) + 'd ago';
+    return date.toLocaleDateString();
+  }
+
+  document.addEventListener('DOMContentLoaded', loadProfile);
+</script>
 </body>
 </html>

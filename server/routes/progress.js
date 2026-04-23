@@ -160,6 +160,22 @@ router.get('/leaderboard', async (req, res) => {
 });
 
 /* ─────────────────────────────────────────────────────────────
+   GET /api/progress/mentors
+   Returns all users with 'mentor' role
+   ───────────────────────────────────────────────────────────── */
+router.get('/mentors', async (req, res) => {
+  try {
+    const mentors = await User
+      .find({ role: 'mentor' })
+      .select('name xp level badges college bio github linkedin');
+
+    res.json({ success: true, mentors });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error fetching mentors' });
+  }
+});
+
+/* ─────────────────────────────────────────────────────────────
    PATCH /api/progress/task  — Protected
    Body: { levelNumber, taskIndex, completed }
    Marks an individual task as complete and awards small XP.

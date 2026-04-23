@@ -245,82 +245,90 @@
   </main>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const unlockedLevel = parseInt(localStorage.getItem('skillup_unlocked_level')) || 2;
+async function initRoadmap() {
+  // Default from localStorage, override with real API data
+  let unlockedLevel = parseInt(localStorage.getItem('skillup_unlocked_level')) || 1;
+  let totalXP = 0;
+
+  // Try to load real data from API
+  if (SkillupAPI.isLoggedIn()) {
+    try {
+      const { progress } = await SkillupAPI.getProgress();
+      const { gamification, user } = progress;
+      unlockedLevel = gamification.level;
+      totalXP = gamification.xp;
+
+      // Update nav
+      const navXp = document.querySelector('.nav-xp');
+      if (navXp) navXp.textContent = `⭐ ${totalXP.toLocaleString()} XP`;
+      const navAvatar = document.querySelector('.nav-avatar');
+      if (navAvatar) { navAvatar.textContent = (user.name||'U').charAt(0); navAvatar.title = user.name; }
+
+      // Update header
+      const header = document.querySelector('.flex-between .muted strong');
+      if (header) header.textContent = `Level ${unlockedLevel}`;
+      const xpBadge = document.querySelector('.xp-badge');
+      if (xpBadge) xpBadge.textContent = `⭐ ${totalXP.toLocaleString()} / 3500 XP total`;
+    } catch(err) {
+      console.warn('Roadmap API error:', err.message);
+    }
+  }
+
   const nodes = document.querySelectorAll('.rm-node');
-  
   nodes.forEach((node, idx) => {
     const levelNum = idx + 1;
     const card = node.querySelector('.rm-card');
     const ball = node.querySelector('.node-ball');
     const tag = card.querySelector('.tag');
-    
-    // Clear status classes
+
     card.classList.remove('done', 'active', 'locked');
     ball.classList.remove('done', 'active', 'locked', 'unlocked');
-    
-    // Remove existing buttons
+
     const existingBtn = card.querySelector('a.btn');
     if (existingBtn) existingBtn.remove();
 
     if (levelNum < unlockedLevel) {
       card.classList.add('done');
       ball.classList.add('done');
-      if (tag) {
-        tag.className = 'tag tag-green mb-8';
-        tag.textContent = '✅ Completed';
-      }
-      
+      ball.textContent = '✅';
+      if (tag) { tag.className = 'tag tag-green mb-8'; tag.textContent = '✅ Completed'; }
       const btn = document.createElement('a');
       btn.href = 'level.html?level=' + levelNum;
       btn.className = 'btn btn-secondary btn-sm';
-      btn.style.marginTop = '14px';
-      btn.style.width = '100%';
-      btn.style.justifyContent = 'center';
+      btn.style.cssText = 'margin-top:14px;width:100%;justify-content:center;';
       btn.textContent = 'Review Level ' + levelNum + ' →';
       card.appendChild(btn);
-
     } else if (levelNum === unlockedLevel) {
       card.classList.add('active');
       ball.classList.add('active');
-      if (tag) {
-        tag.className = 'tag tag-cyan mb-8';
-        tag.textContent = '🔄 In Progress';
-      }
-      
+      if (tag) { tag.className = 'tag tag-cyan mb-8'; tag.textContent = '🔄 In Progress'; }
       const btn = document.createElement('a');
       btn.href = 'level.html?level=' + levelNum;
       btn.className = 'btn btn-primary btn-sm';
-      btn.style.marginTop = '14px';
-      btn.style.width = '100%';
-      btn.style.justifyContent = 'center';
+      btn.style.cssText = 'margin-top:14px;width:100%;justify-content:center;';
       btn.textContent = 'Continue Learning →';
       card.appendChild(btn);
-
     } else {
       card.classList.add('locked');
       ball.classList.add('locked');
-      if (tag) {
-        tag.className = 'tag tag-purple mb-8';
-        tag.textContent = '🔒 Locked';
-      }
+      if (tag) { tag.className = 'tag tag-purple mb-8'; tag.textContent = '🔒 Locked'; }
     }
   });
 
   // Update total progress bar
   const totalBar = document.querySelector('.flex-between .progress-bar');
   if (totalBar) {
-    const progress = Math.min(100, Math.round(((unlockedLevel - 1) / 7) * 100));
-    totalBar.style.width = progress + '%';
-    totalBar.setAttribute('data-progress', progress);
+    const pct = Math.min(100, Math.round(((unlockedLevel - 1) / 7) * 100));
+    totalBar.style.width = pct + '%';
     const progressText = totalBar.parentElement.nextElementSibling;
-    if (progressText && progressText.textContent.includes('%')) {
-       progressText.textContent = progress + '% of full journey complete';
-    }
+    if (progressText) progressText.textContent = pct + '% of full journey complete';
   }
-});
+}
+
+document.addEventListener('DOMContentLoaded', initRoadmap);
 </script>
 </body>
 </html>

@@ -33,6 +33,7 @@ const sendTokenResponse = (user, statusCode, res) => {
       _id:      user._id,
       name:     user.name,
       email:    user.email,
+      username: user.username,
       xp:       user.xp,
       level:    user.level,
       streak:   user.streak,
@@ -66,19 +67,23 @@ router.post('/register', [
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { name, email, password, college = '' } = req.body;
+    const { name, email, password, username, college = '' } = req.body;
 
-    // Check if email already registered
-    const existing = await User.findOne({ email });
+    // Check if email or username already registered
+    const existing = await User.findOne({ 
+      $or: [{ email }, { username }]
+    });
     if (existing) {
       return res.status(409).json({
         success: false,
-        message: 'An account with this email already exists'
+        message: existing.email === email 
+          ? 'An account with this email already exists'
+          : 'This username is already taken'
       });
     }
 
-    // Create user — password is hashed by pre-save hook
-    const user = await User.create({ name, email, password, college });
+    // Create user — password and missing username handled by pre-save hooks
+    const user = await User.create({ name, email, password, username, college });
 
     // Award "First Step" badge for registering
     user.badges.push({ id: 'first_step', name: 'First Step', icon: '🌟' });
@@ -99,7 +104,7 @@ router.post('/register', [
    Body: { email, password }
    ───────────────────────────────────────────────────────────── */
 router.post('/login', [
-  body('email').isEmail().normalizeEmail().withMessage('Valid email required'),
+  body('email').notEmpty().withMessage('Email or Username is required'),
   body('password').notEmpty().withMessage('Password is required')
 ], async (req, res) => {
   try {
@@ -108,10 +113,13 @@ router.post('/login', [
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    const { email: identifier, password } = req.body;
+    const loginValue = identifier.toLowerCase().trim();
 
-    // Find user and explicitly SELECT password (it's hidden by default)
-    const user = await User.findOne({ email }).select('+password');
+    // Find user by email OR username and explicitly SELECT password
+    const user = await User.findOne({
+      $or: [{ email: loginValue }, { username: loginValue }]
+    }).select('+password');
     if (!user) {
       return res.status(401).json({
         success: false,

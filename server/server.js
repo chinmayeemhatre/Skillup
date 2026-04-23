@@ -16,7 +16,7 @@ const app = express();
 
 // ── Middleware ────────────────────────────────────────────────
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:5500'],  // add your frontend origin
+  origin: '*',  // Allow all origins for local development
   credentials: true
 }));
 app.use(express.json({ limit: '10kb' }));                       // parse JSON bodies
@@ -30,6 +30,7 @@ app.use('/api/auth',     require('./routes/auth'));
 app.use('/api/levels',   require('./routes/levels'));
 app.use('/api/quiz',     require('./routes/quiz'));
 app.use('/api/progress', require('./routes/progress'));
+app.use('/api/admin',    require('./routes/admin'));
 
 // ── Health check ──────────────────────────────────────────────
 app.get('/api/health', (req, res) => {

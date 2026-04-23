@@ -84,7 +84,6 @@ const levelSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Sort levels by number by default
-levelSchema.index({ levelNumber: 1 });
+// Main model export
 
 module.exports = mongoose.model('Level', levelSchema);

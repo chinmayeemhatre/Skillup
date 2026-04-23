@@ -158,10 +158,43 @@
   </div>
 </div>
 
+<script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
+  SkillupAPI.requireAuth();
+
+  async function initMessages() {
+    try {
+      const res = await SkillupAPI.getMentors();
+      if (res.success) {
+        renderConversations(res.mentors);
+      }
+    } catch (err) {
+      console.error('Error loading mentors for chat:', err);
+    }
+  }
+
+  function renderConversations(mentors) {
+    const colors = ['#c0365a,#c49a1a', '#7047c0,#c0365a', '#0b8fa8,#7047c0', '#3a9e4f,#0b8fa8'];
+    const list = document.querySelector('.conv-list');
+    
+    list.innerHTML = mentors.map((m, i) => `
+      <div class="conv-item" onclick="openChat(this,'${m.name}','${m.name.charAt(0)}','${colors[i % colors.length]}','online')">
+        <div class="conv-av" style="background:linear-gradient(135deg,${colors[i % colors.length]});">${m.name.charAt(0)}<div class="conv-dot dot-g"></div></div>
+        <div style="flex:1;min-width:0;"><div class="conv-name">${m.name}</div><div class="conv-preview">Lvl ${m.level} · ${m.college || 'Mentor'}</div></div>
+        <div class="conv-time">now</div>
+      </div>
+    `).join('');
+
+    // Open first one if exists
+    if (mentors.length > 0) {
+      const first = list.querySelector('.conv-item');
+      first.click();
+    }
+  }
+
   function openChat(el, name, initials, color, status) {
-    document.querySelectorAll('.conv-item').forEach(c => { c.classList.remove('active'); c.querySelector('.conv-unread')?.remove(); });
+    document.querySelectorAll('.conv-item').forEach(c => { c.classList.remove('active'); });
     el.classList.add('active');
     document.getElementById('chatAv').textContent = initials;
     document.getElementById('chatAv').style.background = `linear-gradient(135deg,${color})`;
@@ -170,9 +203,41 @@
     if(status==='online') st.innerHTML=`<span style="color:var(--lime-l)">🟢 Online · Mentor</span>`;
     else if(status==='away') st.innerHTML=`<span style="color:var(--yellow-l)">🟡 Away · Mentor</span>`;
     else st.innerHTML=`<span style="color:var(--text3)">⚫ Offline · Mentor</span>`;
+    
     document.getElementById('chatMessages').innerHTML = `<div class="date-sep">Conversation with ${name}</div>
       <div style="text-align:center;color:var(--text3);font-size:0.82rem;padding:20px;">Say hi and ask your question! 👋</div>`;
   }
+
+  function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const chatMessages = document.getElementById('chatMessages');
+    const user = SkillupAPI.getUser() || { name: 'Me' };
+
+    chatMessages.innerHTML += `
+      <div class="msg-row mine">
+        <div class="msg-av" style="background:linear-gradient(135deg,#7047c0,#0b8fa8);">${user.name.charAt(0)}</div>
+        <div><div class="msg-bubble">${msg}</div><div class="msg-time">Just now</div></div>
+      </div>
+    `;
+    input.value = '';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Simulate response
+    setTimeout(() => {
+      chatMessages.innerHTML += `
+        <div class="msg-row">
+          <div class="msg-av" style="background:var(--pink);">${document.getElementById('chatAv').textContent}</div>
+          <div><div class="msg-bubble">That's a great question! I'll get back to you in a bit.</div><div class="msg-time">Just now</div></div>
+        </div>
+      `;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 1500);
+  }
+
+  initMessages();
 </script>
 </body>
 </html>
