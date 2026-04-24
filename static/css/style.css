@@ -21,10 +21,9 @@
   --purple-l: #a395c6;
   --gold:     #b89b42;
 
-  /* ── Added: missing variables referenced across pages ── */
-  --green:    #10b981;   /* completion, online status, streak */
+  --green:    #10b981;
   --green-l:  #34d399;
-  --border2:  rgba(184,155,66,0.25); /* muted hover/active border accent */
+  --border2:  rgba(184,155,66,0.25);
 
   --text:  #f4ead7;
   --text2: #b4a789;
@@ -57,7 +56,6 @@ h1, h2, h3, h4, .syne { font-family: 'Syne', sans-serif; font-weight: 800; lette
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .gradient-text { background: linear-gradient(135deg, var(--yellow), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-/* ── Typography ── */
 .text-xs { font-size: 0.75rem; }
 .text-sm { font-size: 0.875rem; }
 .text-lg { font-size: 1.125rem; }
@@ -69,7 +67,6 @@ h1, h2, h3, h4, .syne { font-family: 'Syne', sans-serif; font-weight: 800; lette
 .mb-24 { margin-bottom: 24px; }
 .mb-32 { margin-bottom: 32px; }
 
-/* ── Navbar ── */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 999;
   height: 68px; display: flex; align-items: center;
@@ -89,7 +86,6 @@ h1, h2, h3, h4, .syne { font-family: 'Syne', sans-serif; font-weight: 800; lette
 .nav-avatar { width: 36px; height: 36px; border-radius: 4px; background: var(--pink); display: grid; place-items: center; font-weight: 800; font-size: 0.88rem; color: #fff; cursor: pointer; border: 2px solid rgba(192,77,112,0.15); }
 .nav-xp { display: flex; align-items: center; gap: 6px; background: rgba(184,155,66,0.1); border: 1px solid rgba(184,155,66,0.25); padding: 6px 12px; border-radius: 3px; font-size: 0.8rem; font-weight: 700; color: var(--yellow-l); }
 
-/* ── Buttons ── */
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 4px; font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; border: none; transition: var(--t); white-space: nowrap; }
 .btn:active { transform: scale(0.97); }
 .btn-primary { background: var(--pink); color: #fff; }
@@ -100,13 +96,11 @@ h1, h2, h3, h4, .syne { font-family: 'Syne', sans-serif; font-weight: 800; lette
 .btn-icon { width: 40px; height: 40px; padding: 0; display: grid; place-items: center; background: var(--glass); border: 1px solid var(--border); color: var(--text2); border-radius: 3px; }
 .btn-icon:hover { border-color: var(--pink-l); }
 
-/* ── Cards ── */
 .card { background: var(--glass); border: 1px solid var(--border); border-radius: var(--r2); padding: 24px; transition: border-color 0.25s; }
 .card:hover { border-color: rgba(192,77,112,0.15); }
 .card-glow { box-shadow: 0 0 24px rgba(192,77,112,0.06); border-color: rgba(192,77,112,0.15); }
 .card-yellow { border-color: rgba(184,155,66,0.15); }
 
-/* ── Tags ── */
 .tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 3px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 .tag-pink    { background: rgba(192,77,112,0.1);  color: var(--pink-l);   border: 1px solid rgba(192,77,112,0.25); }
 .tag-yellow  { background: rgba(184,155,66,0.1);  color: var(--yellow-l); border: 1px solid rgba(184,155,66,0.25); }
@@ -117,11 +111,9 @@ h1, h2, h3, h4, .syne { font-family: 'Syne', sans-serif; font-weight: 800; lette
 .tag-green   { background: rgba(16,185,129,0.1);   color: var(--green-l);   border: 1px solid rgba(16,185,129,0.25); }
 .tag-red     { background: rgba(192,77,112,0.1);  color: var(--pink-l);   border: 1px solid rgba(192,77,112,0.25); }
 
-/* ── Progress ── */
 .progress-wrap { height: 8px; background: var(--bg3); border-radius: 2px; overflow: hidden; position: relative; }
 .progress-bar { height: 100%; background: var(--pink); border-radius: 2px; width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 12px rgba(192,77,112,0.2); }
 
-/* ── Sidebar ── */
 .sidebar { width: 240px; border-right: 1px solid var(--border); background: var(--bg); display: flex; flex-direction: column; padding: 24px 16px; position: sticky; top: 68px; height: calc(100vh - 68px); overflow-y: auto; }
 .sidebar-section { margin-bottom: 28px; }
 .sidebar-label { font-size: 0.72rem; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin: 0 12px 12px; }
@@ -130,16 +122,13 @@ h1, h2, h3, h4, .syne { font-family: 'Syne', sans-serif; font-weight: 800; lette
 .sidebar-link.active { background: var(--glass2); color: var(--pink); border-right: 2px solid var(--pink); }
 .sidebar-link .icon { font-size: 1.1rem; }
 
-/* ── Streak ── */
 .streak-circle { width: 34px; height: 34px; border-radius: 4px; border: 2px solid var(--border); display: grid; place-items: center; font-size: 0.7rem; font-weight: 700; color: var(--text3); transition: var(--t); }
 .streak-circle.done { background: var(--orange); border-color: var(--orange); color: #fff; }
 .streak-circle.today { border-color: var(--cyan); color: var(--cyan-l); }
 
-/* ── Page Shell ── */
 .page-shell { display: flex; min-height: 100vh; padding-top: 68px; }
 .main-content { flex: 1; padding: 32px 40px; max-width: 1400px; }
 
-/* ── Forms ── */
 .input-group { display: flex; flex-direction: column; gap: 6px; }
 .input-label { font-size: 0.83rem; font-weight: 700; color: var(--text2); }
 .input { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: var(--r); padding: 11px 15px; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; transition: var(--t); width: 100%; }
@@ -148,11 +137,9 @@ h1, h2, h3, h4, .syne { font-family: 'Syne', sans-serif; font-weight: 800; lette
 textarea.input { resize: vertical; min-height: 100px; }
 select.input { cursor: pointer; }
 
-/* ── Dividers ── */
 .divider-text { display: flex; align-items: center; gap: 16px; margin: 24px 0; color: var(--text3); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .divider-text::before, .divider-text::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* ── Toast ── */
 .toast-container { position: fixed; top: 80px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
 .toast { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 13px 17px; display: flex; align-items: center; gap: 12px; min-width: 270px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); animation: slideIn 0.3s ease; font-size: 0.87rem; font-weight: 600; }
 .toast.success { border-color: rgba(90,158,111,0.3); }
@@ -161,16 +148,14 @@ select.input { cursor: pointer; }
 
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* ── Animations ── */
 @keyframes fadeUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(184,155,66,0.3); } 70% { box-shadow: 0 0 0 10px rgba(184,155,66,0); } 100% { box-shadow: 0 0 0 0 rgba(184,155,66,0); } }
 @keyframes orbFloat1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(25px,-30px)} }
 @keyframes orbFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,25px)} }
 @keyframes cursorSpark { 0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.6); } }
-/* Glow pulse — used by roadmap active node & level rings */
+
 @keyframes glow { 0%,100% { box-shadow: 0 0 20px rgba(77,150,160,0.15), 0 0 40px rgba(77,150,160,0.05); } 50% { box-shadow: 0 0 40px rgba(77,150,160,0.3), 0 0 80px rgba(77,150,160,0.1); } }
 
-/* ── Floating Feedback ── */
 .floating-feedback {
   position: fixed;
   bottom: 24px;
@@ -221,7 +206,6 @@ select.input { cursor: pointer; }
 .fade-up-d2 { animation: fadeUp 0.5s 0.2s ease both; }
 .fade-up-d3 { animation: fadeUp 0.5s 0.3s ease both; }
 
-/* ── Floating Orbs ── */
 .orb { position: fixed; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: -1; opacity: 0.12; }
 .orb-purple { background: var(--purple); }
 .orb-cyan   { background: var(--cyan); }

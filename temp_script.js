@@ -1,17 +1,11 @@
 
-/* ==========================================================
-   SKILLUP — Level Page Controller
-   All 7 levels' data, quiz engine, and code challenge system
-   ========================================================== */
-
-// ── Level Content Data ──────────────────────────────────────
 const LEVEL_DATA = {
   1: {
     title: "Level 1: Programming Basics",
     shortTitle: "Basics",
     icon: "🧠",
     totalXP: 100,
-    status: "done",       // done | active | locked
+    status: "done",
     currentXP: 100,
     maxXP: 100,
     progress: 100,
@@ -128,7 +122,7 @@ print(s.college)               # KGISL (inherited class attr)`
     challenge: [
       { q:"Which of the following is a mutable data type in Python?", options:["tuple","string","list","int"], answer:2, explanation:"Lists are mutable, meaning their contents can be changed after creation." },
       { q:"What is the correct syntax to output 'Hello World' in Python?", options:["p('Hello World')","echo 'Hello World'","print('Hello World')","printf('Hello World')"], answer:2, explanation:"Python uses the print() function to output text to the console." },
-      { q:"How do you insert comments in Python code?", options:["/* This is a comment */","// This is a comment","# This is a comment","<!-- This is a comment -->"], answer:2, explanation:"In Python, comments start with the hash character (#)." },
+      { q:"How do you insert comments in Python code?", options:["","// This is a comment","# This is a comment","<!-- This is a comment -->"], answer:2, explanation:"In Python, comments start with the hash character (#)." },
       { q:"Which operator is used for exponentiation (power) in Python?", options:["^","**","//","%"], answer:1, explanation:"The ** operator is used for exponentiation. For example, 2**3 equals 8." },
       { q:"What will be the output of `bool('False')`?", options:["True","False","Error","None"], answer:0, explanation:"Any non-empty string in Python evaluates to True, even the string 'False'." },
       { q:"Which method can be used to remove any whitespace from both the beginning and the end of a string?", options:["strip()","trim()","ptrim()","len()"], answer:0, explanation:"The strip() method removes leading and trailing whitespace." },
@@ -144,7 +138,6 @@ print(s.college)               # KGISL (inherited class attr)`
     ]
   },
 
-  // ── LEVEL 2: DSA ─────────────────────────────────────────
   2: {
     title: "Level 2: Data Structures &amp; Algorithms",
     shortTitle: "DSA",
@@ -223,12 +216,12 @@ def find_middle(head):
         },
         {
           title: "🔍 Binary Search",
-          content: "<strong style='color:var(--yellow-l)'>Binary Search</strong> works ONLY on sorted arrays. Key idea: compare the middle element to the target and eliminate <em>half</em> the remaining search space each step. This gives O(log n) time. Critical detail: use <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>mid = left + (right - left) // 2</code> to avoid integer overflow.",
+          content: "<strong style='color:var(--yellow-l)'>Binary Search</strong> works ONLY on sorted arrays. Key idea: compare the middle element to the target and eliminate <em>half</em> the remaining search space each step. This gives O(log n) time. Critical detail: use <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>mid = left + (right - left)
           code: `def binary_search(arr, target):
     """Iterative binary search — O(log n)"""
     left, right = 0, len(arr) - 1
     while left <= right:
-        mid = left + (right - left) // 2   # prevent overflow
+        mid = left + (right - left)
         if   arr[mid] == target: return mid
         elif arr[mid] <  target: left  = mid + 1  # go right
         else:                    right = mid - 1  # go left
@@ -242,7 +235,7 @@ print(binary_search(arr, 6))    # -1  (not found)
 def search_rotated(nums, target):
     left, right = 0, len(nums) - 1
     while left <= right:
-        mid = (left + right) // 2
+        mid = (left + right)
         if nums[mid] == target: return mid
         if nums[left] <= nums[mid]:   # left half is sorted
             if nums[left] <= target < nums[mid]: right = mid - 1
@@ -329,7 +322,6 @@ print(bfs(root))       # [5, 3, 7, 1, 4, 6, 8]  ← level order`
     ]
   },
 
-  // ── LEVELS 3-7 (Fully Populated) ────
   3: {
     title: "Level 3: Projects", shortTitle: "Projects", icon: "🛠️", totalXP: 500, status: "locked", currentXP: 0, maxXP: 500, progress: 0,
     desc: "Build real projects — a portfolio that speaks louder than grades. Web apps, REST APIs, and deployment await.",
@@ -341,7 +333,7 @@ print(bfs(root))       # [5, 3, 7, 1, 4, 6, 8]  ← level order`
           code: `import { useState } from 'react';
 
 function Counter({ initialValue }) {
-  // useState hook for internal component state
+
   const [count, setCount] = useState(initialValue);
 
   return (
@@ -360,18 +352,15 @@ function Counter({ initialValue }) {
           code: `const express = require('express');
 const app = express();
 
-// Middleware to parse JSON bodies
 app.use(express.json());
 
-// GET endpoint
 app.get('/api/users', (req, res) => {
   res.json({ users: [{ id: 1, name: 'Aarav' }] });
 });
 
-// POST endpoint
 app.post('/api/users', (req, res) => {
   const newUser = req.body;
-  // Save to DB...
+
   res.status(201).json({ message: 'User created!', user: newUser });
 });
 
@@ -382,17 +371,14 @@ app.listen(3000, () => console.log('Server running on port 3000'));`
           content: "Databases store persistent data. <strong style='color:var(--yellow-l)'>MongoDB</strong> is a NoSQL database that stores data in flexible, JSON-like documents. We use <strong style='color:var(--yellow-l)'>Mongoose</strong> in Node.js to define schemas and interact with the database efficiently.",
           code: `const mongoose = require('mongoose');
 
-// Define a Schema
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, unique: true },
   level: { type: Number, default: 1 }
 });
 
-// Create a Model
 const User = mongoose.model('User', userSchema);
 
-// Async function to create a user
 async function createUser(userData) {
   try {
     const user = new User(userData);
@@ -476,7 +462,7 @@ I'm a Full-Stack Developer passionate about building scalable web apps.
 
 Example Post:
 "Just finished building a full-stack E-commerce app! 🚀
-I learned so much about integrating Stripe for payments and optimizing Redux state. 
+I learned so much about integrating Stripe for payments and optimizing Redux state.
 Check out the live demo here: [Link]
 #webdevelopment #reactjs #nodejs"`
         }
@@ -529,24 +515,21 @@ Check out the live demo here: [Link]
         {
           title: "💻 Technical & Whiteboard Coding",
           content: "In a coding interview, communication is more important than the perfect solution. Never code in silence. Follow the <strong style='color:var(--yellow-l)'>REACT</strong> framework: <strong>R</strong>epeat the question, <strong>E</strong>xample edge cases, <strong>A</strong>pproach (discuss brute force then optimized), <strong>C</strong>ode (write cleanly), <strong>T</strong>est (dry run with examples).",
-          code: `// Interviewer: "Find if two numbers in an array sum to a target."
-
-// 1. Clarify: "Can there be negative numbers? Are there duplicates?"
-// 2. Approach: "Brute force is O(n^2). I can optimize to O(n) using a Hash Map."
+          code: `
 
 function twoSum(nums, target) {
-  const map = new Map(); // Stores { value: index }
-  
+  const map = new Map();
+
   for (let i = 0; i < nums.length; i++) {
     const complement = target - nums[i];
     if (map.has(complement)) {
-      return [map.get(complement), i]; // Found it!
+      return [map.get(complement), i];
     }
     map.set(nums[i], i);
   }
   return [];
 }
-// 3. Dry Run: "If nums=[2,7,11], target=9. Map gets 2. Next is 7. 9-7=2. 2 is in map. Return [0,1]."`
+
         },
         {
           title: "🧠 System Design Basics",
@@ -689,9 +672,9 @@ I'm currently interviewing with your team and am very interested in the role. I 
           code: `Negotiation Email Template:
 
 "Hi [Recruiter],
-I'm thrilled about the offer! I've really enjoyed meeting the team. 
+I'm thrilled about the offer! I've really enjoyed meeting the team.
 
-Based on my research for similar roles in [City], and considering my prior internship experience with [Skill], I was hoping we could explore a base salary closer to $X. 
+Based on my research for similar roles in [City], and considering my prior internship experience with [Skill], I was hoping we could explore a base salary closer to $X.
 
 I am very excited to join and if we can make this adjustment, I am ready to sign today."`
         },
@@ -740,14 +723,10 @@ How to ask a good question:
   }
 };
 
-/* ==========================================================
-   ── Page Init & Header Render ──
-   ========================================================== */
 const params = new URLSearchParams(window.location.search);
 let currentLevel = parseInt(params.get('level')) || 2;
 if (currentLevel < 1 || currentLevel > 7) currentLevel = 2;
 
-// Determine unlocked level from localStorage
 const unlockedLevel = parseInt(localStorage.getItem('skillup_unlocked_level')) || 2;
 for (let i = 1; i <= 7; i++) {
   if (i < unlockedLevel) {
@@ -761,7 +740,6 @@ for (let i = 1; i <= 7; i++) {
 
 const lvl = LEVEL_DATA[currentLevel];
 
-// Render header immediately
 (function renderHeader() {
   document.title = `${lvl.title.replace(/&amp;/g,'&')} — SKILLUP`;
   document.getElementById('bcTitle').textContent   = lvl.shortTitle;
@@ -784,9 +762,6 @@ const lvl = LEVEL_DATA[currentLevel];
   document.getElementById('levelXPCount').textContent = `${lvl.currentXP} / ${lvl.maxXP} XP`;
 })();
 
-/* ==========================================================
-   ── Theory Renderer ──
-   ========================================================== */
 (function renderTheory() {
   const container  = document.getElementById('theoryContent');
   const resSection = document.getElementById('resourcesSection');
@@ -809,7 +784,6 @@ const lvl = LEVEL_DATA[currentLevel];
     return;
   }
 
-  // Render theory sections
   container.innerHTML = lvl.theory.sections.map(s => `
     <div class="theory-block">
       <h3>${s.title}</h3>
@@ -817,7 +791,6 @@ const lvl = LEVEL_DATA[currentLevel];
       <div class="code-block">${escHtml(s.code)}</div>
     </div>`).join('');
 
-  // Render resource links
   document.getElementById('resourcesList').innerHTML = lvl.theory.resources.map(r => `
     <a href="${r.url}" target="_blank" rel="noopener" class="resource-link">
       <span style="font-size:1.5rem;flex-shrink:0;">${r.icon}</span>
@@ -835,9 +808,6 @@ function escHtml(str) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ==========================================================
-   ── Tab Switcher & Theory Completion ──
-   ========================================================== */
 function isTheoryCompleted() {
   return localStorage.getItem('skillup_theory_done_' + currentLevel) === 'true';
 }
@@ -872,22 +842,17 @@ function markTheoryComplete() {
   localStorage.setItem('skillup_theory_done_' + currentLevel, 'true');
   showToast('Theory completed! Quiz & Challenge unlocked.', 'success', '🔓');
   updateTabUI();
-  
-  // Re-render theory to remove the complete button
+
   const completeBtn = document.getElementById('btnCompleteTheory');
   if (completeBtn) completeBtn.style.display = 'none';
 
   switchLvlTab('quiz', document.getElementById('tabQuiz'));
 }
 
-/* ==========================================================
-   ── Theory Renderer Extension ──
-   ========================================================== */
-// Override the end of renderTheory from earlier to add the Complete Button
 const origRenderTheory = window.renderTheory;
 window.renderTheory = function() {
   if (origRenderTheory) origRenderTheory();
-  // Wait for DOM
+
 };
 setTimeout(() => {
   const container = document.getElementById('panelTheory');
@@ -897,9 +862,6 @@ setTimeout(() => {
   }
 }, 100);
 
-/* ==========================================================
-   ── Quiz Engine ──
-   ========================================================== */
 let qState = { qs:[], ans:[], cur:0, timer:null, timeLeft:600, running:false };
 
 document.getElementById('quizQCount').textContent   = lvl.quiz.length || 5;
@@ -967,7 +929,7 @@ function renderQuestion() {
 }
 
 function selectAnswer(idx) {
-  if (qState.ans[qState.cur] !== null) return;  // already answered
+  if (qState.ans[qState.cur] !== null) return;
   qState.ans[qState.cur] = idx;
   renderQuestion();
   const correct = idx === qState.qs[qState.cur].answer;
@@ -1003,12 +965,10 @@ function finishQuiz() {
   document.getElementById('scoreSubMsg').textContent = sub;
   document.getElementById('xpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.05rem;padding:10px 22px;justify-content:center;">⭐ +${xp} XP Earned!</div>`;
 
-  // Save score to localStorage
   const scores = JSON.parse(localStorage.getItem('skillup_scores') || '[]');
   scores.push({ level: currentLevel, score: pct, correct, total, xp, date: new Date().toISOString() });
   localStorage.setItem('skillup_scores', JSON.stringify(scores));
 
-  // Show wrong answer review
   const wrong = qState.qs.map((q,i) => ({q, i, uAns: qState.ans[i], ok: qState.ans[i] === q.answer })).filter(x => !x.ok);
   if (wrong.length) {
     document.getElementById('reviewSection').innerHTML = `
@@ -1046,9 +1006,6 @@ function startTimer() {
   }, 1000);
 }
 
-/* ==========================================================
-   ── Challenge Test Engine ──
-   ========================================================== */
 let cState = { qs:[], ans:[], cur:0, timer:null, timeLeft:1800, running:false };
 
 document.getElementById('chalQCount').textContent = lvl.challenge?.length || 15;
@@ -1150,12 +1107,10 @@ function finishChallenge() {
   document.getElementById('cScoreSubMsg').textContent = sub;
   document.getElementById('cXpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.05rem;padding:10px 22px;justify-content:center;">⭐ +${xp} XP Earned!</div>`;
 
-  // Save to localStorage
   const scores = JSON.parse(localStorage.getItem('skillup_chal_scores') || '[]');
   scores.push({ level: currentLevel, score: pct, correct, total, xp, date: new Date().toISOString() });
   localStorage.setItem('skillup_chal_scores', JSON.stringify(scores));
 
-  // Unlock next level if score >= 80%
   if (pct >= 80) {
     const currentUnlocked = parseInt(localStorage.getItem('skillup_unlocked_level')) || 2;
     if (currentLevel >= currentUnlocked && currentLevel < 7) {
@@ -1163,7 +1118,6 @@ function finishChallenge() {
     }
   }
 
-  // Show wrong answer review
   const wrong = cState.qs.map((q,i) => ({q, i, uAns: cState.ans[i], ok: cState.ans[i] === q.answer })).filter(x => !x.ok);
   if (wrong.length) {
     document.getElementById('cReviewSection').innerHTML = `

@@ -7,15 +7,14 @@
   <meta name="description" content="Learn with SKILLUP — theory, quizzes and coding challenges for every level."/>
   <link rel="stylesheet" href="static/css/style.css"/>
   <style>
-    /* ── Tab system ── */
+
     .tab-bar{display:flex;gap:6px;background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:6px;margin-bottom:28px;}
     .tab-btn{flex:1;padding:11px 16px;border-radius:4px;font-size:0.88rem;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--text2);transition:var(--t);font-family:'Space Grotesk',sans-serif;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
     .tab-btn.active{background:var(--yellow);color:var(--bg);box-shadow:0 0 15px rgba(214,169,58,0.35);}
     .tab-btn:hover:not(.active){background:var(--glass2);color:var(--text);}
     .tab-panel{display:none;}
     .tab-panel.active{display:block;animation:fadeUp 0.3s ease;}
- 
-    /* ── Theory ── */
+
     .theory-block{background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:26px 28px;margin-bottom:20px;transition:var(--t);}
     .theory-block:hover{border-color:rgba(214,169,58,0.22);}
     .theory-block h3{font-size:1.05rem;margin-bottom:14px;color:var(--yellow-l);display:flex;align-items:center;gap:10px;}
@@ -32,7 +31,6 @@
     .resource-link:hover{border-color:rgba(214,169,58,0.35);background:rgba(214,169,58,0.05);transform:translateX(5px);}
     .r-type{font-size:0.72rem;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
 
-    /* ── Quiz ── */
     .quiz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
     .timer-box{display:flex;align-items:center;gap:8px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.28);padding:9px 18px;border-radius:4px;font-weight:800;color:#ff6b35;font-family:'Syne',sans-serif;font-size:1.15rem;}
     .timer-box.warning{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444;animation:pulse-ring 0.8s ease infinite;}
@@ -57,14 +55,13 @@
     .expl-box{background:rgba(214,169,58,0.07);border:1px solid rgba(214,169,58,0.22);border-radius:4px;padding:14px 18px;margin-top:16px;font-size:0.87rem;color:var(--text2);line-height:1.7;display:none;}
     .expl-box.show{display:flex;gap:10px;align-items:flex-start;}
     .quiz-nav{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
-    /* Score result */
+
     .score-result{text-align:center;padding:40px 20px;animation:fadeUp 0.5s ease;}
     .score-circle{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;margin:0 auto 24px;font-family:'Syne',sans-serif;}
     .score-circle.great{background:rgba(16,185,129,0.15);border:3px solid var(--green);box-shadow:0 0 40px rgba(16,185,129,0.3);}
     .score-circle.good{background:rgba(255,204,0,0.15);border:3px solid var(--yellow);box-shadow:0 0 40px rgba(255,204,0,0.3);}
     .score-circle.poor{background:rgba(239,68,68,0.15);border:3px solid #ef4444;}
 
-    /* ── Challenge / Code Editor ── */
     .challenge-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
     @media(max-width:900px){.challenge-wrap{grid-template-columns:1fr;}}
     .problem-card{background:var(--glass);border:1px solid var(--border);border-radius:6px;padding:24px;margin-bottom:16px;}
@@ -102,7 +99,6 @@
     .test-case.passed { border-left-color: var(--green); }
     .test-case.failed { border-left-color: #ef4444; }
 
-    /* ── Level header ── */
     .level-hdr{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
     .level-icon-big{width:72px;height:72px;border-radius:14px;display:grid;place-items:center;font-size:2.2rem;flex-shrink:0;}
     .lv-active{background:linear-gradient(135deg,rgba(214,169,58,0.3),rgba(244,212,123,0.12));border:2px solid rgba(214,169,58,0.5);box-shadow:0 0 30px rgba(214,169,58,0.2);}
@@ -115,7 +111,7 @@
   </style>
 </head>
 <body>
-<!-- ── NAV ── -->
+
 <nav class="navbar">
   <div class="container">
     <a href="index.html" class="nav-logo"><img src="static/images/logo.png" alt="SKILLUP"></a>
@@ -136,7 +132,7 @@
 </nav>
 
 <div class="page-shell">
-  <!-- ── SIDEBAR ── -->
+
   <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-label">Main</div>
@@ -154,7 +150,7 @@
       <a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
       <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
     </div>
-    <!-- mini profile card -->
+
     <div style="position:absolute;bottom:20px;left:16px;right:16px;">
       <div style="background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px;">
         <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--yellow),var(--cyan));display:grid;place-items:center;font-weight:800;font-size:0.9rem;flex-shrink:0;color:var(--bg);">A</div>
@@ -166,9 +162,8 @@
     </div>
   </aside>
 
-  <!-- ── MAIN CONTENT ── -->
   <main class="main-content">
-    <!-- Breadcrumb -->
+
     <div class="breadcrumb">
       <a href="dashboard.html">Dashboard</a>
       <span class="bc-sep">›</span>
@@ -177,7 +172,6 @@
       <span id="bcTitle">Level 2: DSA</span>
     </div>
 
-    <!-- Level Header (populated by JS) -->
     <div class="level-hdr fade-up" id="levelHdr">
       <div class="level-icon-big lv-active" id="levelIcon">⚡</div>
       <div style="flex:1;min-width:0;">
@@ -195,14 +189,12 @@
       </div>
     </div>
 
-    <!-- ── Tab Bar ── -->
     <div class="tab-bar fade-up-d1">
       <button class="tab-btn active" id="tabTheory"    onclick="switchLvlTab('theory',this)">📚 Theory</button>
       <button class="tab-btn"        id="tabQuiz"      onclick="switchLvlTab('quiz',this)">🧠 Quiz</button>
       <button class="tab-btn"        id="tabChallenge" onclick="switchLvlTab('challenge',this)">💻 Challenge</button>
     </div>
 
-    <!-- ════════ THEORY PANEL ════════ -->
     <div id="panelTheory" class="tab-panel active fade-up-d2">
       <div id="theoryContent"></div>
       <div id="resourcesSection" style="margin-top:28px;">
@@ -215,9 +207,8 @@
       </div>
     </div>
 
-    <!-- ════════ QUIZ PANEL ════════ -->
     <div id="panelQuiz" class="tab-panel">
-      <!-- Intro screen -->
+
       <div id="quizIntro" class="card" style="text-align:center;padding:50px 32px;">
         <div style="font-size:4rem;margin-bottom:16px;" class="float-anim">🧠</div>
         <h2 style="font-size:1.8rem;margin-bottom:12px;">Ready for the Quiz?</h2>
@@ -238,7 +229,7 @@
         </div>
         <button class="btn btn-primary" style="padding:14px 44px;font-size:1rem;" onclick="startQuiz()">Start Quiz 🚀</button>
       </div>
-      <!-- Active quiz area -->
+
       <div id="quizArea" style="display:none;">
         <div class="quiz-meta">
           <div>
@@ -249,7 +240,7 @@
         </div>
         <div id="questionDisplay"></div>
       </div>
-      <!-- Results screen -->
+
       <div id="quizResult" style="display:none;" class="score-result">
         <div class="score-circle" id="scoreCircle">
           <div>
@@ -268,9 +259,8 @@
       </div>
     </div>
 
-    <!-- ════════ CHALLENGE PANEL ════════ -->
     <div id="panelChallenge" class="tab-panel">
-      <!-- Challenge Test Intro -->
+
       <div id="challengeIntro" class="card" style="text-align:center;padding:50px 32px;">
         <div style="font-size:4rem;margin-bottom:16px;" class="float-anim">⏳</div>
         <h2 style="font-size:1.8rem;margin-bottom:12px;">Level Challenge Test</h2>
@@ -291,7 +281,7 @@
         </div>
         <button class="btn btn-primary" style="padding:14px 44px;font-size:1rem;" onclick="startChallenge()">Start Test 🚀</button>
       </div>
-      <!-- Active Challenge Area: Coding Lab -->
+
       <div id="challengeArea" style="display:none;">
         <div class="editor-container">
           <div class="editor-header">
@@ -306,7 +296,7 @@
               <h4 id="problemTitle">Problem Title</h4>
               <p id="problemDesc">Problem description goes here...</p>
               <div class="test-cases" id="testCases">
-                <!-- Test cases added here -->
+
               </div>
             </div>
             <textarea class="editor-input" id="codeInput" spellcheck="false" placeholder="# Write your code here..."></textarea>
@@ -318,7 +308,7 @@
           <button class="btn btn-primary" id="submitCodingBtn" disabled onclick="finishCodingChallenge()">Submit Solution ✓</button>
         </div>
       </div>
-      <!-- Challenge Results -->
+
       <div id="challengeResult" style="display:none;" class="score-result">
         <div class="score-circle" id="cScoreCircle">
           <div>
@@ -341,19 +331,14 @@
 <script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
-/* ==========================================================
-   SKILLUP — Level Page Controller
-   All 7 levels' data, quiz engine, and code challenge system
-   ========================================================== */
 
-// ── Level Content Data ──────────────────────────────────────
 const LEVEL_DATA = {
   1: {
     title: "Level 1: Programming Basics",
     shortTitle: "Basics",
     icon: "🧠",
     totalXP: 100,
-    status: "done",       // done | active | locked
+    status: "done",
     currentXP: 100,
     maxXP: 100,
     progress: 100,
@@ -470,7 +455,7 @@ print(s.college)               # KGISL (inherited class attr)`
     challenge: [
       { q:"Which of the following is a mutable data type in Python?", options:["tuple","string","list","int"], answer:2, explanation:"Lists are mutable, meaning their contents can be changed after creation." },
       { q:"What is the correct syntax to output 'Hello World' in Python?", options:["p('Hello World')","echo 'Hello World'","print('Hello World')","printf('Hello World')"], answer:2, explanation:"Python uses the print() function to output text to the console." },
-      { q:"How do you insert comments in Python code?", options:["/* This is a comment */","// This is a comment","# This is a comment","<!-- This is a comment -->"], answer:2, explanation:"In Python, comments start with the hash character (#)." },
+      { q:"How do you insert comments in Python code?", options:["","// This is a comment","# This is a comment",""], answer:2, explanation:"In Python, comments start with the hash character (#)." },
       { q:"Which operator is used for exponentiation (power) in Python?", options:["^","**","//","%"], answer:1, explanation:"The ** operator is used for exponentiation. For example, 2**3 equals 8." },
       { q:"What will be the output of `bool('False')`?", options:["True","False","Error","None"], answer:0, explanation:"Any non-empty string in Python evaluates to True, even the string 'False'." },
       { q:"Which method can be used to remove any whitespace from both the beginning and the end of a string?", options:["strip()","trim()","ptrim()","len()"], answer:0, explanation:"The strip() method removes leading and trailing whitespace." },
@@ -481,7 +466,6 @@ print(s.college)               # KGISL (inherited class attr)`
     ]
   },
 
-  // ── LEVEL 2: DSA ─────────────────────────────────────────
   2: {
     title: "Level 2: Data Structures &amp; Algorithms",
     shortTitle: "DSA",
@@ -560,12 +544,12 @@ def find_middle(head):
         },
         {
           title: "🔍 Binary Search",
-          content: "<strong style='color:var(--yellow-l)'>Binary Search</strong> works ONLY on sorted arrays. Key idea: compare the middle element to the target and eliminate <em>half</em> the remaining search space each step. This gives O(log n) time. Critical detail: use <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>mid = left + (right - left) // 2</code> to avoid integer overflow.",
+          content: "<strong style='color:var(--yellow-l)'>Binary Search</strong> works ONLY on sorted arrays. Key idea: compare the middle element to the target and eliminate <em>half</em> the remaining search space each step. This gives O(log n) time. Critical detail: use <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>mid = left + (right - left)
           code: `def binary_search(arr, target):
     """Iterative binary search — O(log n)"""
     left, right = 0, len(arr) - 1
     while left <= right:
-        mid = left + (right - left) // 2   # prevent overflow
+        mid = left + (right - left)
         if   arr[mid] == target: return mid
         elif arr[mid] <  target: left  = mid + 1  # go right
         else:                    right = mid - 1  # go left
@@ -579,7 +563,7 @@ print(binary_search(arr, 6))    # -1  (not found)
 def search_rotated(nums, target):
     left, right = 0, len(nums) - 1
     while left <= right:
-        mid = (left + right) // 2
+        mid = (left + right)
         if nums[mid] == target: return mid
         if nums[left] <= nums[mid]:   # left half is sorted
             if nums[left] <= target < nums[mid]: right = mid - 1
@@ -666,7 +650,6 @@ print(bfs(root))       # [5, 3, 7, 1, 4, 6, 8]  ← level order`
     ]
   },
 
-  // ── LEVELS 3-7 (Fully Populated) ────
   3: {
     title: "Level 3: Projects", shortTitle: "Projects", icon: "🛠️", totalXP: 500, status: "locked", currentXP: 0, maxXP: 500, progress: 0,
     desc: "Build real projects — a portfolio that speaks louder than grades. Web apps, REST APIs, and deployment await.",
@@ -681,7 +664,6 @@ function Dashboard({ userId }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetching data on component mount
   useEffect(() => {
     fetch(\`/api/user/\${userId}/stats\`)
       .then(res => res.json())
@@ -689,9 +671,8 @@ function Dashboard({ userId }) {
         setData(json);
         setLoading(false);
       });
-  }, [userId]); // Re-run if userId changes
+  }, [userId]);
 
-  // Memoized value to prevent expensive re-calculations
   const processedData = useMemo(() => {
     return data ? data.map(item => item.value * 2) : [];
   }, [data]);
@@ -709,7 +690,6 @@ const app = express();
 
 app.use(express.json());
 
-// Authentication Middleware
 const authenticateToken = (req, res, next) => {
   const token = req.headers['authorization'];
   if (!token) return res.sendStatus(401);
@@ -733,29 +713,27 @@ app.get('/api/protected', authenticateToken, (req, res) => {
 const postSchema = new mongoose.Schema({
   title: String,
   body: String,
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Referencing
-  comments: [{ // Embedding
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  comments: [{
     text: String,
     postedAt: { type: Date, default: Date.now }
   }]
 });
 
-// Adding an index for fast lookup
-postSchema.index({ author: 1 }); 
+postSchema.index({ author: 1 });
 
 const Post = mongoose.model('Post', postSchema);`
         },
         {
           title: "🧪 Testing & Code Quality",
           content: "Professional code is tested. <br>• <strong>Unit Testing:</strong> Testing individual functions in isolation (using Jest/Mocha).<br>• <strong>Integration Testing:</strong> Testing how multiple modules work together (API endpoints).<br>• <strong>Linting:</strong> Using ESLint to enforce consistent code style and catch bugs early.",
-          code: `// Example Jest Unit Test
+          code: `
 const { sum } = require('./math');
 
 test('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
 });
 
-// Integration Test (Supertest)
 const request = require('supertest');
 const app = require('./app');
 
@@ -818,7 +796,7 @@ describe('GET /api/users', () => {
         {
           title: "🐙 GitHub Profile & Portfolio",
           content: "Your GitHub is your proof of work. Create a <strong style='color:var(--yellow-l)'>Profile README</strong> by creating a repository with the exact same name as your username. Pin your top 4-6 projects. Ensure every pinned project has a detailed README explaining what it does, the tech stack, and how to run it.",
-          code: `<!-- Example Profile README.md -->
+          code: `
 # Hi there, I'm Aarav! 👋
 
 I'm a Full-Stack Developer passionate about building scalable web apps.
@@ -901,21 +879,19 @@ Key Tip: Use "I" for your actions, but "We" for the team's success.`
         {
           title: "💻 Master DSA: Advanced Patterns",
           content: "To clear interviews at FAANG+, you need more than just arrays. <br>• <strong>Dynamic Programming (DP):</strong> Solving subproblems to optimize (Memoization/Tabulation).<br>• <strong>Graph Algorithms:</strong> BFS/DFS, Dijkstra's (Shortest Path), Topological Sort.<br>• <strong>Sliding Window & Two Pointers:</strong> Essential for string/array optimization from O(n^2) to O(n).",
-          code: `// Sliding Window Example: Max Sum Subarray of size K
+          code: `
 function maxSubarraySum(arr, k) {
   let maxSum = 0, windowSum = 0;
   for (let i = 0; i < k; i++) maxSum += arr[i];
   windowSum = maxSum;
 
   for (let i = k; i < arr.length; i++) {
-    windowSum += arr[i] - arr[i - k]; // Slide the window
+    windowSum += arr[i] - arr[i - k];
     maxSum = Math.max(maxSum, windowSum);
   }
   return maxSum;
 }
 
-// Topological Sort (Kahn's Algorithm)
-// Used for task scheduling and dependency resolution.`
         },
         {
           title: "🏗️ System Design: Scalability & Performance",
@@ -1037,7 +1013,7 @@ Follow-up Message:
           title: "🎉 Evaluating & Negotiating Offers",
           content: "An offer is more than just base salary. <strong style='color:var(--yellow-l)'>Total Compensation (TC)</strong> includes Base, Bonus, and Equity (RSUs/Options). Beyond money, evaluate the <strong style='color:var(--yellow-l)'>Engineering Culture</strong>: Do they have good testing practices? Is there a mentorship program? What is the tech stack? Never accept immediately; always express gratitude and ask for 48-72 hours to review the formal document.",
           code: `Salary Negotiation Email Template:
-"Hi [Recruiter Name], thank you so much for the offer! I am incredibly excited about the prospect of joining [Company]. 
+"Hi [Recruiter Name], thank you so much for the offer! I am incredibly excited about the prospect of joining [Company].
 
 Based on my research and other ongoing interviews, I was expecting a base salary closer to [Amount]. Given my experience in [Specific Skill], is there any flexibility in the budget for this role?"
 
@@ -1093,14 +1069,10 @@ Tip: Be concise and stick to the 3-point format.`
   }
 };
 
-/* ==========================================================
-   ── Page Init & Header Render ──
-   ========================================================== */
 const params = new URLSearchParams(window.location.search);
 let currentLevel = parseInt(params.get('level')) || 2;
 if (currentLevel < 1 || currentLevel > 7) currentLevel = 2;
 
-// Determine unlocked level from localStorage
 const unlockedLevel = parseInt(localStorage.getItem('skillup_unlocked_level')) || 2;
 for (let i = 1; i <= 7; i++) {
   if (i < unlockedLevel) {
@@ -1114,7 +1086,6 @@ for (let i = 1; i <= 7; i++) {
 
 const lvl = LEVEL_DATA[currentLevel];
 
-// Render header immediately
 (function renderHeader() {
   document.title = `${lvl.title.replace(/&amp;/g,'&')} — SKILLUP`;
   document.getElementById('bcTitle').textContent   = lvl.shortTitle;
@@ -1137,9 +1108,6 @@ const lvl = LEVEL_DATA[currentLevel];
   document.getElementById('levelXPCount').textContent = `${lvl.currentXP} / ${lvl.maxXP} XP`;
 })();
 
-/* ==========================================================
-   ── Theory Renderer ──
-   ========================================================== */
 (function renderTheory() {
   const container  = document.getElementById('theoryContent');
   const resSection = document.getElementById('resourcesSection');
@@ -1162,7 +1130,6 @@ const lvl = LEVEL_DATA[currentLevel];
     return;
   }
 
-  // Render theory sections
   container.innerHTML = lvl.theory.sections.map(s => `
     <div class="theory-block">
       <h3>${s.title}</h3>
@@ -1170,7 +1137,6 @@ const lvl = LEVEL_DATA[currentLevel];
       <div class="code-block">${escHtml(s.code)}</div>
     </div>`).join('');
 
-  // Render resource links
   document.getElementById('resourcesList').innerHTML = lvl.theory.resources.map(r => `
     <a href="${r.url}" target="_blank" rel="noopener" class="resource-link">
       <span style="font-size:1.5rem;flex-shrink:0;">${r.icon}</span>
@@ -1188,9 +1154,6 @@ function escHtml(str) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ==========================================================
-   ── Tab Switcher & Theory Completion ──
-   ========================================================== */
 function isTheoryCompleted() {
   return localStorage.getItem('skillup_theory_done_' + currentLevel) === 'true';
 }
@@ -1225,22 +1188,17 @@ function markTheoryComplete() {
   localStorage.setItem('skillup_theory_done_' + currentLevel, 'true');
   showToast('Theory completed! Quiz & Challenge unlocked.', 'success', '🔓');
   updateTabUI();
-  
-  // Re-render theory to remove the complete button
+
   const completeBtn = document.getElementById('btnCompleteTheory');
   if (completeBtn) completeBtn.style.display = 'none';
 
   switchLvlTab('quiz', document.getElementById('tabQuiz'));
 }
 
-/* ==========================================================
-   ── Theory Renderer Extension ──
-   ========================================================== */
-// Override the end of renderTheory from earlier to add the Complete Button
 const origRenderTheory = window.renderTheory;
 window.renderTheory = function() {
   if (origRenderTheory) origRenderTheory();
-  // Wait for DOM
+
 };
 setTimeout(() => {
   const container = document.getElementById('panelTheory');
@@ -1250,9 +1208,6 @@ setTimeout(() => {
   }
 }, 100);
 
-/* ==========================================================
-   ── Quiz Engine ──
-   ========================================================== */
 let qState = { qs:[], ans:[], cur:0, timer:null, timeLeft:600, running:false };
 
 document.getElementById('quizQCount').textContent   = lvl.quiz.length || 5;
@@ -1320,7 +1275,7 @@ function renderQuestion() {
 }
 
 function selectAnswer(idx) {
-  if (qState.ans[qState.cur] !== null) return;  // already answered
+  if (qState.ans[qState.cur] !== null) return;
   qState.ans[qState.cur] = idx;
   renderQuestion();
   const correct = idx === qState.qs[qState.cur].answer;
@@ -1356,19 +1311,16 @@ function finishQuiz() {
   document.getElementById('scoreSubMsg').textContent = sub;
   document.getElementById('xpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.05rem;padding:10px 22px;justify-content:center;">⭐ +${xp} XP Earned!</div>`;
 
-  // Save score to localStorage
   const scores = JSON.parse(localStorage.getItem('skillup_scores') || '[]');
   scores.push({ level: currentLevel, score: pct, correct, total, xp, date: new Date().toISOString() });
   localStorage.setItem('skillup_scores', JSON.stringify(scores));
 
-  // Also send to backend if logged in
   if (SkillupAPI.isLoggedIn()) {
     const answers = qState.ans.map(a => a ?? -1);
     const timeTaken = 600 - qState.timeLeft;
     SkillupAPI.submitQuiz(currentLevel, answers, timeTaken).catch(err => console.warn('Quiz API error:', err.message));
   }
 
-  // Show wrong answer review
   const wrong = qState.qs.map((q,i) => ({q, i, uAns: qState.ans[i], ok: qState.ans[i] === q.answer })).filter(x => !x.ok);
   if (wrong.length) {
     document.getElementById('reviewSection').innerHTML = `
@@ -1406,9 +1358,6 @@ function startTimer() {
   }, 1000);
 }
 
-/* ==========================================================
-   ── Challenge Test Engine ──
-   ========================================================== */
 let cState = { qs:[], ans:[], cur:0, timer:null, timeLeft:1800, running:false };
 
 document.getElementById('chalQCount').textContent = lvl.challenge?.length || 15;
@@ -1421,14 +1370,14 @@ function startChallenge() {
   document.getElementById('challengeIntro').style.display  = 'none';
   document.getElementById('challengeArea').style.display   = 'block';
   document.getElementById('challengeResult').style.display = 'none';
-  
+
   document.getElementById('codingTitle').textContent = lvl.coding.title;
   document.getElementById('problemTitle').textContent = lvl.coding.title;
   document.getElementById('problemDesc').textContent = lvl.coding.desc;
   document.getElementById('codeInput').value = lvl.coding.starter;
   document.getElementById('codingOutput').style.display = 'none';
   document.getElementById('submitCodingBtn').disabled = true;
-  
+
   startCTimer();
 }
 
@@ -1437,7 +1386,7 @@ function runCodingChallenge() {
   const output = document.getElementById('codingOutput');
   output.classList.add('show');
   output.textContent = "Running tests...\n";
-  
+
   setTimeout(() => {
     const isValid = lvl.coding.validation(code);
     if (isValid) {
@@ -1462,7 +1411,7 @@ function resetCodingChallenge() {
 function finishCodingChallenge() {
   clearInterval(cState.timer);
   const xp = Math.round(lvl.totalXP * 0.3);
-  
+
   document.getElementById('challengeArea').style.display = 'none';
   document.getElementById('challengeResult').style.display = 'block';
   document.getElementById('cScorePct').textContent = "100%";
@@ -1470,7 +1419,7 @@ function finishCodingChallenge() {
   document.getElementById('cScoreMsg').textContent = "Challenge Mastered!";
   document.getElementById('cScoreSubMsg').textContent = "You've successfully solved the programming problem for this level.";
   document.getElementById('cXpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.1rem;padding:10px 24px;">⭐ +${xp} XP Earned</div>`;
-  
+
   launchConfetti();
   showToast(`Challenge passed! +${xp} XP 🎉`, 'success', '⭐');
 }
@@ -1504,25 +1453,22 @@ function finishChallenge() {
   document.getElementById('cScoreSubMsg').textContent = sub;
   document.getElementById('cXpEarned').innerHTML = `<div class="xp-badge" style="font-size:1.05rem;padding:10px 22px;justify-content:center;">⭐ +${xp} XP Earned!</div>`;
 
-  // Save to localStorage
   const scores = JSON.parse(localStorage.getItem('skillup_chal_scores') || '[]');
   scores.push({ level: currentLevel, score: pct, correct, total, xp, date: new Date().toISOString() });
   localStorage.setItem('skillup_chal_scores', JSON.stringify(scores));
 
-  // Unlock next level if score >= 80%
   if (pct >= 80) {
     const currentUnlocked = parseInt(localStorage.getItem('skillup_unlocked_level')) || 2;
     if (currentLevel >= currentUnlocked && currentLevel < 7) {
       localStorage.setItem('skillup_unlocked_level', currentLevel + 1);
     }
-    // Also update via backend if logged in
+
     if (SkillupAPI.isLoggedIn()) {
       const code = document.getElementById('codeInput')?.value || '';
       SkillupAPI.submitCode(currentLevel, 'javascript', code).catch(err => console.warn('Challenge API error:', err.message));
     }
   }
 
-  // Show wrong answer review
   const wrong = cState.qs.map((q,i) => ({q, i, uAns: cState.ans[i], ok: cState.ans[i] === q.answer })).filter(x => !x.ok);
   if (wrong.length) {
     document.getElementById('cReviewSection').innerHTML = `

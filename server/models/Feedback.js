@@ -1,8 +1,3 @@
-/**
- * SKILLUP — Feedback Model (Mongoose Schema)
- *
- * Stores user-submitted feedback, bug reports, and suggestions.
- */
 
 const mongoose = require('mongoose');
 

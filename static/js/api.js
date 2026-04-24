@@ -1,12 +1,6 @@
-/**
- * SKILLUP — Frontend API Client
- * Central module for all backend API calls.
- * Stores JWT in localStorage and attaches it to every authenticated request.
- */
 
 const API_BASE = 'http://localhost:5000/api';
 
-// ── Token helpers ──────────────────────────────────────────────
 function getToken() {
   return localStorage.getItem('skillup_token');
 }
@@ -30,7 +24,6 @@ function isLoggedIn() {
   return !!getToken();
 }
 
-// ── Auth guard: call on protected pages ───────────────────────
 function requireAuth() {
   if (!isLoggedIn()) {
     window.location.href = 'login.html';
@@ -39,7 +32,6 @@ function requireAuth() {
   return true;
 }
 
-// ── Base fetch wrapper ─────────────────────────────────────────
 async function apiFetch(path, options = {}) {
   const token = getToken();
   const headers = { 'Content-Type': 'application/json', ...options.headers };
@@ -54,7 +46,6 @@ async function apiFetch(path, options = {}) {
   return data;
 }
 
-// ── Auth ───────────────────────────────────────────────────────
 async function apiLogin(email, password) {
   const data = await apiFetch('/auth/login', {
     method: 'POST',
@@ -84,7 +75,6 @@ async function apiUpdateProfile(updates) {
   });
 }
 
-// ── Levels ─────────────────────────────────────────────────────
 async function apiGetLevels() {
   return apiFetch('/levels');
 }
@@ -93,7 +83,6 @@ async function apiGetLevel(number) {
   return apiFetch(`/levels/${number}`);
 }
 
-// ── Progress ───────────────────────────────────────────────────
 async function apiGetProgress() {
   return apiFetch('/progress/me');
 }
@@ -120,7 +109,6 @@ async function apiSubmitCode(levelNumber, language, code) {
   });
 }
 
-// ── Quiz ───────────────────────────────────────────────────────
 async function apiSubmitQuiz(levelNumber, answers, timeTaken) {
   return apiFetch('/quiz/submit', {
     method: 'POST',
@@ -132,12 +120,10 @@ async function apiGetQuizHistory() {
   return apiFetch('/quiz/history');
 }
 
-// ── Health check ───────────────────────────────────────────────
 async function apiHealthCheck() {
   return apiFetch('/health');
 }
 
-// ── Update navbar dynamically ──────────────────────────────────
 function updateNavbar() {
   const user = getUser();
   const navActions = document.querySelector('.nav-actions');
@@ -164,7 +150,6 @@ function handleLogout() {
   window.location.href = 'login.html';
 }
 
-// ── Expose globally ────────────────────────────────────────────
 window.SkillupAPI = {
   getToken, getUser, setSession, clearSession, isLoggedIn, requireAuth, apiFetch,
   login: apiLogin, register: apiRegister, getMe: apiGetMe, updateProfile: apiUpdateProfile,
@@ -176,5 +161,4 @@ window.SkillupAPI = {
   updateNavbar, handleLogout
 };
 
-// Auto-update navbar on every page load
 document.addEventListener('DOMContentLoaded', updateNavbar);

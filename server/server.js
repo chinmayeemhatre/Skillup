@@ -1,7 +1,3 @@
-/**
- * SKILLUP — Express Backend Entry Point
- * Connects to MongoDB, registers all API routes, and starts the server.
- */
 
 const express    = require('express');
 const mongoose   = require('mongoose');
@@ -9,23 +5,19 @@ const cors       = require('cors');
 const dotenv     = require('dotenv');
 const path       = require('path');
 
-// Load environment variables from .env
 dotenv.config();
 
 const app = express();
 
-// ── Middleware ────────────────────────────────────────────────
 app.use(cors({
-  origin: '*',  // Allow all origins for local development
+  origin: '*',
   credentials: true
 }));
-app.use(express.json({ limit: '10kb' }));                       // parse JSON bodies
+app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static frontend files in production
 app.use(express.static(path.join(__dirname, '../')));
 
-// ── API Routes ────────────────────────────────────────────────
 app.use('/api/auth',     require('./routes/auth'));
 app.use('/api/levels',   require('./routes/levels'));
 app.use('/api/quiz',     require('./routes/quiz'));
@@ -33,7 +25,6 @@ app.use('/api/progress', require('./routes/progress'));
 app.use('/api/admin',    require('./routes/admin'));
 app.use('/api/feedback', require('./routes/feedback'));
 
-// ── Health check ──────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -42,14 +33,12 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Serve frontend for all non-API routes (SPA support)
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(__dirname, '../index.html'));
   }
 });
 
-// ── Global Error Handler ──────────────────────────────────────
 app.use((err, req, res, next) => {
   console.error('❌ Server Error:', err.message);
   res.status(err.status || 500).json({
@@ -58,7 +47,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ── Connect to MongoDB & Start Server ────────────────────────
 const PORT     = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 

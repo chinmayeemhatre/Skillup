@@ -37,7 +37,7 @@
   </style>
 </head>
 <body>
-<!-- NAV -->
+
 <nav class="navbar">
   <div class="container">
     <a href="index.html" class="nav-logo"><img src="static/images/logo.png" alt="SKILLUP"></a>
@@ -57,7 +57,7 @@
 </nav>
 
 <div class="page-shell">
-  <!-- SIDEBAR -->
+
   <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-label">Main</div>
@@ -75,7 +75,7 @@
       <a href="profile.html" class="sidebar-link"><span class="icon">👤</span> My Profile</a>
       <a href="login.html" class="sidebar-link"><span class="icon">🚪</span> Logout</a>
     </div>
-    <!-- Mini profile card -->
+
     <div style="position:absolute;bottom:20px;left:16px;right:16px;">
       <div style="background:var(--glass);border:1px solid var(--border);border-radius:4px;padding:24px;display:flex;align-items:center;gap:18px;">
         <div style="width:38px;height:38px;border-radius:50%;background:var(--purple);display:grid;place-items:center;font-weight:800;font-size:0.9rem;flex-shrink:0;color:#fff;">A</div>
@@ -87,9 +87,8 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
   <main class="main-content">
-    <!-- Welcome Banner -->
+
     <div class="welcome-banner fade-up">
       <div class="orb"></div>
       <div style="display:flex;align-items:center;gap:20px;position:relative;z-index:1;">
@@ -112,9 +111,9 @@
     </div>
 
     <div class="grid-2 fade-up-d1">
-      <!-- LEFT COLUMN -->
+
       <div>
-        <!-- Today's Tasks -->
+
         <div class="card mb-24">
           <div class="section-title"><div class="dot"></div>Today's Tasks <span class="tag tag-cyan" style="margin-left:auto;">2/5 done</span></div>
           <div id="taskList">
@@ -147,7 +146,6 @@
           <a href="roadmap.html" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-top:8px;">View All Tasks →</a>
         </div>
 
-        <!-- Quick Actions -->
         <div class="card">
           <div class="section-title"><div class="dot"></div>Quick Actions</div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
@@ -159,9 +157,8 @@
         </div>
       </div>
 
-      <!-- RIGHT COLUMN -->
       <div>
-        <!-- Stats -->
+
         <div class="stats-grid mb-24">
           <div class="stat-card"><div class="stat-value gradient-text" data-count="340">0</div><div class="stat-label">⭐ Total XP</div></div>
           <div class="stat-card"><div class="stat-value" style="color:#ff6b35;" data-count="12">0</div><div class="stat-label">🔥 Day Streak</div></div>
@@ -169,7 +166,6 @@
           <div class="stat-card"><div class="stat-value" style="color:var(--cyan);">#8</div><div class="stat-label">🏆 Class Rank</div></div>
         </div>
 
-        <!-- Weekly Streak -->
         <div class="card mb-24">
           <div class="section-title"><div class="dot"></div>This Week's Streak 🔥</div>
           <div class="streak-week">
@@ -184,7 +180,6 @@
           <p style="font-size:0.8rem;color:var(--text2);margin-top:12px;">🔥 Keep it up! 2 more days for a <strong style="color:var(--gold);">7-day badge</strong>!</p>
         </div>
 
-        <!-- Badges -->
         <div class="card mb-24">
           <div class="section-title"><div class="dot"></div>My Badges <span class="tag tag-gold" style="margin-left:auto;">5 earned</span></div>
           <div class="badge-row">
@@ -199,7 +194,6 @@
           </div>
         </div>
 
-        <!-- Path to Mentor -->
         <div class="card mb-24" id="mentorPathCard">
           <div class="section-title"><div class="dot"></div>Become a Mentor 🎓</div>
           <div style="padding:15px; background:rgba(192,54,90,0.05); border:1px dashed var(--pink); border-radius:12px; margin-bottom:12px;">
@@ -210,7 +204,6 @@
           <div class="progress-container" style="height:8px; background:rgba(255,255,255,0.05);"><div class="progress-bar" id="mentorProgressBar" style="width:0%; background:var(--gold);"></div></div>
         </div>
 
-        <!-- Available Mentors -->
         <div class="card">
           <div class="section-title"><div class="dot"></div>Available Mentors</div>
           <div id="miniMentorList">
@@ -231,7 +224,7 @@
 <script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
-  // Auth guard
+
   SkillupAPI.requireAuth();
 
   async function loadDashboard() {
@@ -239,7 +232,6 @@
       const { progress } = await SkillupAPI.getProgress();
       const { user, gamification, levelProgress } = progress;
 
-      // — Welcome banner —
       const initial = (user.name || 'U').charAt(0).toUpperCase();
       document.querySelector('.welcome-banner h2').textContent = user.name;
       document.querySelector('.welcome-banner .level-badge').textContent = `⚡ Level ${gamification.level} — ${getLevelTitle(gamification.level)}`;
@@ -247,7 +239,6 @@
       const streakEl = document.querySelector('.welcome-banner strong');
       if (streakEl) streakEl.textContent = gamification.streak.current;
 
-      // — XP bar —
       const xpLabelEl = document.getElementById('currentXP');
       const maxXPEl   = document.getElementById('maxXP');
       if (xpLabelEl) { xpLabelEl.dataset.xp = gamification.xpInLevel; animateCounter(xpLabelEl, gamification.xpInLevel); }
@@ -255,13 +246,11 @@
       const bar = document.querySelector('[data-progress]');
       if (bar) animateProgressBar(bar, gamification.levelPct);
 
-      // — Stat cards —
       const statVals = document.querySelectorAll('.stat-value[data-count]');
       if (statVals[0]) { statVals[0].dataset.count = gamification.xp; animateCounter(statVals[0], gamification.xp); }
       if (statVals[1]) { statVals[1].dataset.count = gamification.streak.current; animateCounter(statVals[1], gamification.streak.current); }
       if (statVals[2]) { statVals[2].dataset.count = gamification.badgeCount; animateCounter(statVals[2], gamification.badgeCount); }
 
-      // — Sidebar mini-card —
       const sidebarAvatar = document.querySelector('.sidebar [style*="font-weight:800"]');
       if (sidebarAvatar) sidebarAvatar.textContent = initial;
       const sidebarName = document.querySelector('.sidebar [style*="font-size:0.85rem;font-weight:700"]');
@@ -269,32 +258,26 @@
       const sidebarBadge = document.querySelector('.sidebar .level-badge');
       if (sidebarBadge) sidebarBadge.textContent = `⚡ Level ${gamification.level}`;
 
-      // — Nav avatar —
       const navAvatar = document.querySelector('.nav-avatar');
       if (navAvatar) { navAvatar.textContent = initial; navAvatar.title = user.name; }
       const navXp = document.querySelector('.nav-xp');
       if (navXp) navXp.textContent = `⭐ ${gamification.xp.toLocaleString()} XP`;
 
-      // — Level ring emoji —
       const ringEl = document.querySelector('.level-ring');
       if (ringEl) ringEl.textContent = getLevelEmoji(gamification.level);
 
-      // — Badges —
       renderBadges(gamification.badges);
 
-      // — Level progress —
       renderLevelMap(levelProgress, gamification.level);
 
-      // — Mentor Path —
       updateMentorPath(gamification.level, gamification.xp);
 
-      // — Mini Mentor List —
       loadMiniMentors();
 
     } catch (err) {
       console.error('Error loading dashboard:', err);
       showToast('Session expired. Please login again.', 'error', '🚪');
-      // SkillupAPI.handleLogout();
+
     }
   }
 
@@ -311,7 +294,7 @@
       const levelsLeft = Math.max(0, 4 - level);
       const xpLeft = Math.max(0, 1000 - xp);
       const pct = Math.min(100, (level / 4) * 50 + (xp / 1000) * 50);
-      
+
       mentorStatusText.textContent = `${levelsLeft} levels and ${xpLeft} XP left to become a Mentor!`;
       mentorProgressBar.style.width = pct + '%';
     }
@@ -325,7 +308,7 @@
         list.innerHTML = '<p class="muted" style="font-size:0.8rem; padding:10px;">No mentors available right now.</p>';
         return;
       }
-      
+
       const colors = ['#7c3aed,#06b6d4', '#ec4899,#7c3aed', '#f59e0b,#ef4444', '#10b981,#3b82f6'];
       list.innerHTML = mentors.slice(0, 3).map((m, i) => `
         <div class="mini-mentor">
@@ -356,14 +339,12 @@
     const countTag = badgeSection?.querySelector('.tag-gold');
     if (countTag) countTag.textContent = `${badges.length} earned`;
 
-    // Replace badge items
     badgeRow.innerHTML = badges.map(b => `
       <div class="badge-item">
         <div class="badge-icon earned">${b.icon}</div>
         <div class="badge-name">${b.name}</div>
       </div>`).join('');
 
-    // Show some locked placeholders
     const locked = [
       { icon: '🛠️', name: 'Builder' }, { icon: '🎯', name: 'Sharp Aim' }, { icon: '🚀', name: 'Rocket' }
     ].filter(l => !badges.find(b => b.name === l.name)).slice(0, 3);
@@ -374,8 +355,8 @@
 
   function renderStreak(streak) {
     const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    const today = new Date().getDay(); // 0=Sun
-    const todayIdx = today === 0 ? 6 : today - 1; // convert to Mon=0 index
+    const today = new Date().getDay();
+    const todayIdx = today === 0 ? 6 : today - 1;
     const circles = document.querySelectorAll('.day-circle');
     circles.forEach((circle, i) => {
       circle.classList.remove('done', 'today');
@@ -401,7 +382,6 @@
     }
   }
 
-  // Load on startup
   document.addEventListener('DOMContentLoaded', loadDashboard);
 </script>
 <a href="feedback.html" class="feedback-fab">💬</a>

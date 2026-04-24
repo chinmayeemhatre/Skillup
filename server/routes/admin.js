@@ -6,14 +6,9 @@ const Level = require('../models/Level');
 const Score = require('../models/Score');
 const Feedback = require('../models/Feedback');
 
-// Apply protection to all admin routes
 router.use(protect);
 router.use(admin);
 
-/**
- * GET /api/admin/stats
- * Get overall platform stats for the admin dashboard
- */
 router.get('/stats', async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ role: 'student' });
@@ -35,10 +30,6 @@ router.get('/stats', async (req, res) => {
   }
 });
 
-/**
- * GET /api/admin/users
- * List all users with their current progress
- */
 router.get('/users', async (req, res) => {
   try {
     const users = await User.find().select('-password').sort({ xp: -1 });
@@ -48,10 +39,6 @@ router.get('/users', async (req, res) => {
   }
 });
 
-/**
- * GET /api/admin/feedback
- * Fetch all platform feedback
- */
 router.get('/feedback', async (req, res) => {
   try {
     const feedback = await Feedback.find()
@@ -63,10 +50,6 @@ router.get('/feedback', async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/admin/users/:id
- * Delete a user account
- */
 router.delete('/users/:id', async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);

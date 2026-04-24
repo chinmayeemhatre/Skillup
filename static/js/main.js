@@ -1,10 +1,8 @@
 
-// ── Active nav link ──
 document.querySelectorAll('.nav-links a, .sidebar-link').forEach(link => {
   if (link.href === location.href) link.classList.add('active');
 });
 
-// ── Animated XP / Number counters ──
 function animateCounter(el, target, duration = 1200) {
   let start = 0, step = target / (duration / 16);
   const tick = () => {
@@ -20,7 +18,6 @@ function animateProgressBar(bar, targetPct, delay = 400) {
   setTimeout(() => { bar.style.width = targetPct + '%'; }, delay);
 }
 
-// ── Initialise counters on page load ──
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-count]').forEach(el => {
     animateCounter(el, parseInt(el.dataset.count));
@@ -28,12 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-progress]').forEach(bar => {
     animateProgressBar(bar, parseFloat(bar.dataset.progress));
   });
-  // initStars(); // Particles removed per user request
+
   initMobileNav();
   initCustomCursor();
 });
 
-// Custom golden cursor
 function initCustomCursor() {
   if (window.matchMedia('(pointer: coarse)').matches) return;
 
@@ -51,19 +47,18 @@ function initCustomCursor() {
   let ringX = 0, ringY = 0;
   let reticleX = 0, reticleY = 0;
   let lastSpark = 0;
-  
+
   const interactiveSelector = 'a, button, input, textarea, select, .mini-level, .level-chip, .card, [role="button"], .sidebar-link, .btn';
 
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    
+
     const isHovering = Boolean(e.target.closest(interactiveSelector));
     ring.classList.toggle('is-hovering', isHovering);
     dot.classList.toggle('is-hovering', isHovering);
     reticle.classList.toggle('is-hovering', isHovering);
 
-    // Occasional sparks on fast move
     const now = performance.now();
     if (now - lastSpark > 80 && Math.abs(e.movementX) + Math.abs(e.movementY) > 20) {
       lastSpark = now;
@@ -77,7 +72,7 @@ function initCustomCursor() {
   });
 
   function animate() {
-    // Smooth trailing
+
     dotX += (mouseX - dotX) * 0.35;
     dotY += (mouseY - dotY) * 0.35;
     ringX += (mouseX - ringX) * 0.15;
@@ -88,7 +83,7 @@ function initCustomCursor() {
     dot.style.transform = `translate(${dotX}px, ${dotY}px)`;
     ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
     reticle.style.transform = `translate(${reticleX}px, ${reticleY}px) translate(-50%, -50%)`;
-    
+
     requestAnimationFrame(animate);
   }
 
@@ -98,7 +93,6 @@ function initCustomCursor() {
   animate();
 }
 
-// ── Star field ──
 function initStars() {
   const canvas = document.getElementById('starCanvas');
   if (!canvas) return;
@@ -131,7 +125,6 @@ function initStars() {
   });
 }
 
-// ── Mobile sidebar ──
 function initMobileNav() {
   const btn = document.getElementById('menuBtn');
   const sidebar = document.querySelector('.sidebar');
@@ -140,7 +133,6 @@ function initMobileNav() {
   }
 }
 
-// ── Toast notifications ──
 function showToast(msg, type = 'info', icon = '🔔') {
   let container = document.getElementById('toastContainer');
   if (!container) {
@@ -156,7 +148,6 @@ function showToast(msg, type = 'info', icon = '🔔') {
   setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(30px)'; toast.style.transition = 'all 0.4s'; setTimeout(() => toast.remove(), 400); }, 3500);
 }
 
-// ── Confetti ──
 function launchConfetti() {
   const colors = ['#d6a93a','#f4d47b','#b88928','#8f6816','#fff4cf','#17130b'];
   for (let i = 0; i < 80; i++) {
@@ -176,7 +167,6 @@ function launchConfetti() {
   }
 }
 
-// ── Level-up modal ──
 function showLevelUp(newLevel, title) {
   const overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,14,26,0.85);z-index:10000;display:grid;place-items:center;backdrop-filter:blur(8px);';
@@ -193,7 +183,6 @@ function showLevelUp(newLevel, title) {
   overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 }
 
-// ── Task completion ──
 function completeTask(btn, xpReward) {
   if (btn.dataset.done === '1') return;
   btn.dataset.done = '1';
@@ -202,7 +191,6 @@ function completeTask(btn, xpReward) {
   btn.style.borderColor = '#10b981';
   btn.style.color = '#10b981';
 
-  // Update XP bar
   const bar = document.querySelector('[data-progress]');
   const xpEl = document.getElementById('currentXP');
   const xpMax = document.getElementById('maxXP');
@@ -217,7 +205,6 @@ function completeTask(btn, xpReward) {
   showToast(`+${xpReward} XP earned! Keep going 🔥`, 'success', '⭐');
 }
 
-// ── Chat ──
 function sendMessage() {
   const input = document.getElementById('chatInput');
   const msgs = document.getElementById('chatMessages');
@@ -230,7 +217,6 @@ function sendMessage() {
   msgs.scrollTop = msgs.scrollHeight;
   input.value = '';
 
-  // Simulated reply
   setTimeout(() => {
     const replies = ['Great question! Let me explain...','Sure, I can help with that 👍','Check out this resource: leetcode.com','Try breaking the problem into smaller parts!'];
     const reply = document.createElement('div');
@@ -241,7 +227,6 @@ function sendMessage() {
   }, 1200);
 }
 
-// ── Chat enter key ──
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.activeElement?.id === 'chatInput') {
     e.preventDefault();
@@ -249,14 +234,12 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Leaderboard search ──
 function filterLeaderboard(query) {
   document.querySelectorAll('.lb-row').forEach(row => {
     row.style.display = row.dataset.name?.toLowerCase().includes(query.toLowerCase()) ? '' : 'none';
   });
 }
 
-// ── Tab switching ──
 function switchTab(tabId, btnEl) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -264,7 +247,6 @@ function switchTab(tabId, btnEl) {
   btnEl?.classList.add('active');
 }
 
-// ── Demo: trigger level up ──
 window.demoLevelUp = () => showLevelUp(3, 'Project Builder 🛠️');
 window.showToast = showToast;
 window.completeTask = completeTask;

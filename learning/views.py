@@ -10,7 +10,6 @@ from django.views.decorators.http import require_POST
 from .forms import HelpRequestForm, MessageForm, ProfileForm, SignUpForm
 from .models import Badge, HelpRequest, Level, MentorMessage, Profile, TaskCompletion, UserBadge, UserLevelProgress
 
-
 def ensure_profile(user):
     profile, _ = Profile.objects.get_or_create(
         user=user,
@@ -18,7 +17,6 @@ def ensure_profile(user):
     )
     profile.touch_streak()
     return profile
-
 
 def award_badges(user):
     profile = ensure_profile(user)
@@ -31,7 +29,6 @@ def award_badges(user):
         qualifies = qualifies or (badge.name == 'Consistency Spark' and profile.streak >= 3)
         if qualifies:
             UserBadge.objects.get_or_create(user=user, badge=badge)
-
 
 def progress_snapshot(user):
     levels = Level.objects.prefetch_related('tasks').all()
@@ -50,12 +47,10 @@ def progress_snapshot(user):
         'current_level': current,
     }
 
-
 def home(request):
     levels = Level.objects.all()
     leaders = Profile.objects.select_related('user').order_by('-xp')[:5]
     return render(request, 'learning/home.html', {'levels': levels, 'leaders': leaders})
-
 
 def signup(request):
     if request.method == 'POST':
@@ -73,7 +68,6 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'registration/signup.html', {'form': form})
 
-
 @login_required
 def dashboard(request):
     snapshot = progress_snapshot(request.user)
@@ -88,13 +82,11 @@ def dashboard(request):
         'badges': badges,
     })
 
-
 @login_required
 def roadmap(request):
     snapshot = progress_snapshot(request.user)
     completed_levels = set(UserLevelProgress.objects.filter(user=request.user, completed=True).values_list('level_id', flat=True))
     return render(request, 'learning/roadmap.html', {**snapshot, 'completed_levels': completed_levels})
-
 
 @login_required
 def level_detail(request, number):
@@ -114,7 +106,6 @@ def level_detail(request, number):
         'level_progress': level_progress,
         **resources,
     })
-
 
 @login_required
 @require_POST
@@ -148,11 +139,9 @@ def toggle_task(request, task_id):
     award_badges(request.user)
     return redirect(reverse('level_detail', args=[task.level.number]))
 
-
 def leaderboard(request):
     leaders = Profile.objects.select_related('user').annotate(done=Count('user__task_completions')).order_by('-xp', '-streak')[:25]
     return render(request, 'learning/leaderboard.html', {'leaders': leaders})
-
 
 @login_required
 def mentors(request):
@@ -176,7 +165,6 @@ def mentors(request):
         'requests': requests,
     })
 
-
 @login_required
 def chat(request, user_id):
     other = get_object_or_404(User, id=user_id)
@@ -191,7 +179,6 @@ def chat(request, user_id):
         return redirect('chat', user_id=other.id)
     messages_qs = MentorMessage.objects.filter(sender__in=[request.user, other], receiver__in=[request.user, other]).select_related('sender')
     return render(request, 'learning/chat.html', {'other': other, 'chat_messages': messages_qs, 'form': form})
-
 
 @login_required
 def profile(request):

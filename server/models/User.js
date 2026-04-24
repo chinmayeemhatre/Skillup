@@ -1,22 +1,16 @@
-/**
- * SKILLUP — User Model (Mongoose Schema)
- *
- * Stores all user data including authentication info,
- * gamification state (XP, level, streak, badges), and progress.
- */
 
 const mongoose = require('mongoose');
 const bcrypt   = require('bcryptjs');
 
 const badgeSchema = new mongoose.Schema({
-  id:        { type: String, required: true },  // e.g. 'first_step'
-  name:      { type: String, required: true },  // e.g. 'First Step'
-  icon:      { type: String, required: true },  // emoji
+  id:        { type: String, required: true },
+  name:      { type: String, required: true },
+  icon:      { type: String, required: true },
   earnedAt:  { type: Date,   default: Date.now }
 }, { _id: false });
 
 const userSchema = new mongoose.Schema({
-  // ── Authentication ──────────────────────────────────────────
+
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -45,11 +39,10 @@ const userSchema = new mongoose.Schema({
     type:      String,
     required:  [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters'],
-    select:    false  // never return password in queries by default
+    select:    false
   },
-  avatar: { type: String, default: '' },  // URL to profile image
+  avatar: { type: String, default: '' },
 
-  // ── Gamification ─────────────────────────────────────────────
   xp: {
     type:    Number,
     default: 0,
@@ -68,8 +61,6 @@ const userSchema = new mongoose.Schema({
   },
   badges: [badgeSchema],
 
-  // ── Progress ─────────────────────────────────────────────────
-  // levelProgress[2] = { completed: true, tasksCompleted: [0,1,2], quizScore: 80 }
   levelProgress: {
     type:    Map,
     of:      new mongoose.Schema({
@@ -82,10 +73,8 @@ const userSchema = new mongoose.Schema({
     default: {}
   },
 
-  // ── Leaderboard ───────────────────────────────────────────────
   rank:  { type: Number, default: 0 },
 
-  // ── Social ────────────────────────────────────────────────────
   role: {
     type:    String,
     enum:    ['student', 'mentor', 'admin'],
@@ -96,23 +85,20 @@ const userSchema = new mongoose.Schema({
   github:   { type: String, default: '' },
   linkedin: { type: String, default: '' },
 
-  // ── Timestamps ────────────────────────────────────────────────
   createdAt:   { type: Date, default: Date.now },
   lastActiveAt:{ type: Date, default: Date.now }
 
 }, {
-  timestamps: true,    // adds createdAt & updatedAt automatically
+  timestamps: true,
   toJSON:     { virtuals: true },
   toObject:   { virtuals: true }
 });
 
-// ── Virtual: XP needed for next level ────────────────────────
 userSchema.virtual('xpToNextLevel').get(function () {
   const thresholds = [0, 100, 500, 1000, 1400, 2000, 2500, 3500];
   return thresholds[this.level] || 0;
 });
 
-// ── Virtual: percentage progress within current level ────────
 userSchema.virtual('levelProgressPct').get(function () {
   const thresholds = [0, 100, 500, 1000, 1400, 2000, 2500, 3500];
   const prev = thresholds[this.level - 1] || 0;
@@ -121,43 +107,39 @@ userSchema.virtual('levelProgressPct').get(function () {
   return Math.min(100, Math.round(((this.xp - prev) / (next - prev)) * 100));
 });
 
-// ── Pre-save: Hash password and generate username ────────────
 userSchema.pre('save', async function (next) {
-  // Generate username from email if missing
+
   if (!this.username && this.email) {
     this.username = this.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '') + Math.floor(100 + Math.random() * 900);
   }
 
-  // Skip if password wasn't changed, or if seed script already hashed it
   if (!this.isModified('password') || this.$skipPasswordHash) return next();
   const salt  = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// ── Instance method: compare password for login ──────────────
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-// ── Instance method: update streak ───────────────────────────
 userSchema.methods.updateStreak = function () {
   const now      = new Date();
   const lastDate = this.streak.lastLogin;
 
   if (!lastDate) {
-    // First ever login
+
     this.streak.current = 1;
   } else {
     const diffDays = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
     if (diffDays === 1) {
-      // Consecutive day
+
       this.streak.current += 1;
     } else if (diffDays > 1) {
-      // Broken streak — reset
+
       this.streak.current = 1;
     }
-    // Same day — no change
+
   }
 
   this.streak.longest   = Math.max(this.streak.longest, this.streak.current);
@@ -165,7 +147,6 @@ userSchema.methods.updateStreak = function () {
   this.lastActiveAt     = now;
 };
 
-// ── Index: fast leaderboard lookups ──────────────────────────
 userSchema.index({ xp: -1 });
 
 module.exports = mongoose.model('User', userSchema);

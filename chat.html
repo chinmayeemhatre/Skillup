@@ -69,7 +69,7 @@
 
 <div style="padding-top:68px;height:100vh;display:flex;flex-direction:column;">
   <div class="chat-shell">
-    <!-- Conversations -->
+
     <div class="conversations">
       <div class="conv-header">
         <h3 style="margin-bottom:12px;font-size:0.95rem;font-weight:700;">💬 Messages</h3>
@@ -107,7 +107,6 @@
       </div>
     </div>
 
-    <!-- Chat main -->
     <div class="chat-main">
       <div class="chat-header" id="chatHeader">
         <div class="chat-header-av" id="chatAv" style="background:linear-gradient(135deg,#c0365a,#c49a1a);">K</div>
@@ -173,7 +172,7 @@
   function renderConversations(mentors) {
     const colors = ['#c0365a,#c49a1a', '#7047c0,#c0365a', '#0b8fa8,#7047c0', '#3a9e4f,#0b8fa8'];
     const list = document.querySelector('.conv-list');
-    
+
     list.innerHTML = mentors.map((m, i) => `
       <div class="conv-item" onclick="openChat(this,'${m.name}','${m.name.charAt(0)}','${colors[i % colors.length]}','online')">
         <div class="conv-av" style="background:linear-gradient(135deg,${colors[i % colors.length]});">${m.name.charAt(0)}<div class="conv-dot dot-g"></div></div>
@@ -182,7 +181,6 @@
       </div>
     `).join('');
 
-    // Open first one if exists
     if (mentors.length > 0) {
       const first = list.querySelector('.conv-item');
       first.click();
@@ -199,7 +197,7 @@
     if(status==='online') st.innerHTML=`<span style="color:var(--lime-l)">🟢 Online · Mentor</span>`;
     else if(status==='away') st.innerHTML=`<span style="color:var(--yellow-l)">🟡 Away · Mentor</span>`;
     else st.innerHTML=`<span style="color:var(--text3)">⚫ Offline · Mentor</span>`;
-    
+
     document.getElementById('chatMessages').innerHTML = `<div class="date-sep">Conversation with ${name}</div>
       <div style="text-align:center;color:var(--text3);font-size:0.82rem;padding:20px;">Say hi and ask your question! 👋</div>`;
   }
@@ -221,7 +219,6 @@
     input.value = '';
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // Simulate response
     setTimeout(() => {
       chatMessages.innerHTML += `
         <div class="msg-row">

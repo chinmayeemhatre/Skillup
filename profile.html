@@ -60,7 +60,6 @@
 
   <main class="main-content">
 
-    <!-- Profile Banner -->
     <div class="profile-banner fade-up">
       <div class="orb orb-purple" style="width:280px;height:280px;right:-80px;top:-80px;opacity:0.15;position:absolute;"></div>
       <div style="display:flex;align-items:flex-start;gap:24px;position:relative;z-index:1;flex-wrap:wrap;">
@@ -86,14 +85,13 @@
           <button class="btn btn-secondary btn-sm" onclick="showToast('Link copied!','info','🔗')">🔗 Share Profile</button>
         </div>
       </div>
-      <!-- XP Progress -->
+
       <div style="margin-top:20px;position:relative;z-index:1;">
         <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text2);margin-bottom:6px;"><span>Level 2</span><span>340 / 500 XP</span><span>Level 3</span></div>
         <div class="progress-wrap"><div class="progress-bar" data-progress="68" style="width:0%"></div></div>
       </div>
     </div>
 
-    <!-- Stats -->
     <div class="stats-grid mb-24 fade-up-d1">
       <div class="stat-card"><div class="stat-value gradient-text" data-count="340">0</div><div class="stat-label">⭐ XP Earned</div></div>
       <div class="stat-card"><div class="stat-value" style="color:#ff6b35;" data-count="12">0</div><div class="stat-label">🔥 Day Streak</div></div>
@@ -101,14 +99,12 @@
       <div class="stat-card"><div class="stat-value" style="color:var(--cyan);" data-count="18">0</div><div class="stat-label">✅ Tasks Done</div></div>
     </div>
 
-    <!-- Tabs -->
     <div class="tab-bar fade-up-d2">
       <div class="tab-btn active" onclick="switchTab('tabBadges',this)">🏅 Badges</div>
       <div class="tab-btn" onclick="switchTab('tabActivity',this)">📅 Activity</div>
       <div class="tab-btn" onclick="switchTab('tabSettings',this)">⚙️ Settings</div>
     </div>
 
-    <!-- Badges Tab -->
     <div class="tab-panel active" id="tabBadges">
       <div class="card fade-up-d3">
         <div class="section-title"><div class="dot"></div>Achievement Badges <span class="tag tag-gold" style="margin-left:auto;">5 / 20 earned</span></div>
@@ -127,7 +123,6 @@
       </div>
     </div>
 
-    <!-- Activity Tab -->
     <div class="tab-panel" id="tabActivity">
       <div class="card fade-up">
         <div class="section-title"><div class="dot"></div>Recent Activity</div>
@@ -139,7 +134,6 @@
       </div>
     </div>
 
-    <!-- Settings Tab -->
     <div class="tab-panel" id="tabSettings">
       <div class="card fade-up">
         <div class="section-title"><div class="dot"></div>Account Settings</div>
@@ -169,7 +163,6 @@
       const { user, gamification } = progress;
       const initial = (user.name || 'U').charAt(0).toUpperCase();
 
-      // — Profile banner —
       document.querySelector('.profile-avatar').textContent = initial;
       document.querySelector('.profile-banner h2').textContent = user.name;
       const subline = document.querySelector('.profile-banner h2 + div');
@@ -185,29 +178,24 @@
           <div style="display:flex;align-items:center;gap:5px;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);padding:4px 12px;border-radius:20px;font-size:0.82rem;font-weight:700;color:#ff6b35;">🔥 ${gamification.streak.current} day streak</div>`;
       }
 
-      // Bio
       const bioEl = document.querySelector('.profile-banner p[style*="0.88rem"]');
       if (bioEl) bioEl.textContent = `"${user.bio || 'Aspiring software developer on SKILLUP 🚀'}"`;
 
-      // XP bar
       const xpBar = document.querySelector('.profile-banner .progress-bar');
       if (xpBar) { xpBar.dataset.progress = gamification.levelPct; animateProgressBar(xpBar, gamification.levelPct); }
       const xpLabel = document.querySelector('.profile-banner .progress-wrap').previousElementSibling;
       if (xpLabel) xpLabel.innerHTML = `<span>Level ${gamification.level}</span><span>${gamification.xpInLevel} / ${gamification.xpNeeded} XP</span><span>Level ${gamification.level+1}</span>`;
 
-      // — Stat cards —
       const statVals = document.querySelectorAll('.stat-value[data-count]');
       if (statVals[0]) { statVals[0].dataset.count = gamification.xp; animateCounter(statVals[0], gamification.xp); }
       if (statVals[1]) { statVals[1].dataset.count = gamification.streak.current; animateCounter(statVals[1], gamification.streak.current); }
       if (statVals[2]) { statVals[2].dataset.count = gamification.badgeCount; animateCounter(statVals[2], gamification.badgeCount); }
 
-      // — Nav —
       const navXp = document.querySelector('.nav-xp');
       if (navXp) navXp.textContent = `⭐ ${gamification.xp.toLocaleString()} XP`;
       const navAvatar = document.querySelector('.nav-avatar');
       if (navAvatar) { navAvatar.textContent = initial; navAvatar.title = user.name; }
 
-      // — Badges —
       const badgeRow = document.querySelector('#tabBadges .badge-row');
       if (badgeRow && gamification.badges) {
         const countEl = document.querySelector('#tabBadges .tag-gold');
@@ -223,7 +211,6 @@
         });
       }
 
-      // — Activity: recent scores —
       const activityDiv = document.querySelector('#tabActivity .card');
       if (activityDiv) {
         try {

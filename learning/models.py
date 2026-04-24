@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-
 class Level(models.Model):
     number = models.PositiveSmallIntegerField(unique=True)
     title = models.CharField(max_length=80)
@@ -18,7 +17,6 @@ class Level(models.Model):
     def __str__(self):
         return f'Level {self.number}: {self.title}'
 
-
 class LevelTask(models.Model):
     level = models.ForeignKey(Level, related_name='tasks', on_delete=models.CASCADE)
     title = models.CharField(max_length=140)
@@ -27,7 +25,6 @@ class LevelTask(models.Model):
 
     def __str__(self):
         return self.title
-
 
 class Resource(models.Model):
     RESOURCE_TYPES = [('video', 'Video'), ('reference', 'Reference'), ('tip', 'Tip')]
@@ -40,7 +37,6 @@ class Resource(models.Model):
     def __str__(self):
         return self.title
 
-
 class Badge(models.Model):
     name = models.CharField(max_length=80, unique=True)
     description = models.CharField(max_length=180)
@@ -49,7 +45,6 @@ class Badge(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
@@ -80,7 +75,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-
 class UserLevelProgress(models.Model):
     user = models.ForeignKey(User, related_name='level_progress', on_delete=models.CASCADE)
     level = models.ForeignKey(Level, related_name='progress', on_delete=models.CASCADE)
@@ -90,7 +84,6 @@ class UserLevelProgress(models.Model):
     class Meta:
         unique_together = ('user', 'level')
 
-
 class TaskCompletion(models.Model):
     user = models.ForeignKey(User, related_name='task_completions', on_delete=models.CASCADE)
     task = models.ForeignKey(LevelTask, related_name='completions', on_delete=models.CASCADE)
@@ -99,7 +92,6 @@ class TaskCompletion(models.Model):
     class Meta:
         unique_together = ('user', 'task')
 
-
 class UserBadge(models.Model):
     user = models.ForeignKey(User, related_name='badges', on_delete=models.CASCADE)
     badge = models.ForeignKey(Badge, related_name='users', on_delete=models.CASCADE)
@@ -107,7 +99,6 @@ class UserBadge(models.Model):
 
     class Meta:
         unique_together = ('user', 'badge')
-
 
 class HelpRequest(models.Model):
     user = models.ForeignKey(User, related_name='help_requests', on_delete=models.CASCADE)
@@ -118,7 +109,6 @@ class HelpRequest(models.Model):
 
     def __str__(self):
         return f'{self.user.username}: {self.question[:40]}'
-
 
 class MentorMessage(models.Model):
     sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)

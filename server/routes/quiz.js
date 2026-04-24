@@ -1,8 +1,3 @@
-/**
- * SKILLUP — Quiz Submission Routes
- * POST /api/quiz/submit  — Submit quiz answers, award XP, store score
- * GET  /api/quiz/history — Get current user's quiz history
- */
 
 const express  = require('express');
 const { body, validationResult } = require('express-validator');
@@ -13,11 +8,6 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-/* ─────────────────────────────────────────────────────────────
-   POST /api/quiz/submit  — Protected
-   Body: { levelNumber, answers: [0, 2, 1, 3, 0], timeTaken }
-   Returns: { score, correct, total, xpEarned, badges }
-   ───────────────────────────────────────────────────────────── */
 router.post('/submit', protect, [
   body('levelNumber').isInt({ min: 1, max: 7 }).withMessage('Invalid level number'),
   body('answers').isArray({ min: 1 }).withMessage('Answers array is required'),
@@ -31,13 +21,11 @@ router.post('/submit', protect, [
 
     const { levelNumber, answers, timeTaken = 0 } = req.body;
 
-    // 1. Fetch level with quiz questions
     const level = await Level.findOne({ levelNumber });
     if (!level || !level.quiz.length) {
       return res.status(404).json({ success: false, message: 'Level or quiz not found' });
     }
 
-    // 2. Grade the answers
     let correct = 0;
     level.quiz.forEach((q, i) => {
       if (answers[i] === q.answerIndex) correct++;
@@ -47,14 +35,12 @@ router.post('/submit', protect, [
     const scorePct  = Math.round((correct / total) * 100);
     const xpEarned  = Math.round(level.totalXP * 0.2 * (correct / total));
 
-    // 3. Count how many times user has attempted this level's quiz
     const prevAttempts = await Score.countDocuments({
       userId: req.user._id,
       levelId: level._id,
       type: 'quiz'
     });
 
-    // 4. Save score record
     const score = await Score.create({
       userId:         req.user._id,
       levelId:        level._id,
@@ -68,11 +54,9 @@ router.post('/submit', protect, [
       attempt:        prevAttempts + 1
     });
 
-    // 5. Award XP to user
     const user = await User.findById(req.user._id);
     user.xp += xpEarned;
 
-    // 6. Update user's level progress
     const progressKey = String(levelNumber);
     const existing    = user.levelProgress.get(progressKey) || {};
     const prevBest    = existing.quizScore || 0;
@@ -81,7 +65,6 @@ router.post('/submit', protect, [
       quizScore: Math.max(prevBest, scorePct)
     });
 
-    // 7. Check for level-up (XP thresholds)
     const xpThresholds = [0, 100, 500, 1000, 1400, 2000, 2500, 3500];
     let newBadges = [];
     while (user.level < 7 && user.xp >= xpThresholds[user.level]) {
@@ -97,7 +80,6 @@ router.post('/submit', protect, [
       }
     }
 
-    // 8. Milestone badges
     const badgeChecks = [
       { condition: user.streak.current >= 7,  id: 'week_streak',   name: '7-Day Streak',  icon: '🔥' },
       { condition: user.xp >= 500,            id: 'xp_500',        name: 'XP Hunter',     icon: '⭐' },
@@ -132,10 +114,6 @@ router.post('/submit', protect, [
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   GET /api/quiz/history  — Protected
-   Returns all past quiz attempts for the logged-in user
-   ───────────────────────────────────────────────────────────── */
 router.get('/history', protect, async (req, res) => {
   try {
     const history = await Score

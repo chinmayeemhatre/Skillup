@@ -1,10 +1,3 @@
-/**
- * SKILLUP — Progress Routes
- * GET  /api/progress/me            — Full progress summary for current user
- * POST /api/progress/submit-code   — Submit a coding challenge solution
- * GET  /api/progress/leaderboard   — Top 20 users by XP
- * PATCH /api/progress/task         — Mark a task as complete
- */
 
 const express  = require('express');
 const { body } = require('express-validator');
@@ -15,23 +8,16 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-/* ─────────────────────────────────────────────────────────────
-   GET /api/progress/me  — Protected
-   Returns dashboard-ready data: XP, level, streak, badges,
-   recent scores, and per-level progress map.
-   ───────────────────────────────────────────────────────────── */
 router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
 
-    // Fetch last 10 score records for the score history chart
     const recentScores = await Score
       .find({ userId: req.user._id })
       .sort({ createdAt: -1 })
       .limit(10)
       .select('levelNumber type score xpEarned createdAt');
 
-    // XP thresholds per level
     const xpThresholds = [0, 100, 500, 1000, 1400, 2000, 2500, 3500];
     const prevXP       = xpThresholds[user.level - 1] || 0;
     const nextXP       = xpThresholds[user.level]     || 0;
@@ -72,11 +58,6 @@ router.get('/me', protect, async (req, res) => {
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   POST /api/progress/submit-code  — Protected
-   Body: { levelNumber, language, code }
-   Stores the submission and awards challenge XP.
-   ───────────────────────────────────────────────────────────── */
 router.post('/submit-code', protect, [
   body('levelNumber').isInt({ min: 1, max: 7 }),
   body('language').isIn(['python','javascript','cpp']),
@@ -90,9 +71,8 @@ router.post('/submit-code', protect, [
       return res.status(404).json({ success: false, message: 'Level not found' });
     }
 
-    const xpEarned = Math.round(level.totalXP * 0.3);  // 30% of level XP for challenge
+    const xpEarned = Math.round(level.totalXP * 0.3);
 
-    // Save submission record
     await Score.create({
       userId:        req.user._id,
       levelId:       level._id,
@@ -101,11 +81,10 @@ router.post('/submit-code', protect, [
       xpEarned,
       language,
       codeSubmitted: code,
-      passed:        true,   // In production, run test cases here
+      passed:        true,
       score:         100
     });
 
-    // Award XP and mark challenge complete
     const user = await User.findById(req.user._id);
     user.xp += xpEarned;
 
@@ -113,7 +92,6 @@ router.post('/submit-code', protect, [
     const prog = user.levelProgress.get(key) || {};
     user.levelProgress.set(key, { ...prog, challengeCompleted: true });
 
-    // Check for "Builder" badge
     if (!user.badges.find(b => b.id === 'builder')) {
       user.badges.push({ id: 'builder', name: 'Builder', icon: '🛠️' });
     }
@@ -131,10 +109,6 @@ router.post('/submit-code', protect, [
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   GET /api/progress/leaderboard
-   Top 20 users sorted by XP — public endpoint
-   ───────────────────────────────────────────────────────────── */
 router.get('/leaderboard', async (req, res) => {
   try {
     const top = await User
@@ -159,10 +133,6 @@ router.get('/leaderboard', async (req, res) => {
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   GET /api/progress/mentors
-   Returns all users with 'mentor' role
-   ───────────────────────────────────────────────────────────── */
 router.get('/mentors', async (req, res) => {
   try {
     const mentors = await User
@@ -175,11 +145,6 @@ router.get('/mentors', async (req, res) => {
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   PATCH /api/progress/task  — Protected
-   Body: { levelNumber, taskIndex, completed }
-   Marks an individual task as complete and awards small XP.
-   ───────────────────────────────────────────────────────────── */
 router.patch('/task', protect, [
   body('levelNumber').isInt({ min: 1, max: 7 }),
   body('taskIndex').isInt({ min: 0 }),
@@ -195,7 +160,7 @@ router.patch('/task', protect, [
 
     if (completed && !tasks.includes(taskIndex)) {
       tasks.push(taskIndex);
-      user.xp += 10;  // +10 XP per task
+      user.xp += 10;
     } else if (!completed) {
       const idx = tasks.indexOf(taskIndex);
       if (idx > -1) tasks.splice(idx, 1);

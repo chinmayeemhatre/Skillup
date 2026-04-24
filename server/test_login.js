@@ -1,4 +1,4 @@
-// Quick test script to verify login works
+
 const http = require('http');
 
 const body = JSON.stringify({ email: 'aarav@skillup.dev', password: 'password123' });

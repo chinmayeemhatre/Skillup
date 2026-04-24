@@ -1,8 +1,3 @@
-/**
- * SKILLUP — Feedback Routes
- * POST /api/feedback — Submit new feedback
- * GET /api/feedback — Admin view (managed via admin route)
- */
 
 const express  = require('express');
 const { body, validationResult } = require('express-validator');
@@ -11,10 +6,6 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-/* ─────────────────────────────────────────────────────────────
-   POST /api/feedback  — Protected
-   Body: { rating, type, title, content }
-   ───────────────────────────────────────────────────────────── */
 router.post('/', protect, [
   body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be between 1 and 5'),
   body('type').isIn(['suggestion', 'bug', 'praise']).withMessage('Invalid feedback type'),

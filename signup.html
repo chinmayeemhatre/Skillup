@@ -47,7 +47,6 @@
       <p class="muted" style="font-size:0.85rem;margin-top:6px;">Start your coding journey today — free!</p>
     </div>
 
-    <!-- Step indicator -->
     <div class="step-indicator">
       <div class="step-dot active" id="dot1">1</div>
       <div class="step-line" id="line1"></div>
@@ -56,7 +55,6 @@
       <div class="step-dot" id="dot3">3</div>
     </div>
 
-    <!-- Step 1: Basic Info -->
     <div id="step1">
       <div class="form-stack">
         <div class="row-2">
@@ -86,7 +84,6 @@
       </div>
     </div>
 
-    <!-- Step 2: Password & College -->
     <div id="step2" style="display:none;">
       <div class="form-stack">
         <div class="input-group">
@@ -118,7 +115,6 @@
       </div>
     </div>
 
-    <!-- Step 3: Choose Starting Level -->
     <div id="step3" style="display:none;">
       <p class="muted" style="font-size:0.88rem;margin-bottom:12px;">Where are you right now? We'll personalise your roadmap:</p>
       <div class="level-select-grid">
@@ -140,7 +136,7 @@
 <script src="static/js/api.js"></script>
 <script src="static/js/main.js"></script>
 <script>
-  // If already logged in, go to dashboard
+
   if (SkillupAPI.isLoggedIn()) window.location.href = 'dashboard.html';
 
   let selectedLevel = '1';

@@ -3,7 +3,6 @@ from django.core.management.base import BaseCommand
 
 from learning.models import Badge, Level, LevelTask, Profile, Resource, TaskCompletion, UserBadge, UserLevelProgress
 
-
 LEVELS = [
     {
         'number': 1,
@@ -192,7 +191,6 @@ LEVELS = [
     },
 ]
 
-
 BADGES = [
     ('Beginner', 'Created an account and started the roadmap.', '[B]', 0),
     ('Task Crusher', 'Completed at least ten learning tasks.', '[T]', 250),
@@ -203,7 +201,6 @@ BADGES = [
     ('Internship Ready', 'Reached the final readiness zone.', '[I]', 1800),
 ]
 
-
 DEMO_USERS = [
     ('aarav', 'Aarav Sharma', 'aarav@skillup.dev', 'KGISL Institute of Technology', 360, 2, 4, 'AS'),
     ('priya', 'Priya Nair', 'priya@skillup.dev', 'PSG College of Technology', 980, 4, 8, 'PN'),
@@ -211,7 +208,6 @@ DEMO_USERS = [
     ('karan', 'Karan Mehta', 'karan@skillup.dev', 'VIT Chennai', 2050, 6, 18, 'KM'),
     ('meera', 'Meera Iyer', 'meera@skillup.dev', 'Anna University', 2480, 7, 21, 'MI'),
 ]
-
 
 class Command(BaseCommand):
     help = 'Seed SKILLUP with levels, tasks, resources, badges, and demo users.'

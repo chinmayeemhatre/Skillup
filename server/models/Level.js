@@ -1,28 +1,19 @@
-/**
- * SKILLUP — Level Model (Mongoose Schema)
- *
- * Stores all content for each learning level:
- * theory sections, quiz questions, and coding challenges.
- */
 
 const mongoose = require('mongoose');
 
-// ── Quiz Question Sub-schema ──────────────────────────────────
 const quizQuestionSchema = new mongoose.Schema({
   question:     { type: String, required: true },
-  options:      { type: [String], required: true },  // 4 choices
-  answerIndex:  { type: Number,  required: true },   // 0-3
-  explanation:  { type: String,  default: '' }       // shown after answering
+  options:      { type: [String], required: true },
+  answerIndex:  { type: Number,  required: true },
+  explanation:  { type: String,  default: '' }
 }, { _id: false });
 
-// ── Theory Section Sub-schema ─────────────────────────────────
 const theorySectionSchema = new mongoose.Schema({
   title:   { type: String, required: true },
-  content: { type: String, required: true },  // HTML-safe text
-  code:    { type: String, default: '' }       // code snippet
+  content: { type: String, required: true },
+  code:    { type: String, default: '' }
 }, { _id: false });
 
-// ── Resource Link Sub-schema ──────────────────────────────────
 const resourceSchema = new mongoose.Schema({
   icon:  { type: String, default: '🔗' },
   title: { type: String, required: true },
@@ -30,7 +21,6 @@ const resourceSchema = new mongoose.Schema({
   url:   { type: String, required: true }
 }, { _id: false });
 
-// ── Challenge Sub-schema ──────────────────────────────────────
 const challengeSchema = new mongoose.Schema({
   title:      { type: String, required: true },
   difficulty: { type: String, enum: ['easy','medium','hard'], default: 'medium' },
@@ -47,14 +37,13 @@ const challengeSchema = new mongoose.Schema({
     cpp:        { type: String, default: '' }
   },
   sampleOutput: { type: String, default: '' },
-  // For auto-evaluation (future feature)
+
   testCases: [{
     input:          String,
     expectedOutput: String
   }]
 }, { _id: false });
 
-// ── Main Level Schema ─────────────────────────────────────────
 const levelSchema = new mongoose.Schema({
   levelNumber: {
     type:     Number,
@@ -62,13 +51,12 @@ const levelSchema = new mongoose.Schema({
     unique:   true,
     min: 1, max: 7
   },
-  title:     { type: String, required: true },  // "Level 2: DSA"
-  shortTitle:{ type: String, required: true },  // "DSA"
-  icon:      { type: String, default: '⚡' },   // emoji
+  title:     { type: String, required: true },
+  shortTitle:{ type: String, required: true },
+  icon:      { type: String, default: '⚡' },
   totalXP:   { type: Number, default: 100, min: 0 },
   description:{ type: String, default: '' },
 
-  // ── Content ──────────────────────────────────────────────────
   theory: {
     sections:  [theorySectionSchema],
     resources: [resourceSchema]
@@ -76,14 +64,11 @@ const levelSchema = new mongoose.Schema({
   quiz:      [quizQuestionSchema],
   challenge: challengeSchema,
 
-  // ── Meta ─────────────────────────────────────────────────────
   isPublished: { type: Boolean, default: true },
-  order:       { type: Number,  default: 0 }    // for sorting
+  order:       { type: Number,  default: 0 }
 
 }, {
   timestamps: true
 });
-
-// Main model export
 
 module.exports = mongoose.model('Level', levelSchema);

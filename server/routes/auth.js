@@ -1,9 +1,3 @@
-/**
- * SKILLUP — Auth Routes
- * POST /api/auth/register  — Create new account
- * POST /api/auth/login     — Login and receive JWT
- * GET  /api/auth/me        — Get current user profile (protected)
- */
 
 const express  = require('express');
 const jwt      = require('jsonwebtoken');
@@ -13,17 +7,14 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
-// ── Helper: sign a JWT and return it ──────────────────────────
 const signToken = (userId) =>
   jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d'
   });
 
-// ── Helper: send token response ───────────────────────────────
 const sendTokenResponse = (user, statusCode, res) => {
   const token = signToken(user._id);
 
-  // Remove password from output
   user.password = undefined;
 
   res.status(statusCode).json({
@@ -44,10 +35,6 @@ const sendTokenResponse = (user, statusCode, res) => {
   });
 };
 
-/* ─────────────────────────────────────────────────────────────
-   POST /api/auth/register
-   Body: { name, email, password, college? }
-   ───────────────────────────────────────────────────────────── */
 router.post('/register', [
   body('name')
     .trim()
@@ -61,7 +48,7 @@ router.post('/register', [
     .withMessage('Password must be at least 6 characters')
 ], async (req, res) => {
   try {
-    // Validate input
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ success: false, errors: errors.array() });
@@ -69,23 +56,20 @@ router.post('/register', [
 
     const { name, email, password, username, college = '' } = req.body;
 
-    // Check if email or username already registered
-    const existing = await User.findOne({ 
+    const existing = await User.findOne({
       $or: [{ email }, { username }]
     });
     if (existing) {
       return res.status(409).json({
         success: false,
-        message: existing.email === email 
+        message: existing.email === email
           ? 'An account with this email already exists'
           : 'This username is already taken'
       });
     }
 
-    // Create user — password and missing username handled by pre-save hooks
     const user = await User.create({ name, email, password, username, college });
 
-    // Award "First Step" badge for registering
     user.badges.push({ id: 'first_step', name: 'First Step', icon: '🌟' });
     user.streak.current  = 1;
     user.streak.lastLogin = new Date();
@@ -99,10 +83,6 @@ router.post('/register', [
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   POST /api/auth/login
-   Body: { email, password }
-   ───────────────────────────────────────────────────────────── */
 router.post('/login', [
   body('email').notEmpty().withMessage('Email or Username is required'),
   body('password').notEmpty().withMessage('Password is required')
@@ -116,7 +96,6 @@ router.post('/login', [
     const { email: identifier, password } = req.body;
     const loginValue = identifier.toLowerCase().trim();
 
-    // Find user by email OR username and explicitly SELECT password
     const user = await User.findOne({
       $or: [{ email: loginValue }, { username: loginValue }]
     }).select('+password');
@@ -127,7 +106,6 @@ router.post('/login', [
       });
     }
 
-    // Verify password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({
@@ -136,7 +114,6 @@ router.post('/login', [
       });
     }
 
-    // Update streak
     user.updateStreak();
     await user.save();
 
@@ -148,10 +125,6 @@ router.post('/login', [
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   GET /api/auth/me  — Protected
-   Returns the logged-in user's full profile
-   ───────────────────────────────────────────────────────────── */
 router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -164,10 +137,6 @@ router.get('/me', protect, async (req, res) => {
   }
 });
 
-/* ─────────────────────────────────────────────────────────────
-   PATCH /api/auth/profile  — Protected
-   Update name, bio, college, github, linkedin, avatar
-   ───────────────────────────────────────────────────────────── */
 router.patch('/profile', protect, [
   body('name').optional().trim().isLength({ min: 2, max: 50 }),
   body('bio').optional().isLength({ max: 300 })

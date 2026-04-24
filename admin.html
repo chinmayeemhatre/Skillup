@@ -11,19 +11,19 @@
     .stat-card:hover { border-color: var(--yellow-l); transform: translateY(-5px); }
     .stat-val { font-size: 2.5rem; font-weight: 800; color: var(--yellow-l); margin-bottom: 4px; }
     .stat-label { font-size: 0.9rem; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
-    
+
     .admin-section { background: var(--glass); border: 1px solid var(--border); border-radius: 8px; padding: 30px; margin-bottom: 30px; }
     .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    
+
     .user-table { width: 100%; border-collapse: collapse; }
     .user-table th { text-align: left; padding: 14px; border-bottom: 1px solid var(--border); color: var(--text3); font-size: 0.8rem; text-transform: uppercase; }
     .user-table td { padding: 14px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem; }
     .user-table tr:hover { background: rgba(255,255,255,0.02); }
-    
+
     .badge-admin { padding: 4px 10px; border-radius: 3px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
     .badge-student { background: rgba(6,182,212,0.1); color: var(--cyan); border: 1px solid var(--cyan-d); }
     .badge-admin-role { background: rgba(244,212,123,0.1); color: var(--yellow); border: 1px solid var(--yellow-d); }
-    
+
     .action-btn { background: none; border: none; cursor: pointer; color: var(--text3); transition: var(--t); font-size: 1.1rem; }
     .action-btn:hover { color: #ef4444; }
   </style>
@@ -32,7 +32,6 @@
   <div class="custom-cursor"></div>
   <div class="glow"></div>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="logo">SKILL<span>UP</span></a>
@@ -42,7 +41,7 @@
         <a href="leaderboard.html">Leaderboard</a>
       </div>
       <div class="nav-actions">
-        <!-- Injected by api.js -->
+
       </div>
     </div>
   </nav>
@@ -53,7 +52,6 @@
       <p class="muted">Monitor platform activity and manage users.</p>
     </div>
 
-    <!-- Stats Grid -->
     <div class="admin-grid" id="statsGrid">
       <div class="stat-card">
         <div class="stat-val" id="totalUsers">-</div>
@@ -69,7 +67,6 @@
       </div>
     </div>
 
-    <!-- User Management Section -->
     <div class="admin-section">
       <div class="section-header">
         <h2>User Management</h2>
@@ -88,28 +85,26 @@
             </tr>
           </thead>
           <tbody id="userTableBody">
-            <!-- Injected by admin.js -->
+
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- User Feedback Section -->
     <div class="admin-section">
       <div class="section-header">
         <h2>User Feedback</h2>
         <button class="btn btn-outline btn-sm" onclick="fetchFeedback()">Refresh Feedback 🔄</button>
       </div>
       <div id="feedbackList" style="margin-top: 20px;">
-        <!-- Injected by JS -->
+
       </div>
     </div>
 
-    <!-- Recent Activity Section -->
     <div class="admin-section">
       <h2>Recent Activity</h2>
       <div id="activityList" style="margin-top: 20px;">
-        <!-- Injected by admin.js -->
+
       </div>
     </div>
   </main>
@@ -117,7 +112,7 @@
   <script src="static/js/api.js"></script>
   <script src="static/js/main.js"></script>
   <script>
-    // Security check
+
     document.addEventListener('DOMContentLoaded', async () => {
       if (!SkillupAPI.isLoggedIn()) {
         window.location.href = 'login.html';
@@ -129,7 +124,7 @@
         window.location.href = 'dashboard.html';
         return;
       }
-      
+
       initAdmin();
     });
 
@@ -173,7 +168,7 @@
           document.getElementById('totalUsers').textContent = res.stats.totalUsers;
           document.getElementById('totalXP').textContent = res.stats.totalXP.toLocaleString();
           document.getElementById('totalLevels').textContent = res.stats.totalLevels;
-          
+
           renderActivity(res.stats.recentActivity);
         }
       } catch (err) {
@@ -241,7 +236,6 @@
       }
     }
 
-    // Extend SkillupAPI with admin methods
     SkillupAPI.getAdminStats = () => SkillupAPI.apiFetch('/admin/stats');
     SkillupAPI.getAdminUsers = () => SkillupAPI.apiFetch('/admin/users');
     SkillupAPI.getAdminFeedback = () => SkillupAPI.apiFetch('/admin/feedback');

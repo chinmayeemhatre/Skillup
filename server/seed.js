@@ -1,12 +1,3 @@
-/**
- * SKILLUP — Database Seeder
- * Seeds MongoDB with sample levels and demo users.
- *
- * Usage:
- *   cd server
- *   node seed.js          ← inserts sample data
- *   node seed.js --clear  ← clears all data first, then seeds
- */
 
 const mongoose = require('mongoose');
 const dotenv   = require('dotenv');
@@ -19,7 +10,6 @@ const Level = require('./models/Level');
 const Score = require('./models/Score');
 const Feedback = require('./models/Feedback');
 
-// ── Sample Level Data ─────────────────────────────────────────
 const levelsData = [
   {
     levelNumber: 1,
@@ -74,8 +64,8 @@ const levelsData = [
       hints:       ['Use modulo %','Check FizzBuzz before Fizz/Buzz separately','for i in range(1, n+1)'],
       starterCode: {
         python:     'def fizzbuzz(n):\n    for i in range(1, n + 1):\n        pass  # your code here\n\nfizzbuzz(15)',
-        javascript: 'function fizzbuzz(n) {\n  for (let i = 1; i <= n; i++) {\n    // your code here\n  }\n}\nfizzbuzz(15);',
-        cpp:        '#include<iostream>\nusing namespace std;\nvoid fizzbuzz(int n){\n    for(int i=1;i<=n;i++){\n        // your code here\n    }\n}\nint main(){fizzbuzz(15);}'
+        javascript: 'function fizzbuzz(n) {\n  for (let i = 1; i <= n; i++) {\n
+        cpp:        '#include<iostream>\nusing namespace std;\nvoid fizzbuzz(int n){\n    for(int i=1;i<=n;i++){\n
       },
       sampleOutput: '1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz',
       testCases:   [{ input:'15', expectedOutput:'1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz' }]
@@ -92,7 +82,7 @@ const levelsData = [
       sections: [
         { title:'Arrays & Two Pointers', content:'Arrays give O(1) access. Two-pointer technique solves many O(n²) problems in O(n).', code:'# Two pointer\ndef two_sum(a,t):\n    l,r=0,len(a)-1\n    while l<r:\n        s=a[l]+a[r]\n        if s==t: return l,r\n        elif s<t: l+=1\n        else: r-=1' },
         { title:'Linked Lists',          content:'Nodes with data and next pointer. O(1) head insertion, O(n) access.', code:'class Node:\n    def __init__(self,v):\n        self.val=v\n        self.next=None' },
-        { title:'Binary Search',         content:'Works on sorted arrays. Halves search space each step → O(log n).', code:'def bs(arr,t):\n    l,r=0,len(arr)-1\n    while l<=r:\n        m=l+(r-l)//2\n        if arr[m]==t: return m\n        elif arr[m]<t: l=m+1\n        else: r=m-1\n    return -1' },
+        { title:'Binary Search',         content:'Works on sorted arrays. Halves search space each step → O(log n).', code:'def bs(arr,t):\n    l,r=0,len(arr)-1\n    while l<=r:\n        m=l+(r-l)
         { title:'Trees & Traversals',    content:'BST: left < root < right. In-order gives sorted output.', code:'def inorder(root):\n    if not root: return []\n    return inorder(root.left)+[root.val]+inorder(root.right)' }
       ],
       resources: [
@@ -120,13 +110,13 @@ const levelsData = [
       constraints: '1 ≤ nums.length ≤ 10000, all values unique, sorted ascending',
       hints: [
         'Initialise left=0, right=len(nums)-1',
-        'mid = left + (right - left) // 2  (avoids overflow)',
+        'mid = left + (right - left)
         'If nums[mid] < target → search right half: left = mid + 1'
       ],
       starterCode: {
-        python:     'def search(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = left + (right - left) // 2\n        # TODO: your logic here\n        pass\n    return -1\n\nprint(search([-1,0,3,5,9,12], 9))',
-        javascript: 'function search(nums, target) {\n  let left = 0, right = nums.length - 1;\n  while (left <= right) {\n    const mid = Math.floor(left + (right - left) / 2);\n    // TODO: your logic here\n  }\n  return -1;\n}\nconsole.log(search([-1,0,3,5,9,12], 9));',
-        cpp:        'int search(vector<int>& n, int t) {\n    int l=0, r=n.size()-1;\n    while(l<=r){\n        int m=l+(r-l)/2;\n        // TODO: your logic here\n    }\n    return -1;\n}'
+        python:     'def search(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = left + (right - left)
+        javascript: 'function search(nums, target) {\n  let left = 0, right = nums.length - 1;\n  while (left <= right) {\n    const mid = Math.floor(left + (right - left) / 2);\n
+        cpp:        'int search(vector<int>& n, int t) {\n    int l=0, r=n.size()-1;\n    while(l<=r){\n        int m=l+(r-l)/2;\n
       },
       sampleOutput: 'Test 1: 4 ✓\nTest 2: -1 ✓\nAll test cases passed!',
       testCases: [
@@ -177,7 +167,6 @@ const levelsData = [
   }
 ];
 
-// ── Sample Users ──────────────────────────────────────────────
 const usersData = [
   { name:'SKILLUP Admin',  email:'admin@skillup.dev',   password:'adminpassword', username:'admin', xp:9999,level:7, college:'SKILLUP HQ', role:'admin' },
   { name:'Aarav Sharma',   email:'aarav@skillup.dev',   password:'password123',   username:'aarav', xp:340, level:2, college:'KGISL', role:'student' },
@@ -190,24 +179,21 @@ const usersData = [
   { name:'Rohan Das',      email:'rohan@skillup.dev',   password:'password123',   username:'rohan', xp:1100,level:4, college:'BITS',  role:'student' }
 ];
 
-// ── Seed function ─────────────────────────────────────────────
 async function seed() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('✅ MongoDB connected');
 
-    // Clear existing data if --clear flag
     if (process.argv.includes('--clear')) {
       await Promise.all([
-        User.deleteMany({}), 
-        Level.deleteMany({}), 
+        User.deleteMany({}),
+        Level.deleteMany({}),
         Score.deleteMany({}),
         Feedback.deleteMany({})
       ]);
       console.log('🗑️  Cleared existing data');
     }
 
-    // Seed levels
     for (const lvl of levelsData) {
       await Level.findOneAndUpdate(
         { levelNumber: lvl.levelNumber },
@@ -217,7 +203,6 @@ async function seed() {
     }
     console.log(`✅ Seeded ${levelsData.length} levels`);
 
-    // Seed users (skip if email already exists)
     let created = 0;
     for (const userData of usersData) {
       const exists = await User.findOne({ email: userData.email });
@@ -238,37 +223,36 @@ async function seed() {
         badges:   [{ id:'first_step', name:'First Step', icon:'🌟' }],
         streak:   { current:5, longest:12, lastLogin: new Date() }
       });
-      // Skip pre-save hook's re-hashing since we hashed manually
+
       user.$skipPasswordHash = true;
       await user.save();
       created++;
     }
     console.log(`✅ Seeded ${created} new users (skipped ${usersData.length - created} existing)`);
 
-    // Seed some sample feedback from students
     const studentUsers = await User.find({ role: 'student' }).limit(3);
     if (studentUsers.length > 0) {
       const feedbackData = [
-        { 
-          user: studentUsers[0]._id, 
-          rating: 5, 
-          type: 'praise', 
-          title: 'Amazing UI!', 
-          content: 'The high-tech golden theme is absolutely stunning. Best learning platform I have used.' 
+        {
+          user: studentUsers[0]._id,
+          rating: 5,
+          type: 'praise',
+          title: 'Amazing UI!',
+          content: 'The high-tech golden theme is absolutely stunning. Best learning platform I have used.'
         },
-        { 
-          user: studentUsers[1]._id, 
-          rating: 4, 
-          type: 'suggestion', 
-          title: 'More C++ content', 
-          content: 'I would love to see more DSA challenges specifically for C++ in Level 2.' 
+        {
+          user: studentUsers[1]._id,
+          rating: 4,
+          type: 'suggestion',
+          title: 'More C++ content',
+          content: 'I would love to see more DSA challenges specifically for C++ in Level 2.'
         },
-        { 
-          user: studentUsers[2]._id, 
-          rating: 2, 
-          type: 'bug', 
-          title: 'Quiz timer glitch', 
-          content: 'The timer occasionally skips a few seconds on mobile view. Please check.' 
+        {
+          user: studentUsers[2]._id,
+          rating: 2,
+          type: 'bug',
+          title: 'Quiz timer glitch',
+          content: 'The timer occasionally skips a few seconds on mobile view. Please check.'
         }
       ];
       await Feedback.insertMany(feedbackData);

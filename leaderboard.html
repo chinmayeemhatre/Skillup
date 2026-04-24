@@ -77,10 +77,9 @@
       <p class="muted">Compete, stay motivated, and see how you rank among your peers.</p>
     </div>
 
-    <!-- Podium -->
     <div class="card card-glow mb-28 fade-up-d1" style="padding:36px;">
       <div class="podium">
-        <!-- 2nd -->
+
         <div class="podium-slot podium-2">
           <div class="podium-avatar" style="background:linear-gradient(135deg,#ec4899,#7c3aed);">P<div class="podium-crown" style="position:absolute;top:-16px;font-size:1rem;">🥈</div></div>
           <div class="podium-name">Priya Nair</div>
@@ -88,7 +87,7 @@
           <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl 4</div>
           <div class="podium-block">2</div>
         </div>
-        <!-- 1st -->
+
         <div class="podium-slot podium-1">
           <div class="podium-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);"><span class="crown">👑</span>K</div>
           <div class="podium-name" style="font-size:0.95rem;">Karan Mehta</div>
@@ -96,7 +95,7 @@
           <div class="level-badge" style="font-size:0.72rem;padding:2px 8px;">Lvl 6</div>
           <div class="podium-block">1</div>
         </div>
-        <!-- 3rd -->
+
         <div class="podium-slot podium-3">
           <div class="podium-avatar" style="background:linear-gradient(135deg,#06b6d4,#7c3aed);">R<div style="position:absolute;top:-16px;font-size:1rem;">🥉</div></div>
           <div class="podium-name">Rohan Das</div>
@@ -110,20 +109,17 @@
       </div>
     </div>
 
-    <!-- Filter -->
     <div class="filter-tabs fade-up-d2">
       <div class="filter-tab active" onclick="setFilter(this,'all')">🌍 All Time</div>
       <div class="filter-tab" onclick="setFilter(this,'week')">📅 This Week</div>
       <div class="filter-tab" onclick="setFilter(this,'level')">⚡ By Level</div>
     </div>
 
-    <!-- Search -->
     <div class="search-bar fade-up-d2">
       <span class="s-icon">🔍</span>
       <input class="input" type="text" id="lbSearch" placeholder="Search a student..." oninput="filterLeaderboard(this.value)"/>
     </div>
 
-    <!-- Table -->
     <div class="card fade-up-d3" style="padding:0;overflow:hidden;">
       <table class="lb-table">
         <thead>
@@ -161,11 +157,9 @@
       const { leaderboard } = await SkillupAPI.getLeaderboard();
       allStudents = leaderboard;
 
-      // Update podium with real top 3
       renderPodium(leaderboard);
       renderTable(leaderboard);
 
-      // Update rank banner
       if (currentUser) {
         const myEntry = leaderboard.find(u => u.name === currentUser.name);
         const rankBanner = document.querySelector('.card-glow > div:last-child');
@@ -175,7 +169,7 @@
       }
     } catch(err) {
       console.warn('Leaderboard load error:', err.message);
-      // Fallback — keep static data visible
+
     }
   }
 
