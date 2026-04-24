@@ -544,7 +544,7 @@ def find_middle(head):
         },
         {
           title: "🔍 Binary Search",
-          content: "<strong style='color:var(--yellow-l)'>Binary Search</strong> works ONLY on sorted arrays. Key idea: compare the middle element to the target and eliminate <em>half</em> the remaining search space each step. This gives O(log n) time. Critical detail: use <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>mid = left + (right - left)
+          content: "<strong style='color:var(--yellow-l)'>Binary Search</strong> works ONLY on sorted arrays. Key idea: compare the middle element to the target and eliminate <em>half</em> the remaining search space each step. This gives O(log n) time. Critical detail: use <code style='color:var(--yellow);background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px;'>mid = left + (right - left) // 2</code> to avoid integer overflow.</strong>",
           code: `def binary_search(arr, target):
     """Iterative binary search — O(log n)"""
     left, right = 0, len(arr) - 1
@@ -891,7 +891,7 @@ function maxSubarraySum(arr, k) {
   }
   return maxSum;
 }
-
+`,
         },
         {
           title: "🏗️ System Design: Scalability & Performance",
